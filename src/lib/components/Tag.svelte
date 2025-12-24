@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { ComponentProps } from "svelte";
-
   let { name }: { name: string } = $props();
 </script>
 

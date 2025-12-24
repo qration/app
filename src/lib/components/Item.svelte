@@ -1,14 +1,19 @@
 <script lang="ts">
 	import Tag from "./Tag.svelte";
 
-
+  let { name, tags, body }: {
+    name: string,
+    tags: Array<string>,
+    body: string,
+  } = $props();
 </script>
 
 <div class="w-full border-2 border-gray-400 p-4 rounded-xl flex flex-col">
-  <span class="text-3xl font-bold">Thing 1</span>
+  <span class="text-3xl font-bold">{name}</span>
   <div class="flex flex-row gap-1">
-    <Tag name="Tag 1"/>
-    <Tag name="Tag 2"/>
+    {#each tags as tag}
+      <Tag name={tag}/>
+    {/each}
   </div>
-  <span>Body text</span>
+  <span>{body}</span>
 </div>

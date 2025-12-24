@@ -1,10 +1,13 @@
 <script lang="ts">
-	import Tag from "./Tag.svelte";
+	import Tag from './Tag.svelte';
+  import { getRelativeTime } from '$lib/util/date';
+  const rtf = new Intl.RelativeTimeFormat('en-CA');
 
-  let { name, tags, body }: {
+  let { name, tags, body, date }: {
     name: string,
     tags: Array<string>,
     body: string,
+    date: Date,
   } = $props();
 </script>
 
@@ -16,4 +19,5 @@
     {/each}
   </div>
   <span>{body}</span>
+  <span class="text-gray-500 italic mt-auto self-end">{getRelativeTime(date, rtf)}</span>
 </div>

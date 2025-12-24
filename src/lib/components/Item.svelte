@@ -7,7 +7,7 @@
     name: string,
     tags: Array<string>,
     body: string,
-    date: Date,
+    date: number,
   } = $props();
 </script>
 

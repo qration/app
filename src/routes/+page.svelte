@@ -1,9 +1,14 @@
 <script>
-	import Item from "$lib/components/Item.svelte";
-
+	import Item from '$lib/components/Item.svelte';
+	import data from '../test-data.json';
 </script>
 
 <div class="flex flex-col gap-2">
-	<Item name="Thing 1" tags={["Tag 1", "Tag 2"]} body="Body text" date={new Date(2025, 11, 6)}/>
-	<Item name="Thing 2" tags={["Tag 3", "Tag 4"]} body="Body text" date={new Date(2025, 5, 4)}/>
+	{#each data as item}
+		<Item
+			name={item.name}
+			tags={item.tags}
+			body={item.body}
+			date={item.date}/>
+	{/each}
 </div>

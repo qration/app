@@ -3,12 +3,14 @@
     "name": "Thing 1",
     "body": "Body text",
     "tags": ["Tag 1", "Tag 2"],
-    "date": 1764997200000
+    "date": 1764997200000,
+    "link": "https://elektr1x.github.io/"
   },
   {
     "name": "Thing 2",
     "body": "Body text",
     "tags": ["Tag 3", "Tag 4"],
-    "date": 1749009600000
+    "date": 1749009600000,
+    "link": "https://google.com"
   }
 ]

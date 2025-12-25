@@ -3,4 +3,5 @@ export interface Item {
   date: number,
   tags: string[],
   body: string,
+  link: string,
 }

@@ -10,11 +10,8 @@ const intervals: Record<number, Intl.RelativeTimeFormatUnit> = {
 export function getRelativeTime(date: number, rtf: Intl.RelativeTimeFormat): string {
   const minutes = ((new Date()).getTime() - date) / (1000 * 60);
   for (const interval of Object.keys(intervals).reverse()) {
-    console.log(interval);
     const units = minutes / +interval;
-    if (units >= 1) {
-      return rtf.format(-Math.round(units), intervals[+interval])
-    }
+    if (units >= 1) return rtf.format(-Math.round(units), intervals[+interval]);
   }
   return '';
 }

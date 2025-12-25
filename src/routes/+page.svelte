@@ -5,10 +5,6 @@
 
 <div class="flex flex-col gap-2">
 	{#each data as item}
-		<Item
-			name={item.name}
-			tags={item.tags}
-			body={item.body}
-			date={item.date}/>
+		<Item item={item}/>
 	{/each}
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import IconButton from '$lib/components/IconButton.svelte';
 	import Item from '$lib/components/Item.svelte';
-	import { IconLayoutGrid, IconLayoutList } from '@tabler/icons-svelte-runes';
+	import { IconLayoutGrid, IconLayoutList, IconSearch } from '@tabler/icons-svelte-runes';
 	import data from '../test-data.json';
 
 	let filtered = $state(data);
@@ -28,9 +28,13 @@
 </script>
 <div class="flex flex-col gap-2">
 	<div class="flex flex-row gap-1.5">
-		<input class="w-full rounded-xl border-2 border-gray-400"
-					 type="text" placeholder="Search..."
-					 bind:value={search} oninput={searchFilter} />
+		<div class="w-full rounded-xl border-2 border-gray-400
+		            flex flex-row items-center">
+			<IconSearch class="absolute left-4"/>
+			<input class="border-none bg-none rounded-xl w-full pl-12"
+						 type="search" placeholder="Search..."
+						 bind:value={search} oninput={searchFilter} />
+		</div>
 		<IconButton Icon={layoutList ? IconLayoutList : IconLayoutGrid}
 		            onclick={layoutToggle}/>
 	</div>

@@ -17,7 +17,7 @@
   } = $props();
 </script>
 
-<div class="w-full border-2 border-gray-400 p-4 rounded-xl flex flex-col">
+<div class="w-full border-2 border-gray-400 p-4 rounded-xl flex flex-col bg-white">
   <div class="flex flex-row justify-between">
     <a href={item.link} target="_blank" class="hover:underline">
       <span class="text-3xl font-bold flex flex-row gap-2 items-center">

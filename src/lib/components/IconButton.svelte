@@ -9,10 +9,9 @@
   } = $props();
 </script>
 
-<button class="bg-gray-100
-             px-2 py-2
-             rounded-xl border-2
-             w-min cursor-pointer hover:brightness-90"
+<button class="bg-white px-2 py-2
+               rounded-xl border-2 border-gray-400
+               w-min cursor-pointer hover:bg-gray-200"
         {onclick} >
   <Icon />
   {text}

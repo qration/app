@@ -26,6 +26,7 @@
 		layoutList = !layoutList;
 	}
 </script>
+
 <div class="flex flex-col gap-2">
 	<div class="flex flex-row gap-1.5">
 		<div class="w-full rounded-xl border-2 border-gray-400

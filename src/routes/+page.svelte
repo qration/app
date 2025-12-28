@@ -1,26 +1,42 @@
 <script lang="ts">
+	import IconButton from '$lib/components/IconButton.svelte';
 	import Item from '$lib/components/Item.svelte';
+	import { IconLayoutGrid, IconLayoutList } from '@tabler/icons-svelte-runes';
 	import data from '../test-data.json';
+
 	let filtered = $state(data);
-
 	let search = $state('');
+	let layoutList = $state(true);
 
-	let starToggle = (index: number) => {
-		return data[index].starred = !data[index].starred;
-  }
+	// surely there's a better way to do this?
+	let starToggle = (id: number): void => {
+		const index = data.findIndex(x => x.id == id); 
+		const fIndex = filtered.findIndex(x => x.id == id); 
+		data[index].starred = !data[index].starred;
+		filtered[fIndex].starred = !filtered[fIndex].starred;
+	}
 
-	let searchFilter = () => {
-		console.log(search);
+	let searchFilter = (): void => {
 		filtered = data.filter(x =>
-		  x.body.toLowerCase().startsWith(search.toLowerCase()) ||
-			x.name.toLowerCase().startsWith(search.toLowerCase()))
+			x.body.toLowerCase().includes(search.toLowerCase()) ||
+			x.name.toLowerCase().includes(search.toLowerCase()));
+	}
+
+	let layoutToggle = (): void => {
+		layoutList = !layoutList;
 	}
 </script>
 <div class="flex flex-col gap-2">
-	<input class="w-full rounded-xl border-2 border-gray-400"
-				 type="text" placeholder="Search..."
-				 bind:value={search} oninput={searchFilter} />
-	{#each filtered as item, index}
-		<Item item={item} onstar={() => starToggle(index)} />
-	{/each}
+	<div class="flex flex-row gap-1.5">
+		<input class="w-full rounded-xl border-2 border-gray-400"
+					 type="text" placeholder="Search..."
+					 bind:value={search} oninput={searchFilter} />
+		<IconButton Icon={layoutList ? IconLayoutList : IconLayoutGrid}
+		            onclick={layoutToggle}/>
+	</div>
+	<div class={`${layoutList ? 'flex flex-col' : 'grid grid-cols-4'} gap-2`}>
+		{#each filtered as item}
+			<Item item={item} onstar={() => starToggle(item.id)} />
+		{/each}
+	</div>
 </div>

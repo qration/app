@@ -32,7 +32,7 @@
 
 <div class="flex flex-col gap-2">
 	<div class="flex flex-row items-center justify-between">
-		<span class="text-5xl font-bold">RSS</span>
+		<span class="text-5xl font-bold">Qration</span>
 		<IconButton Icon={IconPlus} onclick={() => { addModalOpen = true; console.log('hi') }}/>
 	</div>
 	<div class="flex flex-row gap-1.5">
@@ -58,6 +58,83 @@
 	title="Add Feed"
 >
 	{#snippet body()}
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
+		<span>hi</span>
 		<span>hi</span>
 	{/snippet}
 </Modal>

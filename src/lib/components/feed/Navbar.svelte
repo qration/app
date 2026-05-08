@@ -9,7 +9,7 @@
 	<div class="flex flex-1 justify-start">
 		<img src={wordmark} alt="Qration logo" class="h-10 cursor-pointer" />
 	</div>
-	<TextInput placeholder="Search..." iconClass="ti ti-search" cls="flex-6" />
+	<TextInput placeholder="Search..." iconClass="ti ti-search " cls="flex-6 " />
 	<div class="flex flex-1 justify-end">
 		<i class="ti ti-settings cursor-pointer"></i>
 	</div>

@@ -19,7 +19,7 @@
 
 <div
 	class="{cls}flex w-full flex-row items-center rounded-xl border-2
-		border-border text-xl">
+		border-border text-xl bg-bg">
 	<i class="{iconClass}absolute pl-3 text-text-secondary"></i>
 	<input
 		type="text"

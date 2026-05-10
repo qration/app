@@ -54,9 +54,13 @@
 			<SidebarButton text="Saved" iconClass="ti ti-bookmark " />
 		</div>
 
-		{#if !collapsed}
-			<div class="text-xl">Subscriptions</div>
-		{/if}
+    <div>
+      {#if !collapsed}
+        <div class="text-xl">Subscriptions</div>
+      {/if}
+			<SidebarButton text="Feed 1" iconClass="ti ti-rss " />
+			<SidebarButton text="Feed 2" iconClass="ti ti-brand-youtube " />
+    </div>
 	</div>
 
 	<div class="flex flex-col">

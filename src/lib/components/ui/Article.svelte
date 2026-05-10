@@ -20,7 +20,7 @@
 
 <button
 	class="flex flex-col text-lg border-2 border-border items-start
-		text-text-muted hover:text-text bg-bg hover:bg-bg-hover rounded-xl px-3 py-2
+		text-text-muted hover:text-text bg-bg hover:bg-bg-hover rounded px-3 py-2
 		cursor-pointer"
 	{onclick}>
 	<div class="font-medium">

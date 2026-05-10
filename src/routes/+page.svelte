@@ -3,7 +3,7 @@
 	import Sidebar from '$lib/components/feed/Sidebar.svelte';
 </script>
 
-<div class="flex h-screen flex-row">
+<div class="flex h-screen flex-row bg-bg">
 	<Sidebar />
 	<ArticlesSidebar />
 	<div class="p-4">

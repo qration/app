@@ -11,7 +11,8 @@
 </script>
 
 <button
-	class="py-1 px-2 text-2xl h-min cursor-pointer"
+	class="p-1 flex justify-center rounded text-2xl h-min cursor-pointer
+		text-text-muted bg-bg hover:text-text hover:bg-bg-hover"
 	aria-label={label}
 	{onclick}>
 	<i class={iconClass}></i>

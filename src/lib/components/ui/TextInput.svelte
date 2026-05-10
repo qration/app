@@ -19,20 +19,21 @@
 
 <div
 	class="{cls}flex w-full flex-row items-center rounded-xl border-2
-		border-gray-300 text-xl">
-	<i class="{iconClass}absolute pl-3"></i>
+		border-border text-xl">
+	<i class="{iconClass}absolute pl-3 text-text-secondary"></i>
 	<input
 		type="text"
 		{placeholder}
 		class="w-full rounded-xl border-none bg-transparent px-10 py-2 text-xl
-			placeholder:text-gray-400 active:border-none"
+			placeholder:text-text-secondary active:border-none text-text"
 		bind:value={input} />
 	{#if clear && input != ''}
 		<button
 			class="flex cursor-pointer items-center justify-end"
 			aria-label="Clear"
 			onclick={() => clearText()}>
-			<i class="ti ti-x absolute px-3 py-3"></i>
+			<i class="ti ti-x absolute px-3 py-3 text-text-secondary hover:text-text"
+			></i>
 		</button>
 	{/if}
 </div>

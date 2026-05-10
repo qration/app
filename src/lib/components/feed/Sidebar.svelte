@@ -1,7 +1,6 @@
 <script>
 	import wordmark from '$lib/assets/qration-wordmark.svg';
 	import { setContext } from 'svelte';
-
 	import IconButton from '../ui/IconButton.svelte';
 	import SidebarButton from '../ui/SidebarButton.svelte';
 
@@ -17,9 +16,9 @@
 </script>
 
 <div
-	class="border-r-2 font-medium border-r-gray-300 p-4 overflow-x-hidden
-		{collapsed ? 'w-16' : 'w-70'} flex flex-col justify-between transition-all
-		duration-100">
+	class="border-r-2 font-medium border-r-border bg-bg pl-4 pr-3.5 py-4
+		overflow-x-hidden {collapsed ? 'w-16' : 'w-70'} flex flex-col
+		justify-between transition-all duration-100">
 	<div class="flex flex-col gap-4 shrink-0">
 		<div class="flex flex-col">
 			<div
@@ -48,7 +47,7 @@
 		<div class="items-center">
 			<SidebarButton text="Add New" iconClass="ti ti-plus " />
 		</div>
-		<div class="flex flex-col">
+		<div class="flex flex-col gap-0.5">
 			<SidebarButton text="All Feeds" iconClass="ti ti-news " />
 			<SidebarButton text="Unread" iconClass="ti ti-notification " />
 			<SidebarButton text="Favourites" iconClass="ti ti-star " />

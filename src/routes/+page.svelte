@@ -1,16 +1,9 @@
-<script>
-	import ArticlesSidebar from '$lib/components/feed/ArticlesSidebar.svelte';
-	import Sidebar from '$lib/components/feed/Sidebar.svelte';
+<script lang="ts">
+	import logo from '$lib/assets/qration.svg';
+	import { resolve } from '$app/paths';
 </script>
 
-<div class="flex h-screen w-screen flex-row bg-bg">
-	<Sidebar />
-	<ArticlesSidebar />
-	<div class="p-4">
-		<h1>Welcome to SvelteKit</h1>
-		<p>
-			Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read
-			the documentation
-		</p>
-	</div>
+<div class="flex justify-center align-center h-screen w-screen ">
+  <img src={logo} alt="Logo"/>
+  <a href="{resolve('/feed')}">Go to your feed</a>
 </div>

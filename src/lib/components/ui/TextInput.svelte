@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Icon from "@iconify/svelte";
-import IconButton from "./IconButton.svelte";
+	import Icon from '@iconify/svelte';
+	import IconButton from './IconButton.svelte';
 
 	let {
 		placeholder,
@@ -21,8 +21,8 @@ import IconButton from "./IconButton.svelte";
 </script>
 
 <div
-	class="{cls}flex w-full flex-row items-center rounded border-2
-		border-border text-xl bg-bg">
+	class="{cls}flex w-full flex-row items-center rounded border-2 border-border
+		text-xl bg-bg">
 	<div class="text-xl absolute pl-3 text-text-secondary">
 		<Icon {icon} />
 	</div>
@@ -33,8 +33,12 @@ import IconButton from "./IconButton.svelte";
 			placeholder:text-text-secondary active:border-none text-text"
 		bind:value={input} />
 	{#if clear && input != ''}
-	<div class="flex items-center justify-end">
-		<IconButton icon="tabler:x" onclick={() => clearText()} label="Clear" cls="absolute mr-1.5 "/>
-	</div>
+		<div class="flex items-center justify-end">
+			<IconButton
+				icon="tabler:x"
+				onclick={() => clearText()}
+				label="Clear"
+				cls="absolute mr-1.5 " />
+		</div>
 	{/if}
 </div>

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-import { getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	let { text, icon }: { text: string, icon: string, } = $props();
+	let { text, icon }: { text: string; icon: string } = $props();
 
 	const sidebar: { isCollapsed: () => boolean } = getContext('sidebar');
 	const collapsed = $derived(sidebar.isCollapsed());

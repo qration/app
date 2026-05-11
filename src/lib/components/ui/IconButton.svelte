@@ -1,16 +1,16 @@
 <script lang="ts">
-	import Icon from "@iconify/svelte";
+	import Icon from '@iconify/svelte';
 
 	let {
 		icon,
 		label,
 		onclick,
-    cls = '',
+		cls = '',
 	}: {
 		icon: string;
 		label: string;
 		onclick?: (e: MouseEvent) => void;
-    cls?: string;
+		cls?: string;
 	} = $props();
 </script>
 

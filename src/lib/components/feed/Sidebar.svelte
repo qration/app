@@ -23,13 +23,12 @@
 	<div class="flex flex-col gap-4 shrink-0">
 		<div class="flex flex-col">
 			<div
-				class="flex flex-row {collapsed
-					? ' justify-center'
-					: ' justify-between'} items-center">
+				class="flex flex-row
+					{collapsed ? ' justify-center' : ' justify-between'} items-center">
 				<div
-					class="overflow-hidden transition-all duration-75 {collapsed
-						? ' max-w-0 opacity-0'
-						: ' max-w-xs opacity-100'} shrink-0">
+					class="overflow-hidden transition-all duration-75
+						{collapsed ? ' max-w-0 opacity-0' : ' max-w-xs opacity-100'}
+						shrink-0">
 					<a href={resolve('/')}>
 						<img
 							src={wordmark}
@@ -57,13 +56,13 @@
 			<SidebarButton text="Saved" icon="tabler:bookmark" />
 		</div>
 
-    <div>
-      {#if !collapsed}
-        <div class="text-xl">Subscriptions</div>
-      {/if}
+		<div>
+			{#if !collapsed}
+				<div class="text-xl">Subscriptions</div>
+			{/if}
 			<SidebarButton text="Feed 1" icon="tabler:rss" />
 			<SidebarButton text="Feed 2" icon="tabler:brand-youtube" />
-    </div>
+		</div>
 	</div>
 
 	<div class="flex flex-col">

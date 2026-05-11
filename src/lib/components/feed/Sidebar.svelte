@@ -6,6 +6,7 @@
 	import { resolve } from '$app/paths';
 
 	let collapsed = $state(false);
+	let selectedFilter = $state('feed-all');
 
 	setContext('sidebar', {
 		isCollapsed: () => collapsed,
@@ -47,21 +48,22 @@
 			</div>
 		</div>
 		<div class="items-center">
-			<SidebarButton text="Add New" icon="tabler:plus" />
+			<SidebarButton text="Add New" icon="tabler:plus"/>
 		</div>
 		<div class="flex flex-col gap-0.5">
-			<SidebarButton text="All Feeds" icon="tabler:news" />
-			<SidebarButton text="Unread" icon="tabler:notification" />
-			<SidebarButton text="Favourites" icon="tabler:star" />
-			<SidebarButton text="Saved" icon="tabler:bookmark" />
+			<SidebarButton text="All Feeds" icon="tabler:news" selected={selectedFilter == 'feed-all'} onclick={() => selectedFilter = 'feed-all'}/>
+			<SidebarButton text="Unread" icon="tabler:notification" selected={selectedFilter == 'article-unread'} onclick={() => selectedFilter = 'article-unread'} />
+			<SidebarButton text="Today" icon="tabler:calendar" selected={selectedFilter == 'article-today'} onclick={() => selectedFilter = 'article-today'} />
+			<SidebarButton text="Favourites" icon="tabler:star" selected={selectedFilter == 'feed-favourites'} onclick={() => selectedFilter = 'feed-favourites'} />
+			<SidebarButton text="Saved" icon="tabler:bookmark" selected={selectedFilter == 'article-saved'} onclick={() => selectedFilter = 'article-saved'} />
 		</div>
 
-		<div>
+		<div class="flex flex-col gap-0.5">
 			{#if !collapsed}
 				<div class="text-xl">Subscriptions</div>
 			{/if}
-			<SidebarButton text="Feed 1" icon="tabler:rss" />
-			<SidebarButton text="Feed 2" icon="tabler:brand-youtube" />
+			<SidebarButton text="Feed 1" icon="tabler:rss" selected={selectedFilter == 'feed-1'} onclick={() => selectedFilter = 'feed-1'} />
+			<SidebarButton text="Feed 2" icon="tabler:brand-youtube" selected={selectedFilter == 'feed-2'} onclick={() => selectedFilter = 'feed-2'} />
 		</div>
 	</div>
 

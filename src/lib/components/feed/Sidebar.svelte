@@ -3,6 +3,7 @@
 	import { setContext } from 'svelte';
 	import IconButton from '../ui/IconButton.svelte';
 	import SidebarButton from '../ui/SidebarButton.svelte';
+	import { resolve } from '$app/paths';
 
 	let collapsed = $state(false);
 
@@ -22,21 +23,23 @@
 	<div class="flex flex-col gap-4 shrink-0">
 		<div class="flex flex-col">
 			<div
-				class="flex flex-row items-center{collapsed
+				class="flex flex-row {collapsed
 					? ' justify-center'
-					: ' justify-between'}">
+					: ' justify-between'} items-center">
 				<div
-					class="overflow-hidden transition-all duration-75 shrink-0{collapsed
+					class="overflow-hidden transition-all duration-75 {collapsed
 						? ' max-w-0 opacity-0'
-						: ' max-w-xs opacity-100'}">
-					<img
-						src={wordmark}
-						alt="Qration logo"
-						class="max-w-none shrink-0 h-10 cursor-pointer transition-opacity" />
+						: ' max-w-xs opacity-100'} shrink-0">
+					<a href={resolve('/')}>
+						<img
+							src={wordmark}
+							alt="Qration logo"
+							class="max-w-none shrink-0 h-10 cursor-pointer transition-opacity" />
+					</a>
 				</div>
 				<div class="w-6 flex justify-center shrink-0">
 					<IconButton
-						iconClass="ti ti-layout-sidebar-left-{collapsed
+						icon="tabler:layout-sidebar-left-{collapsed
 							? 'expand'
 							: 'collapse'}"
 						label="Collapse"
@@ -45,25 +48,25 @@
 			</div>
 		</div>
 		<div class="items-center">
-			<SidebarButton text="Add New" iconClass="ti ti-plus " />
+			<SidebarButton text="Add New" icon="tabler:plus" />
 		</div>
 		<div class="flex flex-col gap-0.5">
-			<SidebarButton text="All Feeds" iconClass="ti ti-news " />
-			<SidebarButton text="Unread" iconClass="ti ti-notification " />
-			<SidebarButton text="Favourites" iconClass="ti ti-star " />
-			<SidebarButton text="Saved" iconClass="ti ti-bookmark " />
+			<SidebarButton text="All Feeds" icon="tabler:news" />
+			<SidebarButton text="Unread" icon="tabler:notification" />
+			<SidebarButton text="Favourites" icon="tabler:star" />
+			<SidebarButton text="Saved" icon="tabler:bookmark" />
 		</div>
 
     <div>
       {#if !collapsed}
         <div class="text-xl">Subscriptions</div>
       {/if}
-			<SidebarButton text="Feed 1" iconClass="ti ti-rss " />
-			<SidebarButton text="Feed 2" iconClass="ti ti-brand-youtube " />
+			<SidebarButton text="Feed 1" icon="tabler:rss" />
+			<SidebarButton text="Feed 2" icon="tabler:brand-youtube" />
     </div>
 	</div>
 
 	<div class="flex flex-col">
-		<SidebarButton text="Settings" iconClass="ti ti-settings " />
+		<SidebarButton text="Settings" icon="tabler:settings" />
 	</div>
 </div>

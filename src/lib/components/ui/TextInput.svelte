@@ -1,14 +1,15 @@
 <script lang="ts">
-	import IconButton from "./IconButton.svelte";
+	import Icon from "@iconify/svelte";
+import IconButton from "./IconButton.svelte";
 
 	let {
 		placeholder,
-		iconClass = '',
+		icon = '',
 		clear = true,
 		cls = '',
 	}: {
 		placeholder: string;
-		iconClass?: string;
+		icon?: string;
 		clear?: boolean;
 		cls?: string;
 	} = $props();
@@ -22,7 +23,9 @@
 <div
 	class="{cls}flex w-full flex-row items-center rounded border-2
 		border-border text-xl bg-bg">
-	<i class="{iconClass}absolute pl-3 text-text-secondary"></i>
+	<div class="text-xl absolute pl-3 text-text-secondary">
+		<Icon {icon} />
+	</div>
 	<input
 		type="text"
 		{placeholder}
@@ -31,14 +34,7 @@
 		bind:value={input} />
 	{#if clear && input != ''}
 	<div class="flex items-center justify-end">
-		<IconButton iconClass="ti ti-x " onclick={() => clearText()} label="Clear" cls="absolute mr-1.5 "/>
+		<IconButton icon="tabler:x" onclick={() => clearText()} label="Clear" cls="absolute mr-1.5 "/>
 	</div>
-		<!-- <button
-			class="flex cursor-pointer items-center justify-end"
-			aria-label="Clear"
-			onclick={() => clearText()}>
-			<i class=" absolute px-3 py-3 text-text-secondary hover:text-text"
-			></i> -->
-		<!-- </button> -->
 	{/if}
 </div>

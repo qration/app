@@ -9,7 +9,7 @@
 	<div
 		class="sticky top-0 bg-bg py-4 w-full px-4 border-2 border-x-transparent
 			border-t-transparent border-b-border">
-		<TextInput placeholder="Search..." iconClass="ti ti-search " />
+		<TextInput placeholder="Search..." icon="tabler:search" />
 	</div>
 	<div
 		class="flex flex-col gap-4 bg-bg text-text text-4xl overflow-y-scroll
@@ -17,122 +17,122 @@
 		<Article
 			title="Article 1"
 			author="Feed 1"
-			iconClass="ti ti-rss "
+			icon="tabler:rss"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
-			iconClass="ti ti-brand-youtube "
+			icon="tabler:brand-youtube"
 			time={new Date()} />
 	</div>
 </div>

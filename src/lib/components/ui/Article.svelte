@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { getRelativeTime } from '$lib/util/date';
+	import Icon from '@iconify/svelte';
 
 	let {
 		title,
 		author,
 		time,
-		iconClass,
+		icon,
 		onclick,
 	}: {
 		title: string;
 		author: string;
 		time: Date;
-		iconClass: string;
+		icon: string;
 		onclick?: (e: MouseEvent) => void;
 	} = $props();
 
@@ -28,7 +29,7 @@
 	</div>
 	<div class="flex flex-row justify-between w-full">
 		<div class="flex flex-row gap-2 items-center">
-			<i class={iconClass}></i>
+			<Icon {icon} />
 			{author}
 		</div>
 		{getRelativeTime(time.getTime(), rtf)}

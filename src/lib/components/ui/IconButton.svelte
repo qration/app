@@ -1,11 +1,13 @@
 <script lang="ts">
+	import Icon from "@iconify/svelte";
+
 	let {
-		iconClass,
+		icon,
 		label,
 		onclick,
     cls = '',
 	}: {
-		iconClass: string;
+		icon: string;
 		label: string;
 		onclick?: (e: MouseEvent) => void;
     cls?: string;
@@ -17,5 +19,5 @@
 		text-text-muted bg-bg hover:text-text hover:bg-bg-hover"
 	aria-label={label}
 	{onclick}>
-	<i class={iconClass}></i>
+	<Icon {icon} />
 </button>

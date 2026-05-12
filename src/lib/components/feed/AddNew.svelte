@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '../ui/Button.svelte';
 	import Modal from '../ui/Modal.svelte';
 
 	let {
@@ -28,17 +29,11 @@
 				type="url"
 				placeholder="https://example.com/feed.xml"
 				class="w-full rounded border-2 border-border bg-transparent px-3 py-2
-					text-text placeholder:text-text-secondary"
+					text-text placeholder:text-text-secondary focus:outline-none focus:ring-0 focus:border-text"
 				bind:value={url} />
 		</label>
 		<div class="flex justify-end">
-			<button
-				type="button"
-				class="rounded bg-text text-bg px-4 py-2 cursor-pointer
-					hover:bg-text-muted"
-				onclick={confirm}>
-				Confirm
-			</button>
+			<Button onclick={confirm}>Confirm</Button>
 		</div>
 	</div>
 </Modal>

@@ -30,7 +30,7 @@
 		type="text"
 		{placeholder}
 		class="w-full rounded border-none bg-transparent px-10 py-2 text-xl
-			placeholder:text-text-secondary active:border-none text-text"
+			placeholder:text-text-secondary active:border-none text-text focus:outline-none"
 		bind:value={input} />
 	{#if clear && input != ''}
 		<div class="flex items-center justify-end">

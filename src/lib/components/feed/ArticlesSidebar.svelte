@@ -1,6 +1,8 @@
 <script lang="ts">
 	import TextInput from '$lib/components/ui/TextInput.svelte';
 	import Article from '../ui/Article.svelte';
+
+	let selectedArticle = $state('');
 </script>
 
 <div
@@ -18,121 +20,15 @@
 			title="Article 1"
 			author="Feed 1"
 			icon="tabler:rss"
-			time={new Date()} />
+			time={new Date()}
+			selected={selectedArticle == 'article-1'}
+			onclick={() => (selectedArticle = 'article-1')} />
 		<Article
 			title="Article 2"
 			author="Feed 2"
 			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
-		<Article
-			title="Article 2"
-			author="Feed 2"
-			icon="tabler:brand-youtube"
-			time={new Date()} />
+			time={new Date()}
+			selected={selectedArticle == 'article-2'}
+			onclick={() => (selectedArticle = 'article-2')} />
 	</div>
 </div>

@@ -8,12 +8,14 @@
 		time,
 		icon,
 		onclick,
+		selected,
 	}: {
 		title: string;
 		author: string;
 		time: Date;
 		icon: string;
 		onclick?: (e: MouseEvent) => void;
+		selected: boolean;
 	} = $props();
 
 	const rtf = new Intl.RelativeTimeFormat('en-CA');
@@ -21,8 +23,8 @@
 
 <button
 	class="flex flex-col text-lg border-2 border-border items-start
-		text-text-muted hover:text-text bg-bg hover:bg-bg-hover rounded px-3 py-2
-		cursor-pointer"
+		text-text-muted hover:text-text {selected ? 'bg-bg-hover' : 'bg-bg'}
+		hover:bg-bg-hover rounded px-3 py-2 cursor-pointer"
 	{onclick}>
 	<div class="font-medium">
 		{title}

@@ -32,7 +32,13 @@ export default defineConfig(
 				projectService: true,
 				extraFileExtensions: ['.svelte'],
 				parser: ts.parser,
-				svelteConfig,
+				svelteConfig: {
+					...svelteConfig,
+					compilerOptions: {
+						...svelteConfig.compilerOptions,
+						runes: true,
+					},
+				},
 			},
 		},
 	},

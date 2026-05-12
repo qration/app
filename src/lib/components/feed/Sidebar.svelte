@@ -3,10 +3,12 @@
 	import { setContext } from 'svelte';
 	import IconButton from '../ui/IconButton.svelte';
 	import SidebarButton from '../ui/SidebarButton.svelte';
+	import AddNew from './AddNew.svelte';
 	import { resolve } from '$app/paths';
 
 	let collapsed = $state(false);
 	let selectedFilter = $state('feed-all');
+	let addNewOpen = $state(false);
 
 	setContext('sidebar', {
 		isCollapsed: () => collapsed,
@@ -48,7 +50,10 @@
 			</div>
 		</div>
 		<div class="items-center">
-			<SidebarButton text="Add New" icon="tabler:plus" />
+			<SidebarButton
+				text="Add New"
+				icon="tabler:plus"
+				onclick={() => (addNewOpen = true)} />
 		</div>
 		<div class="flex flex-col gap-0.5">
 			<SidebarButton
@@ -99,3 +104,5 @@
 		<SidebarButton text="Settings" icon="tabler:settings" />
 	</div>
 </div>
+
+<AddNew bind:open={addNewOpen} />

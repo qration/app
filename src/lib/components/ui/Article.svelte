@@ -5,14 +5,14 @@
 	let {
 		title,
 		author,
-		time,
+		timestamp,
 		icon,
 		onclick,
 		selected,
 	}: {
 		title: string;
 		author: string;
-		time: Date;
+		timestamp: number;
 		icon: string;
 		onclick?: (e: MouseEvent) => void;
 		selected: boolean;
@@ -34,6 +34,6 @@
 			<Icon {icon} />
 			{author}
 		</div>
-		{getRelativeTime(time.getTime(), rtf)}
+		{getRelativeTime(timestamp * 1000, rtf)}
 	</div>
 </button>

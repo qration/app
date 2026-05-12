@@ -1,14 +1,19 @@
-<script>
+<script lang="ts">
 	import wordmark from '$lib/assets/qration-wordmark.svg';
 	import { setContext } from 'svelte';
 	import IconButton from '../ui/IconButton.svelte';
 	import SidebarButton from '../ui/SidebarButton.svelte';
 	import AddNew from './AddNew.svelte';
 	import { resolve } from '$app/paths';
+	import data from '$lib/assets/test-data.json';
+	import { getFeedIcon } from '$lib/util/util';
 
 	let collapsed = $state(false);
 	let selectedFilter = $state('feed-all');
 	let addNewOpen = $state(false);
+
+	let { onfilterchange }: { onfilterchange: (filter: string) => void } =
+		$props();
 
 	setContext('sidebar', {
 		isCollapsed: () => collapsed,
@@ -16,6 +21,11 @@
 
 	function toggleSidebarCollapse() {
 		collapsed = !collapsed;
+	}
+
+	function setSelectedFilter(filter: string) {
+		selectedFilter = filter;
+		onfilterchange(filter);
 	}
 </script>
 
@@ -60,43 +70,40 @@
 				text="All Feeds"
 				icon="tabler:news"
 				selected={selectedFilter == 'feed-all'}
-				onclick={() => (selectedFilter = 'feed-all')} />
+				onclick={() => setSelectedFilter('feed-all')} />
 			<SidebarButton
 				text="Unread"
 				icon="tabler:notification"
 				selected={selectedFilter == 'article-unread'}
-				onclick={() => (selectedFilter = 'article-unread')} />
+				onclick={() => setSelectedFilter('article-unread')} />
 			<SidebarButton
 				text="Today"
 				icon="tabler:calendar"
 				selected={selectedFilter == 'article-today'}
-				onclick={() => (selectedFilter = 'article-today')} />
+				onclick={() => setSelectedFilter('article-today')} />
 			<SidebarButton
 				text="Favourites"
 				icon="tabler:star"
 				selected={selectedFilter == 'feed-favourites'}
-				onclick={() => (selectedFilter = 'feed-favourites')} />
+				onclick={() => setSelectedFilter('feed-favourites')} />
 			<SidebarButton
 				text="Saved"
 				icon="tabler:bookmark"
 				selected={selectedFilter == 'article-saved'}
-				onclick={() => (selectedFilter = 'article-saved')} />
+				onclick={() => setSelectedFilter('article-saved')} />
 		</div>
 
 		<div class="flex flex-col gap-0.5">
 			{#if !collapsed}
 				<div class="text-xl">Subscriptions</div>
 			{/if}
-			<SidebarButton
-				text="Feed 1"
-				icon="tabler:rss"
-				selected={selectedFilter == 'feed-1'}
-				onclick={() => (selectedFilter = 'feed-1')} />
-			<SidebarButton
-				text="Feed 2"
-				icon="tabler:brand-youtube"
-				selected={selectedFilter == 'feed-2'}
-				onclick={() => (selectedFilter = 'feed-2')} />
+			{#each data.feeds as feed (feed.id)}
+				<SidebarButton
+					text={feed.name}
+					icon={getFeedIcon(feed.type)}
+					selected={selectedFilter == feed.id}
+					onclick={() => setSelectedFilter(feed.id)} />
+			{/each}
 		</div>
 	</div>
 

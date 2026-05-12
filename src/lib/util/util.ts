@@ -1,0 +1,34 @@
+import type { Feed, Article } from '$lib/util/interfaces';
+
+export function getFeedIcon(type: string): string {
+	if (type == 'rss') {
+		return 'tabler:rss';
+	} else if (type == 'youtube') {
+		return 'tabler:brand-youtube';
+	}
+	return '';
+}
+
+// this is only a temporary function, i'll move this to the backend when we implement it
+export function filteredArticles(
+	feeds: Feed[],
+	articles: Article[],
+	filter: string,
+): Article[] {
+	if (filter == 'feed-all') {
+		return articles;
+	} else if (filter == 'article-unread') {
+		return articles.filter((a) => !a.read);
+	} else if (filter == 'article-today') {
+		return articles.filter(
+			(a) => Date.now() - a.timestamp * 1000 <= 24 * 60 * 60 * 1000,
+		);
+	} else if (filter == 'feed-favourites') {
+		return articles.filter(
+			(a) => feeds.find((f) => f.id == a.feed_id)!.favourited == true,
+		);
+	} else if (filter == 'article-saved') {
+		return articles.filter((a) => a.saved == true);
+	}
+	return articles.filter((a) => filter == a.feed_id);
+}

@@ -36,10 +36,10 @@
 
 {#if open}
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 transition backdrop-blur-xs"
 		role="presentation"
 		onclick={onBackdropClick}
-		transition:fade={{ duration: 75 }}>
+		transition:fade={{ duration: 50 }}>
 		<div
 			class="relative bg-bg text-text border-2 border-border rounded-xl p-6
 				min-w-[24rem] max-w-[90vw] shadow-lg"

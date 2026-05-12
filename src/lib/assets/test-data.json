@@ -1,0 +1,63 @@
+{
+  "feeds": [
+    {
+      "id": "one",
+      "name": "Feed 1",
+      "type": "rss",
+      "favourited": false,
+      "url": "https://google.com",
+      "last_fetched": 1778558035
+    },
+    {
+      "id": "two",
+      "name": "Feed 2",
+      "type": "youtube",
+      "favourited": true,
+      "url": "https://youtube.com",
+      "last_fetched": 1778565761
+    },
+    {
+      "id": "three",
+      "name": "Feed 3",
+      "type": "rss",
+      "favourited": false,
+      "url": "https://elektr1x.github.io",
+      "last_fetched": 1778558065
+    }
+  ],
+  "articles": [
+    {
+      "id": "article-one",
+      "name": "Article 1",
+      "feed_id": "one",
+      "url": "https://google.com/mail",
+      "saved": false,
+      "timestamp": 1778558035,
+      "media_type": "text",
+      "content": "Hello this is article 1",
+      "media_url": null
+    },
+    {
+      "id": "article-two",
+      "name": "Article 2",
+      "feed_id": "two",
+      "url": "https://www.youtube.com/watch?v=B6EW8DSJvaE",
+      "saved": false,
+      "timestamp": 1609315514,
+      "media_type": "video",
+      "content": "Hello this is article 2 video description",
+      "media_url": "https://www.youtube-nocookie.com/embed/B6EW8DSJvaE"
+    },
+    {
+      "id": "article-three",
+      "name": "Article 3",
+      "feed_id": "three",
+      "url": "https://elektr1x.github.io/contact",
+      "saved": true,
+      "timestamp": 1778456593,
+      "media_type": "text",
+      "content": "Hello this is article 3",
+      "media_url": null
+    }
+  ]
+}

@@ -27,7 +27,7 @@
 	class="flex flex-col gap bg-bg text-text text-4xl overflow-y-scroll
 		justify-start h-full border-border border-r-2 shrink-0 w-100">
 	<div
-		class="sticky top-0 bg-bg py-4 w-full px-4 border-2 border-x-transparent
+		class="sticky top-0 py-4 w-full px-4 border-2 border-x-transparent
 			border-t-transparent border-b-border">
 		<TextInput
 			placeholder="Search..."
@@ -35,8 +35,8 @@
 			bind:input={search} />
 	</div>
 	<div
-		class="flex flex-col gap-4 bg-bg text-text text-4xl overflow-y-scroll
-			justify-start h-full p-4">
+		class="flex flex-col text-text text-4xl overflow-y-scroll justify-start
+			h-full">
 		{#each filteredArticles as article (article.id)}
 			{@const articleFeed = data.feeds.find((f) => f.id == article.feed_id)}
 			{#if articleFeed}

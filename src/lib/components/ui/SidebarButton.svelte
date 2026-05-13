@@ -18,7 +18,7 @@
 		selected?: boolean;
 		starrable?: boolean;
 		starred?: boolean;
-		onclick?: () => void;
+		onclick?: (e?: MouseEvent) => void;
 		onstar?: () => void;
 	} = $props();
 
@@ -29,6 +29,14 @@
 		e.stopPropagation();
 		if (onstar) onstar();
 	}
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (e.target !== e.currentTarget) return;
+		if (e.key == ' ' || e.key == 'Enter') {
+			e.preventDefault();
+			onclick?.();
+		}
+	}
 </script>
 
 <div
@@ -38,7 +46,7 @@
 		text-text-muted {selected ? 'bg-bg-hover' : 'bg-bg'} hover:text-text rounded
 		[&:hover:not(:has(button:hover))]:bg-bg-hover"
 	{onclick}
-	onkeydown={() => onclick?.()}>
+	onkeydown={handleKeyDown}>
 	<div class="w-6 flex justify-center shrink-0 text-2xl">
 		<Icon {icon} />
 	</div>
@@ -50,7 +58,7 @@
 			{#if starrable}
 				<div class="m-0">
 					<div
-						class="opacity-0 group-hover:opacity-100"
+						class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
 						class:opacity-100={selected}>
 						<IconButton
 							icon="tabler:star{starred ? '-filled' : ''}"

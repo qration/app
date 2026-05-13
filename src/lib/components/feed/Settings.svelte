@@ -27,7 +27,9 @@
 					class="border-border border-2 w-15 h-15 rounded bg-light-theme
 						cursor-pointer hover:border-text flex justify-center items-center"
 					class:border-text={mode.current == 'light'}>
-					<Icon icon="tabler:check" class="text-text text-3xl" />
+					{#if mode.current == 'light'}
+						<Icon icon="tabler:check" class="text-text text-3xl" />
+					{/if}
 					<input
 						type="radio"
 						name="theme"
@@ -40,7 +42,9 @@
 					class="border-border border-2 w-15 h-15 rounded bg-dark-theme
 						cursor-pointer hover:border-text flex justify-center items-center"
 					class:border-text={mode.current == 'light'}>
-					<Icon icon="tabler:check" class="text-text text-3xl" />
+					{#if mode.current == 'dark'}
+						<Icon icon="tabler:check" class="text-text text-3xl" />
+					{/if}
 					<input
 						type="radio"
 						name="theme"

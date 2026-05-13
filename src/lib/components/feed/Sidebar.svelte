@@ -1,5 +1,5 @@
 <script lang="ts">
-	import wordmark from '$lib/assets/qration-wordmark.svg';
+	import Wordmark from '$lib/assets/qration-wordmark.svg?component';
 	import { setContext } from 'svelte';
 	import IconButton from '../ui/IconButton.svelte';
 	import SidebarButton from '../ui/SidebarButton.svelte';
@@ -46,10 +46,13 @@
 						{collapsed ? ' max-w-0 opacity-0' : ' max-w-xs opacity-100'}
 						shrink-0">
 					<a href={resolve('/')}>
-						<img
+						<Wordmark
+							class="fill-text max-w-none shrink-0 h-10 cursor-pointer
+								transition-opacity" />
+						<!-- <img
 							src={wordmark}
 							alt="Qration logo"
-							class="max-w-none shrink-0 h-10 cursor-pointer transition-opacity" />
+							class="max-w-none shrink-0 h-10 cursor-pointer transition-opacity" /> -->
 					</a>
 				</div>
 				<div class="w-6 flex justify-center shrink-0">
@@ -98,7 +101,7 @@
 
 		<div class="flex flex-col gap-0.5">
 			{#if !collapsed}
-				<div class="text-xl">Subscriptions</div>
+				<div class="text-xl text-text">Subscriptions</div>
 			{/if}
 			{#each data.feeds as feed (feed.id)}
 				<SidebarButton

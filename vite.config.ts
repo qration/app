@@ -2,9 +2,16 @@ import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
+import svg from '@poppanator/sveltekit-svg';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [
+		tailwindcss(),
+		sveltekit(),
+		svg({
+			includePaths: ['./src/lib/assets'],
+		}),
+	],
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

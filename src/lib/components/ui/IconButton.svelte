@@ -15,8 +15,8 @@
 </script>
 
 <button
-	class="{cls}p-1 flex justify-center rounded text-2xl h-min cursor-pointer
-		text-text-muted bg-bg hover:text-text hover:bg-bg-hover"
+	class="p-1 flex justify-center rounded text-2xl h-min cursor-pointer
+		text-text-muted bg-bg hover:text-text {cls} hover:bg-bg-hover"
 	aria-label={label}
 	{onclick}>
 	<Icon {icon} />

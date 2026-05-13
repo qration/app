@@ -5,14 +5,17 @@
 	import SidebarButton from '../ui/SidebarButton.svelte';
 	import AddNew from './AddNew.svelte';
 	import { resolve } from '$app/paths';
-	import data from '$lib/assets/test-data.json';
 	import { getFeedIcon } from '$lib/util/util';
+	import type { Feed } from '$lib/util/interfaces';
 
 	let collapsed = $state(false);
 	let selectedFilter = $state('feed-all');
 	let addNewOpen = $state(false);
 
-	let { onfilterchange }: { onfilterchange: (filter: string) => void } =
+	let {
+		onfilterchange,
+		data,
+	}: { onfilterchange: (filter: string) => void; data: { feeds: Feed[] } } =
 		$props();
 
 	setContext('sidebar', {
@@ -102,7 +105,10 @@
 					text={feed.name}
 					icon={getFeedIcon(feed.type)}
 					selected={selectedFilter == feed.id}
-					onclick={() => setSelectedFilter(feed.id)} />
+					onclick={() => setSelectedFilter(feed.id)}
+					starrable={true}
+					starred={feed.favourited}
+					onstar={() => (feed.favourited = !feed.favourited)} />
 			{/each}
 		</div>
 	</div>

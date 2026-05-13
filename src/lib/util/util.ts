@@ -10,7 +10,7 @@ export function getFeedIcon(type: string): string {
 }
 
 // this is only a temporary function, i'll move this to the backend when we implement it
-export function filteredArticles(
+export function filterArticles(
 	feeds: Feed[],
 	articles: Article[],
 	filter: string,

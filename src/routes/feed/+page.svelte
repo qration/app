@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ArticlesSidebar from '$lib/components/feed/ArticlesSidebar.svelte';
 	import Sidebar from '$lib/components/feed/Sidebar.svelte';
+	import ArticleView from '$lib/components/feed/ArticleView.svelte';
 	import data from '$lib/assets/test-data.json';
 
 	let articleFilter = $state('all-feeds');
@@ -13,13 +14,18 @@
 	function articleSelect(articleId: string) {
 		selectedArticleId = articleId;
 	}
+
+	let dataState = $state(data);
 </script>
 
 <div class="flex h-screen w-screen flex-row bg-bg">
-	<Sidebar onfilterchange={filterChange} />
-	<ArticlesSidebar filter={articleFilter} onarticleselect={articleSelect} />
+	<Sidebar onfilterchange={filterChange} data={dataState} />
+	<ArticlesSidebar
+		filter={articleFilter}
+		onarticleselect={articleSelect}
+		data={dataState} />
 	<div class="p-4">
-		{data.articles.find((a) => a.id == selectedArticleId)?.content}
+		<ArticleView articleId={selectedArticleId} data={dataState} />
 		<!-- <h1>Welcome to SvelteKit</h1>
 		<p>
 			Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read

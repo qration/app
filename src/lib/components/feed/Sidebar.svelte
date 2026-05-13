@@ -34,7 +34,7 @@
 
 <div
 	class="border-r-2 font-medium border-r-border bg-bg pl-4 pr-3.5 py-4
-		overflow-x-hidden {collapsed ? 'w-16' : 'w-70'} flex flex-col
+		overflow-x-hidden {collapsed ? 'w-16' : 'w-70'} flex flex-col shrink-0
 		justify-between transition-all duration-100">
 	<div class="flex flex-col gap-4 shrink-0">
 		<div class="flex flex-col">

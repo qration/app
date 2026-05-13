@@ -4,7 +4,7 @@
 	import ArticleView from '$lib/components/feed/ArticleView.svelte';
 	import data from '$lib/assets/test-data.json';
 
-	let articleFilter = $state('all-feeds');
+	let articleFilter = $state('feed-all');
 	let selectedArticleId = $state('');
 
 	function filterChange(filter: string) {
@@ -24,12 +24,10 @@
 		filter={articleFilter}
 		onarticleselect={articleSelect}
 		data={dataState} />
-	<div class="p-4">
-		<ArticleView articleId={selectedArticleId} data={dataState} />
-		<!-- <h1>Welcome to SvelteKit</h1>
-		<p>
-			Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read
-			the documentation
-		</p> -->
-	</div>
+	<ArticleView articleId={selectedArticleId} data={dataState} />
+	<!-- <h1>Welcome to SvelteKit</h1>
+	<p>
+		Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read
+		the documentation
+	</p> -->
 </div>

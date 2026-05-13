@@ -25,7 +25,7 @@
 
 <div
 	class="flex flex-col gap bg-bg text-text text-4xl overflow-y-scroll
-		justify-start h-full border-border border-r-2">
+		justify-start h-full border-border border-r-2 shrink-0 w-100">
 	<div
 		class="sticky top-0 bg-bg py-4 w-full px-4 border-2 border-x-transparent
 			border-t-transparent border-b-border">

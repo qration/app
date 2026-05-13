@@ -42,7 +42,7 @@
 		transition:fade={{ duration: 50 }}>
 		<div
 			class="relative bg-bg text-text border-2 border-border rounded-xl p-6
-				min-w-[24rem] max-w-[90vw] shadow-lg"
+				min-w-96 max-w-[90vw] shadow-lg"
 			role="dialog"
 			aria-modal="true"
 			aria-label={title || 'Dialog'}>

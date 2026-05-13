@@ -7,10 +7,12 @@
 	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
 	import type { Feed } from '$lib/util/interfaces';
+	import Settings from './Settings.svelte';
 
 	let collapsed = $state(false);
 	let selectedFilter = $state('feed-all');
 	let addNewOpen = $state(false);
+	let settingsOpen = $state(false);
 
 	let {
 		onfilterchange,
@@ -117,8 +119,12 @@
 	</div>
 
 	<div class="flex flex-col">
-		<SidebarButton text="Settings" icon="tabler:settings" />
+		<SidebarButton
+			text="Settings"
+			icon="tabler:settings"
+			onclick={() => (settingsOpen = true)} />
 	</div>
 </div>
 
 <AddNew bind:open={addNewOpen} />
+<Settings bind:open={settingsOpen} />

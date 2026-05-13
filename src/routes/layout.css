@@ -6,24 +6,53 @@
 	font-family: 'Atkinson Hyperlegible Next';
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+@layer base {
+	.light {
+		--color-light-theme: var(--color-blue-500);
+		--color-dark-theme: var(--color-slate-900);
+
+		--color-bg: var(--color-light-theme);
+		--color-bg-hover: var(--color-slate-200);
+
+		--color-text: var(--color-slate-950);
+		--color-text-muted: var(--color-slate-700);
+		--color-text-secondary: var(--color-slate-500);
+		--color-border: var(--color-slate-400);
+	}
+
+	.dark {
+		--color-bg: var(--color-dark-theme);
+		--color-bg-hover: var(--color-slate-950);
+
+		--color-text: var(--color-white);
+		--color-text-muted: var(--color-slate-200);
+		--color-text-secondary: var(--color-slate-400);
+		--color-border: var(--color-slate-500);
+	}
+} */
+
 @theme {
-	--color-text-50: var(--color-slate-50);
-	--color-text-100: var(--color-slate-100);
-	--color-text-200: var(--color-slate-200);
-	--color-text-300: var(--color-slate-300);
-	--color-text-400: var(--color-slate-400);
-	--color-text-500: var(--color-slate-500);
-	--color-text-600: var(--color-slate-600);
-	--color-text-700: var(--color-slate-700);
-	--color-text-800: var(--color-slate-800);
-	--color-text-900: var(--color-slate-900);
-	--color-text-950: var(--color-slate-950);
+	--color-light-theme: var(--color-slate-50);
+	--color-dark-theme: var(--color-slate-900);
 
-	--color-bg: var(--color-white);
-	--color-bg-hover: var(--color-gray-200);
+	--color-bg: var(--color-light-theme);
+	--color-bg-hover: var(--color-slate-200);
 
-	--color-text: var(--color-text-950);
-	--color-text-muted: var(--color-text-700);
-	--color-text-secondary: var(--color-text-500);
-	--color-border: var(--color-gray-400);
+	--color-text: var(--color-slate-950);
+	--color-text-muted: var(--color-slate-700);
+	--color-text-secondary: var(--color-slate-500);
+	--color-border: var(--color-slate-400);
+}
+
+.dark {
+	--color-bg: var(--color-slate-900);
+	--color-bg-hover: var(--color-slate-950);
+
+	--color-text: var(--color-slate-50);
+	--color-text-muted: var(--color-slate-200);
+	--color-text-secondary: var(--color-slate-400);
+	--color-border: var(--color-slate-500);
 }

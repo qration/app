@@ -20,7 +20,7 @@
 	<input type="radio" {name} {id} {checked} {onclick} class="peer sr-only" />
 	<label
 		for={id}
-		class="border-border border-2 w-15 h-15 rounded bg-{colour} cursor-pointer
+		class="border-border border-2 w-15 h-15 rounded {colour} cursor-pointer
 			hover:border-text flex justify-center items-center
 			peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500"
 		class:border-text={checked}>

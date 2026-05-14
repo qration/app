@@ -24,13 +24,13 @@
 			<span class="text-text-muted">Theme</span>
 			<div class="flex flex-row gap-4">
 				<Swatch
-					colour="light-theme"
+					colour="bg-light-theme"
 					name="theme"
 					id="light"
 					onclick={() => setMode('light')}
 					checked={mode.current == 'light'} />
 				<Swatch
-					colour="dark-theme"
+					colour="bg-dark-theme"
 					name="theme"
 					id="dark"
 					onclick={() => setMode('dark')}

@@ -8,32 +8,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/*
-@layer base {
-	.light {
-		--color-light-theme: var(--color-blue-500);
-		--color-dark-theme: var(--color-slate-900);
-
-		--color-bg: var(--color-light-theme);
-		--color-bg-hover: var(--color-slate-200);
-
-		--color-text: var(--color-slate-950);
-		--color-text-muted: var(--color-slate-700);
-		--color-text-secondary: var(--color-slate-500);
-		--color-border: var(--color-slate-400);
-	}
-
-	.dark {
-		--color-bg: var(--color-dark-theme);
-		--color-bg-hover: var(--color-slate-950);
-
-		--color-text: var(--color-white);
-		--color-text-muted: var(--color-slate-200);
-		--color-text-secondary: var(--color-slate-400);
-		--color-border: var(--color-slate-500);
-	}
-} */
-
 @theme {
 	--color-light-theme: var(--color-slate-50);
 	--color-dark-theme: var(--color-slate-950);
@@ -50,8 +24,8 @@
 
 .dark {
 	--color-bg: var(--color-dark-theme);
-	--color-bg-hover: var(--color-slate-800);
-	--color-bg-secondary: var(--color-slate-800);
+	--color-bg-hover: var(--color-slate-700);
+	--color-bg-secondary: var(--color-slate-900);
 
 	--color-text: var(--color-slate-50);
 	--color-text-muted: var(--color-slate-200);

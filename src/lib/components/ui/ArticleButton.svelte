@@ -22,12 +22,13 @@
 </script>
 
 <button
-	// class="flex flex-col text-lg border-2 border-border items-start
-	// 	text-text-muted hover:text-text {selected ? 'bg-bg-hover' : 'bg-bg'}
-	// 	hover:bg-bg-hover rounded px-3 py-2 cursor-pointer"
-	class="flex flex-col text-lg items-start text-text-muted hover:text-text
-		{selected ? 'bg-bg-hover' : 'bg-bg'} hover:bg-bg-hover px-3 py-2
-		cursor-pointer border-b-2 border-border"
+	class="flex flex-col text-lg border-2 border-border items-start
+		text-text-muted hover:text-text
+		{selected ? 'bg-bg-hover' : 'bg-bg-secondary'} hover:bg-bg-hover rounded
+		px-3 py-2 cursor-pointer"
+	// class="flex flex-col text-lg items-start text-text-muted hover:text-text
+	// 	{selected ? 'bg-bg-hover' : 'bg-bg'} hover:bg-bg-hover px-3 py-2
+	// 	cursor-pointer border-b-2 border-border"
 	{onclick}>
 	<div class="font-medium">
 		{title}

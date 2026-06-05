@@ -8,6 +8,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+	overscroll-behavior: none;
+}
+
 @theme {
 	--color-light-theme: var(--color-slate-50);
 	--color-dark-theme: var(--color-slate-950);

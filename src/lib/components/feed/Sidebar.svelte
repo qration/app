@@ -35,29 +35,21 @@
 </script>
 
 <div
-	class="border-r-2 font-medium border-r-border bg-bg pl-4 pr-3.5 py-4
+	class="border-r-2 font-medium border-r-border bg-bg px-3.75 py-4
 		overflow-x-hidden {collapsed ? 'w-16' : 'w-70'} flex flex-col shrink-0
-		justify-between transition-all duration-100">
+		justify-between transition-all duration-1000">
 	<div class="flex flex-col gap-4 shrink-0">
 		<div class="flex flex-col">
-			<div
-				class="flex flex-row
-					{collapsed ? ' justify-center' : ' justify-between'} items-center">
+			<div class="relative flex items-center h-10">
 				<div
-					class="overflow-hidden transition-all duration-75
-						{collapsed ? ' max-w-0 opacity-0' : ' max-w-xs opacity-100'}
-						shrink-0">
+					class="overflow-hidden transition-all duration-1000
+						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
 					<a href={resolve('/')}>
 						<Wordmark
-							class="fill-text max-w-none shrink-0 h-10 cursor-pointer
-								transition-opacity" />
-						<!-- <img
-							src={wordmark}
-							alt="Qration logo"
-							class="max-w-none shrink-0 h-10 cursor-pointer transition-opacity" /> -->
+							class="fill-text max-w-none shrink-0 h-10 cursor-pointer" />
 					</a>
 				</div>
-				<div class="w-6 flex justify-center shrink-0">
+				<div class="absolute right-1 w-6 flex justify-center">
 					<IconButton
 						icon="tabler:layout-sidebar-left-{collapsed
 							? 'expand'

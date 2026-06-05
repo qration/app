@@ -47,13 +47,13 @@
 		[&:hover:not(:has(button:hover))]:bg-bg-hover"
 	{onclick}
 	onkeydown={handleKeyDown}>
-	<div class="w-6 flex justify-center shrink-0 text-2xl">
+	<div class="flex justify-center items-center shrink-0 text-2xl leading-none">
 		<Icon {icon} />
 	</div>
 	{#if !collapsed}
 		<div
 			class="whitespace-nowrap flex flex-row justify-between w-full"
-			transition:fade={{ duration: 75 }}>
+			transition:fade={{ duration: 1000 }}>
 			{text}
 			{#if starrable}
 				<div class="m-0">

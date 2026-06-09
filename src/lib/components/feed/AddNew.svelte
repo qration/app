@@ -40,9 +40,11 @@
 			return;
 		}
 
-		await invoke('new_feed', { url: formData.url }).catch((err: string) => {
-			errorData.url = err;
-		});
+		await invoke('new_feed', { url: formData.url }).catch(
+			(err: { code: string }) => {
+				errorData.url = `Error: ${err.code}`;
+			},
+		);
 
 		if (errorData.url) return;
 

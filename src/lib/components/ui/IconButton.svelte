@@ -5,12 +5,12 @@
 		icon,
 		label,
 		onclick,
-		cls = '',
+		class: cls = '',
 	}: {
 		icon: string;
 		label: string;
 		onclick?: (e: MouseEvent) => void;
-		cls?: string;
+		class?: string;
 	} = $props();
 </script>
 

@@ -63,8 +63,8 @@
 						<IconButton
 							icon="tabler:star{starred ? '-filled' : ''}"
 							label="Star {text}"
-							cls="-m-1 group-hover:bg-bg-hover {selected
-								? '!bg-bg-hover'
+							class="-m-1 group-hover:bg-bg-hover {selected
+								? 'bg-bg-hover!'
 								: ''}"
 							onclick={handleOnStar} />
 					</div>

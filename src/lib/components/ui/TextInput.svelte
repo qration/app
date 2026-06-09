@@ -6,7 +6,7 @@
 		placeholder,
 		icon = '',
 		clear = true,
-		cls = '',
+		class: cls = '',
 		input = $bindable(),
 		error = false,
 		oninput,
@@ -14,7 +14,7 @@
 		placeholder: string;
 		icon?: string;
 		clear?: boolean;
-		cls?: string;
+		class?: string;
 		input: string;
 		error?: boolean;
 		oninput?: () => void;
@@ -49,7 +49,7 @@
 				icon="tabler:x"
 				onclick={() => clearText()}
 				label="Clear"
-				cls="absolute mr-1.5 " />
+				class="absolute mr-1.5" />
 		</div>
 	{/if}
 </div>

@@ -5,6 +5,7 @@
 	import Icon from '@iconify/svelte';
 	import TextInput from '../ui/TextInput.svelte';
 	import { isValidURL } from '$lib/util/util';
+	import { invoke } from '@tauri-apps/api/core';
 
 	let {
 		open = $bindable(false),
@@ -24,9 +25,11 @@
 
 	let formData = $state(initialFormData);
 	let errorData = $state(initialErrorData);
+	let loading = $state(false);
 
-	function confirm() {
+	async function confirm() {
 		const trimmed = formData.url.trim();
+
 		if (!trimmed) {
 			errorData.url = "URL can't be empty!";
 			return;
@@ -36,6 +39,12 @@
 			errorData.url = 'URL must be valid!';
 			return;
 		}
+
+		await invoke('new_feed', { url: formData.url }).catch((err: string) => {
+			errorData.url = err;
+		});
+
+		if (errorData.url) return;
 
 		onconfirm?.(trimmed);
 		formData.url = '';
@@ -70,7 +79,21 @@
 			{/if}
 		</label>
 		<div class="flex justify-end">
-			<Button onclick={confirm}>Confirm</Button>
+			<Button
+				onclick={async () => {
+					loading = true;
+					await confirm();
+					loading = false;
+				}}
+				class="h-10">
+				<span class="flex justify-center items-center w-15">
+					{#if loading}
+						<Icon icon="tabler:loader-2" class="block animate-spin" />
+					{:else}
+						Confirm
+					{/if}
+				</span>
+			</Button>
 		</div>
 	</div>
 </Modal>

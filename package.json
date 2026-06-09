@@ -57,6 +57,7 @@
 		"**/*.{js,ts,css,md,svelte}": "prettier --write"
 	},
 	"dependencies": {
+		"@tauri-apps/api": "^2.11.0",
 		"@vitest/browser": "^4.1.6",
 		"mode-watcher": "^1.1.0"
 	}

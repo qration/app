@@ -15,6 +15,7 @@
 @theme {
 	--color-light-theme: var(--color-slate-50);
 	--color-dark-theme: var(--color-slate-950);
+	--color-error: var(--color-red-500);
 
 	--color-bg: var(--color-light-theme);
 	--color-bg-hover: var(--color-slate-300);

@@ -8,12 +8,16 @@
 		clear = true,
 		cls = '',
 		input = $bindable(),
+		error = false,
+		oninput,
 	}: {
 		placeholder: string;
 		icon?: string;
 		clear?: boolean;
 		cls?: string;
 		input: string;
+		error?: boolean;
+		oninput?: () => void;
 	} = $props();
 
 	function clearText() {
@@ -22,18 +26,23 @@
 </script>
 
 <div
-	class="{cls}flex w-full flex-row items-center rounded border-2 border-border
-		text-xl bg-bg">
-	<div class="text-xl absolute pl-3 text-text-secondary">
-		<Icon {icon} />
-	</div>
+	class="flex {cls} w-full flex-row items-center rounded border-2
+		{error ? 'border-error' : 'border-border'} text-xl bg-bg">
+	{#if icon}
+		<div class="text-xl absolute pl-3 text-text-secondary">
+			<Icon {icon} />
+		</div>
+	{/if}
 	<input
 		type="text"
 		{placeholder}
-		class="w-full rounded border-none bg-transparent px-10 py-2 text-xl
+		class="w-full rounded border-none bg-transparent py-2 text-lg
 			placeholder:text-text-secondary active:border-none text-text
 			focus:outline-none"
-		bind:value={input} />
+		class:pl-10={icon}
+		class:pr-10={clear}
+		bind:value={input}
+		{oninput} />
 	{#if clear && input != ''}
 		<div class="flex items-center justify-end">
 			<IconButton

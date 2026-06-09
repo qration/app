@@ -19,3 +19,7 @@ export interface Article {
 	content: string;
 	media_url: string | null;
 }
+
+export interface AddNewFormFields {
+	url: string;
+}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Article, Feed } from '$lib/util/interfaces';
+	import type { Article, Feed } from '$lib/util/bindings';
 	import IconButton from '../ui/IconButton.svelte';
 	import { feedStore } from '$lib/stores/feeds.svelte';
 
@@ -41,7 +41,18 @@
 					frameborder="0"
 					class="aspect-video"></iframe>
 			{/if}
-			{article.content}
+			<div class="h-min feed-content">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html article.content}
+			</div>
 		</div>
 	</div>
 {/if}
+
+<style>
+	.feed-content :global(img) {
+		display: block;
+		margin: 0 auto;
+		max-width: 100%;
+	}
+</style>

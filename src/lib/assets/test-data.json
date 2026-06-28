@@ -3,7 +3,7 @@
     {
       "id": "one",
       "name": "Feed 1",
-      "type": "rss",
+      "feed_type": "rss",
       "favourited": false,
       "url": "https://google.com",
       "last_fetched": 1778558035
@@ -11,7 +11,7 @@
     {
       "id": "two",
       "name": "Feed 2",
-      "type": "youtube",
+      "feed_type": "youtube",
       "favourited": true,
       "url": "https://youtube.com",
       "last_fetched": 1778565761
@@ -19,7 +19,7 @@
     {
       "id": "three",
       "name": "Feed 3",
-      "type": "rss",
+      "feed_type": "rss",
       "favourited": false,
       "url": "https://elektr1x.github.io",
       "last_fetched": 1778558065
@@ -33,7 +33,7 @@
       "url": "https://google.com/mail",
       "saved": false,
       "read": false,
-      "timestamp": 1778558035,
+      "date": "Mon May 11 2026 23:53:55 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 1",
       "media_url": null
@@ -45,7 +45,7 @@
       "url": "https://www.youtube.com/watch?v=B6EW8DSJvaE",
       "saved": false,
       "read": true,
-      "timestamp": 1609315514,
+      "date": "Wed Dec 30 2020 03:05:14 GMT-0500 (Eastern Standard Time)",
       "media_type": "video",
       "content": "Hello this is article 2 video description",
       "media_url": "https://www.youtube-nocookie.com/embed/B6EW8DSJvaE"
@@ -57,7 +57,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -69,7 +69,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -81,7 +81,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -93,7 +93,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -105,7 +105,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -117,7 +117,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -129,7 +129,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -141,7 +141,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -153,7 +153,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null
@@ -165,7 +165,7 @@
       "url": "https://elektr1x.github.io/contact",
       "saved": true,
       "read": false,
-      "timestamp": 1778456593,
+      "date": "Sun May 10 2026 19:43:13 GMT-0400 (Eastern Daylight Time)",
       "media_type": "text",
       "content": "Hello this is article 3",
       "media_url": null

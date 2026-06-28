@@ -1,5 +1,5 @@
 import dataJson from '$lib/assets/test-data.json';
-import type { Article, Feed } from '$lib/util/interfaces';
+import type { Article, Feed } from '$lib/util/bindings';
 
 class FeedStore {
 	data = $state<{ feeds: Feed[]; articles: Article[] }>(dataJson);

@@ -24,5 +24,9 @@ log = "0.4"
 tauri = { version = "2.11.2", features = [] }
 tauri-plugin-log = "2"
 reqwest = "0.13.3"
-rss = "2.0.13"
+rss = { version = "2.0.13", features = ["serde"] }
 thiserror = "2.0.18"
+tauri-specta = { version = "=2.0.0-rc.25", features = ["typescript"] }
+specta = { version = "=2.0.0-rc.25", features = ["derive"] }
+specta-typescript = "0.0.12"
+nanoid = "0.5.0"

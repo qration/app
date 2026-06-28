@@ -97,7 +97,7 @@
 			{#each feedStore.data.feeds as feed (feed.id)}
 				<SidebarButton
 					text={feed.name}
-					icon={getFeedIcon(feed.type)}
+					icon={getFeedIcon(feed.feed_type)}
 					selected={selectedFilter == feed.id}
 					onclick={() => setSelectedFilter(feed.id)}
 					starrable={true}

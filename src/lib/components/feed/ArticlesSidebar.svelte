@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TextInput from '$lib/components/ui/TextInput.svelte';
 	import ArticleButton from '$lib/components/ui/ArticleButton.svelte';
-	import { filterArticles, getFeedIcon } from '$lib/util/util';
+	import { dateStrParse, filterArticles, getFeedIcon } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
 
 	let {
@@ -17,7 +17,7 @@
 	let filteredArticles = $derived(
 		filterArticles(feedStore.data.feeds, feedStore.data.articles, filter)
 			.filter((a) => a.name.toLowerCase().includes(search.toLowerCase()))
-			.sort((a, b) => b.timestamp - a.timestamp),
+			.sort((a, b) => dateStrParse(b.date) - dateStrParse(a.date)),
 	);
 </script>
 
@@ -44,9 +44,10 @@
 					title={article.name}
 					author={articleFeed.name}
 					icon={getFeedIcon(
-						feedStore.data.feeds.find((f) => f.id == article.feed_id)!.type,
+						feedStore.data.feeds.find((f) => f.id == article.feed_id)!
+							.feed_type,
 					)}
-					timestamp={article.timestamp}
+					timestamp={dateStrParse(article.date)}
 					selected={selectedArticle == article.id}
 					onclick={() => {
 						selectedArticle = article.id;

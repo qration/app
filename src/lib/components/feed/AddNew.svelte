@@ -6,7 +6,8 @@
 	import TextInput from '../ui/TextInput.svelte';
 	import { isValidURL } from '$lib/util/util';
 	import { invoke } from '@tauri-apps/api/core';
-	// import { feedStore } from '$lib/stores/feeds.svelte';
+	import { feedStore } from '$lib/stores/feeds.svelte';
+	import type { FeedWithArticles } from '$lib/util/bindings';
 
 	let {
 		open = $bindable(false),
@@ -41,15 +42,21 @@
 			return;
 		}
 
-		// const ch =
-		await invoke('new_feed', { url: formData.url }).catch(
-			(err: { code: string }) => {
-				errorData.url = `Error: ${err.code}`;
-			},
-		);
+		console.log('hi');
 
-		if (errorData.url) return;
-		// feedStore.data.feeds.
+		const ch = await invoke<FeedWithArticles>('new_feed', {
+			url: formData.url,
+		}).catch((err: { code: string }) => {
+			errorData.url = `Error: ${err.code}`;
+		});
+
+		console.log(ch);
+
+		if (errorData.url || !ch) return;
+		feedStore.data.feeds.push(ch.feed);
+		feedStore.data.articles = feedStore.data.articles.concat(ch.articles);
+
+		console.log(feedStore);
 
 		onconfirm?.(trimmed);
 		formData.url = '';

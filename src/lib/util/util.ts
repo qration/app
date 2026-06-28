@@ -1,4 +1,4 @@
-import type { Feed, Article } from '$lib/util/interfaces';
+import type { Feed, Article } from '$lib/util/bindings';
 
 export function getFeedIcon(type: string): string {
 	if (type == 'rss') {
@@ -21,7 +21,7 @@ export function filterArticles(
 		return articles.filter((a) => !a.read);
 	} else if (filter == 'article-today') {
 		return articles.filter(
-			(a) => Date.now() - a.timestamp * 1000 <= 24 * 60 * 60 * 1000,
+			(a) => Date.now() - Date.parse(a.date) * 1000 <= 24 * 60 * 60 * 1000,
 		);
 	} else if (filter == 'feed-favourites') {
 		return articles.filter(
@@ -40,4 +40,8 @@ export function isValidURL(url: string): boolean {
 	} catch {
 		return false;
 	}
+}
+
+export function dateStrParse(dateStr: string): number {
+	return Math.floor(Date.parse(dateStr) / 1000);
 }

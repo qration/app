@@ -33,17 +33,19 @@
 					icon="tabler:bookmark{article.saved ? '-filled' : ''}"
 					label="Save {article.name}"
 					onclick={() => (article.saved = !article.saved)} />
-				<IconButton
-					icon="tabler:external-link"
-					label="Open {article.name}"
-					onclick={async () => await openUrl(article.url)} />
+				{#if article.url}
+					<IconButton
+						icon="tabler:external-link"
+						label="Open {article.name}"
+						onclick={async () => await openUrl(article.url!)} />
+				{/if}
 			</div>
 		</div>
 		<div class="p-4 w-full h-full flex flex-col gap-2 overflow-y-scroll">
 			{#if article.media_type == 'video'}
 				<iframe
 					title={article.name}
-					src={article.media_url}
+					src={article.enclosure!.url}
 					width="100%"
 					height="allowfullscreen"
 					frameborder="0"

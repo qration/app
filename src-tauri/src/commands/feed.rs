@@ -1,3 +1,5 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use rss::Channel;
 use nanoid::nanoid;
 use crate::types::*;
@@ -19,25 +21,33 @@ pub async fn new_feed(url: String) -> Result<FeedWithArticles, FeedError> {
   let feed_id = nanoid!();
   Ok(FeedWithArticles {
     feed: Feed {
-      name: channel.title,
-      url: channel.link,
-      feed_type: String::from("rss"),
       id: feed_id.clone(),
+      name: channel.title,
+      feed_type: FeedType::Rss,
       favourited: false,
-      last_fetched: 0,
+      url: channel.link,
+      last_fetched: Some(SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0)),
     },
     articles: channel.items.into_iter()
       .map(|i| Article {
         id: nanoid!(),
-        name: i.title.unwrap_or(String::from("")),
-        content: i.description.unwrap_or(String::from("")),
+        name: i.title.clone(),
+        content: i.description,
         feed_id: feed_id.clone(),
-        media_type: String::from("rss"),
+        media_type: MediaType::Text,
         read: false,
         saved: false,
-        date: i.pub_date.unwrap_or(String::from("")),
-        url: i.link.unwrap_or(String::from("")),
-        media_url: None,
+        date: i.pub_date.clone(),
+        url: i.link.clone(),
+        enclosure: None,
+        guid: i.guid.map(|g| g.value)
+          .or_else(|| i.link.clone())
+          .unwrap_or_else(|| format!("{}-{}",
+            i.title.clone().as_deref().unwrap_or(""),
+            i.pub_date.clone().as_deref().unwrap_or(""))),
       })
       .collect::<Vec<Article>>(),
   })

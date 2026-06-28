@@ -13,21 +13,28 @@ export const commands = {
 /* Types */
 export type Article = {
 	id: string;
-	name: string;
 	feed_id: string;
-	url: string;
-	saved: boolean;
+	guid: string;
+	name: string | null;
+	content: string | null;
+	url: string | null;
+	date: string | null;
+	media_type: MediaType;
+	enclosure: Enclosure | null;
 	read: boolean;
-	date: string;
-	media_type: string;
-	content: string;
-	media_url: string | null;
+	saved: boolean;
+};
+
+export type Enclosure = {
+	url: string;
+	mime_type: string | null;
+	length: number;
 };
 
 export type Feed = {
 	id: string;
 	name: string;
-	feed_type: string;
+	feed_type: FeedType;
 	favourited: boolean;
 	url: string;
 	last_fetched: number;
@@ -35,10 +42,14 @@ export type Feed = {
 
 export type FeedError = 'RequestFailed' | 'StreamFailed' | 'ParseFailed';
 
+export type FeedType = 'rss' | 'atom';
+
 export type FeedWithArticles = {
 	feed: Feed;
 	articles: Article[];
 };
+
+export type MediaType = 'text';
 
 /* Tauri Specta runtime */
 async function typedError<T, E>(

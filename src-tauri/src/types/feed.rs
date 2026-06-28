@@ -1,29 +1,53 @@
 use serde::{Serialize, Deserialize};
 use specta::Type;
+use specta_typescript::Number;
 use thiserror::Error;
+
+#[derive(Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum FeedType {
+	Rss,
+	Atom,
+}
+
+#[derive(Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum MediaType {
+	Text,
+}
 
 #[derive(Serialize, Deserialize, Type, Clone)]
 pub struct Feed {
 	pub id: String,
 	pub name: String,
-	pub feed_type: String,
+	pub feed_type: FeedType,
 	pub favourited: bool,
 	pub url: String,
-	pub last_fetched: u32,
+	#[specta(type = Number)]
+	pub last_fetched: Option<u64>,
+}
+
+#[derive(Serialize, Deserialize, Type, Clone)]
+pub struct Enclosure {
+	pub url: String,
+	pub mime_type: Option<String>,
+	#[specta(type = Number)]
+	pub length: Option<u64>
 }
 
 #[derive(Serialize, Deserialize, Type, Clone)]
 pub struct Article {
 	pub id: String,
-	pub name: String,
 	pub feed_id: String,
-	pub url: String,
-	pub saved: bool,
+	pub guid: String,
+	pub name: Option<String>,
+	pub content: Option<String>,
+	pub url: Option<String>,
+	pub date: Option<String>,
+	pub media_type: MediaType,
+	pub enclosure: Option<Enclosure>,
 	pub read: bool,
-	pub date: String,
-	pub media_type: String,
-	pub content: String,
-	pub media_url: Option<String>,
+	pub saved: bool,
 }
 
 #[derive(Serialize, Deserialize, Type, Clone)]

@@ -16,8 +16,12 @@
 
 	let filteredArticles = $derived(
 		filterArticles(feedStore.data.feeds, feedStore.data.articles, filter)
-			.filter((a) => a.name.toLowerCase().includes(search.toLowerCase()))
-			.sort((a, b) => dateStrParse(b.date) - dateStrParse(a.date)),
+			.filter((a) =>
+				a.name ? a.name.toLowerCase().includes(search.toLowerCase()) : false,
+			)
+			.sort((a, b) =>
+				a.date && b.date ? dateStrParse(b.date) - dateStrParse(a.date) : 0,
+			),
 	);
 </script>
 

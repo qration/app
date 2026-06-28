@@ -20,8 +20,10 @@ export function filterArticles(
 	} else if (filter == 'article-unread') {
 		return articles.filter((a) => !a.read);
 	} else if (filter == 'article-today') {
-		return articles.filter(
-			(a) => Date.now() - dateStrParse(a.date) * 1000 <= 24 * 60 * 60 * 1000,
+		return articles.filter((a) =>
+			a.date
+				? Date.now() - dateStrParse(a.date) * 1000 <= 24 * 60 * 60 * 1000
+				: false,
 		);
 	} else if (filter == 'feed-favourites') {
 		return articles.filter(
@@ -42,6 +44,6 @@ export function isValidURL(url: string): boolean {
 	}
 }
 
-export function dateStrParse(dateStr: string): number {
-	return Math.floor(Date.parse(dateStr) / 1000);
+export function dateStrParse(dateStr: string | null): number {
+	return dateStr ? Math.floor(Date.parse(dateStr) / 1000) : 0;
 }

@@ -41,15 +41,15 @@
 			)}
 			{#if articleFeed}
 				<ArticleButton
-					title={article.name}
+					{article}
 					author={articleFeed.name}
 					icon={getFeedIcon(
 						feedStore.data.feeds.find((f) => f.id == article.feed_id)!
 							.feed_type,
 					)}
-					timestamp={dateStrParse(article.date)}
 					selected={selectedArticle == article.id}
 					onclick={() => {
+						article.read = true;
 						selectedArticle = article.id;
 						onarticleselect(selectedArticle);
 					}} />

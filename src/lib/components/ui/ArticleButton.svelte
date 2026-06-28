@@ -1,18 +1,18 @@
 <script lang="ts">
+	import type { Article } from '$lib/util/bindings';
 	import { getRelativeTime } from '$lib/util/date';
+	import { dateStrParse } from '$lib/util/util';
 	import Icon from '@iconify/svelte';
 
 	let {
-		title,
+		article,
 		author,
-		timestamp,
 		icon,
 		onclick,
 		selected,
 	}: {
-		title: string;
+		article: Article;
 		author: string;
-		timestamp: number;
 		icon: string;
 		onclick?: (e: MouseEvent) => void;
 		selected: boolean;
@@ -28,7 +28,7 @@
 		px-3 py-2 cursor-pointer min-w-0 max-w-full"
 	{onclick}>
 	<div class="font-medium truncate min-w-0 max-w-full">
-		{title}
+		{article.read ? '' : '\u2022 '}{article.name}
 	</div>
 	<div class="flex flex-row justify-between w-full">
 		<div class="flex flex-row gap-2 items-center">
@@ -37,6 +37,6 @@
 				{author}
 			</span>
 		</div>
-		{getRelativeTime(timestamp * 1000, rtf)}
+		{getRelativeTime(dateStrParse(article.date) * 1000, rtf)}
 	</div>
 </button>

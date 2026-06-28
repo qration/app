@@ -14,7 +14,7 @@
 </script>
 
 {#if article && feed}
-	<div class="flex flex-col min-w-0 max-w-full h-full">
+	<div class="flex flex-col min-w-0 w-full h-full">
 		<div
 			class="flex flex-row justify-between items-center border-b-2 border-border
 				p-2 shrink-0 min-w-0 max-w-full">

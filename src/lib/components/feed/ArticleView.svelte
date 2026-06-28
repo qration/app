@@ -14,13 +14,19 @@
 </script>
 
 {#if article && feed}
-	<div class="flex flex-col w-full h-full">
+	<div class="flex flex-col min-w-0 max-w-full h-full">
 		<div
 			class="flex flex-row justify-between items-center border-b-2 border-border
-				p-2 shrink-0">
-			<div class="text-text font-medium pl-2 text-2xl">
-				{article.name}
-				<span class="font-light text-text-secondary">&#8729; {feed.name}</span>
+				p-2 shrink-0 min-w-0 max-w-full">
+			<div
+				class="flex flex-row text-text font-medium px-2 text-2xl min-w-0
+					max-w-full items-center">
+				<span class="min-w-0">{article.name}</span>
+				<span
+					class="font-light text-text-secondary whitespace-nowrap shrink-0 px-2"
+					>&#8729;</span>
+				<span class="font-light text-text-secondary whitespace-nowrap shrink-0"
+					>{feed.name}</span>
 			</div>
 			<div class="flex flex-row justify-end gap-1">
 				<IconButton

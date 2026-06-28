@@ -2,6 +2,7 @@
 	import type { Article, Feed } from '$lib/util/bindings';
 	import IconButton from '../ui/IconButton.svelte';
 	import { feedStore } from '$lib/stores/feeds.svelte';
+	import { openUrl } from '@tauri-apps/plugin-opener';
 
 	let { articleId }: { articleId: string } = $props();
 	let article: Article | undefined = $derived(
@@ -15,7 +16,8 @@
 {#if article && feed}
 	<div class="flex flex-col w-full h-full">
 		<div
-			class="flex flex-row justify-between items-center border-b-2 border-border p-2 shrink-0">
+			class="flex flex-row justify-between items-center border-b-2 border-border
+				p-2 shrink-0">
 			<div class="text-text font-medium pl-2 text-2xl">
 				{article.name}
 				<span class="font-light text-text-secondary">&#8729; {feed.name}</span>
@@ -28,7 +30,7 @@
 				<IconButton
 					icon="tabler:external-link"
 					label="Open {article.name}"
-					onclick={() => window.open(article.url, '_blank')} />
+					onclick={async () => await openUrl(article.url)} />
 			</div>
 		</div>
 		<div class="p-4 w-full h-full flex flex-col gap-2 overflow-y-scroll">

@@ -74,38 +74,41 @@
 </script>
 
 <Modal bind:open onclose={close} title="Add New Feed">
-	<div class="flex flex-col gap-4">
-		<label class="flex flex-col gap-2">
-			<span class="text-text-muted">Feed URL</span>
-			<TextInput
-				bind:input={formData.url}
-				placeholder="https://example.com/feed.xml"
-				clear={false}
-				error={errorData.url != ''}
-				oninput={() => clearError('url')} />
-			{#if errorData.url}
-				<span class="text-error flex flex-row items-center gap-1">
-					<Icon icon="tabler:circle-x" />
-					{errorData.url}
-				</span>
-			{/if}
-		</label>
-		<div class="flex justify-end">
-			<Button
-				onclick={async () => {
-					loading = true;
-					await confirm();
-					loading = false;
-				}}
-				class="h-10">
-				<span class="flex justify-center items-center w-15">
-					{#if loading}
-						<Icon icon="tabler:loader-2" class="block animate-spin" />
-					{:else}
-						Confirm
-					{/if}
-				</span>
-			</Button>
+	<form>
+		<div class="flex flex-col gap-4">
+			<label class="flex flex-col gap-2">
+				<span class="text-text-muted">Feed URL</span>
+				<TextInput
+					bind:input={formData.url}
+					placeholder="https://example.com/feed.xml"
+					clear={false}
+					error={errorData.url != ''}
+					oninput={() => clearError('url')} />
+				{#if errorData.url}
+					<span class="text-error flex flex-row items-center gap-1">
+						<Icon icon="tabler:circle-x" />
+						{errorData.url}
+					</span>
+				{/if}
+			</label>
+			<div class="flex justify-end">
+				<Button
+					onclick={async () => {
+						loading = true;
+						await confirm();
+						loading = false;
+					}}
+					class="h-10"
+					type="submit">
+					<span class="flex justify-center items-center w-15">
+						{#if loading}
+							<Icon icon="tabler:loader-2" class="block animate-spin" />
+						{:else}
+							Confirm
+						{/if}
+					</span>
+				</Button>
+			</div>
 		</div>
-	</div>
+	</form>
 </Modal>

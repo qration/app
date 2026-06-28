@@ -1,17 +1,14 @@
 <script lang="ts">
 	import type { Article, Feed } from '$lib/util/interfaces';
 	import IconButton from '../ui/IconButton.svelte';
+	import { feedStore } from '$lib/stores/feeds.svelte';
 
-	let {
-		articleId,
-		data,
-	}: { articleId: string; data: { feeds: Feed[]; articles: Article[] } } =
-		$props();
+	let { articleId }: { articleId: string } = $props();
 	let article: Article | undefined = $derived(
-		data.articles.find((a) => a.id == articleId),
+		feedStore.data.articles.find((a) => a.id == articleId),
 	);
 	let feed: Feed | undefined = $derived(
-		data.feeds.find((f) => f.id == article?.feed_id),
+		feedStore.data.feeds.find((f) => f.id == article?.feed_id),
 	);
 </script>
 

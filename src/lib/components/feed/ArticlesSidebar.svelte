@@ -2,24 +2,22 @@
 	import TextInput from '$lib/components/ui/TextInput.svelte';
 	import ArticleButton from '$lib/components/ui/ArticleButton.svelte';
 	import { filterArticles, getFeedIcon } from '$lib/util/util';
-	import type { Article, Feed } from '$lib/util/interfaces';
+	import { feedStore } from '$lib/stores/feeds.svelte';
 
 	let {
 		filter,
 		onarticleselect,
-		data,
 	}: {
 		filter: string;
 		onarticleselect: (article: string) => void;
-		data: { feeds: Feed[]; articles: Article[] };
 	} = $props();
 	let selectedArticle = $state('');
 	let search = $state('');
 
 	let filteredArticles = $derived(
-		filterArticles(data.feeds, data.articles, filter).filter((a) =>
-			a.name.toLowerCase().includes(search.toLowerCase()),
-		),
+		filterArticles(feedStore.data.feeds, feedStore.data.articles, filter)
+			.filter((a) => a.name.toLowerCase().includes(search.toLowerCase()))
+			.sort((a, b) => b.timestamp - a.timestamp),
 	);
 </script>
 
@@ -38,13 +36,15 @@
 		class="flex flex-col gap-4 py-4 px-2 text-text text-4xl overflow-y-scroll
 			justify-start h-full scrollbar-gutter-both">
 		{#each filteredArticles as article (article.id)}
-			{@const articleFeed = data.feeds.find((f) => f.id == article.feed_id)}
+			{@const articleFeed = feedStore.data.feeds.find(
+				(f) => f.id == article.feed_id,
+			)}
 			{#if articleFeed}
 				<ArticleButton
 					title={article.name}
 					author={articleFeed.name}
 					icon={getFeedIcon(
-						data.feeds.find((f) => f.id == article.feed_id)!.type,
+						feedStore.data.feeds.find((f) => f.id == article.feed_id)!.type,
 					)}
 					timestamp={article.timestamp}
 					selected={selectedArticle == article.id}

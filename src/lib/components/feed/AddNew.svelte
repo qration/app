@@ -6,6 +6,7 @@
 	import TextInput from '../ui/TextInput.svelte';
 	import { isValidURL } from '$lib/util/util';
 	import { invoke } from '@tauri-apps/api/core';
+	// import { feedStore } from '$lib/stores/feeds.svelte';
 
 	let {
 		open = $bindable(false),
@@ -40,6 +41,7 @@
 			return;
 		}
 
+		// const ch =
 		await invoke('new_feed', { url: formData.url }).catch(
 			(err: { code: string }) => {
 				errorData.url = `Error: ${err.code}`;
@@ -47,6 +49,7 @@
 		);
 
 		if (errorData.url) return;
+		// feedStore.data.feeds.
 
 		onconfirm?.(trimmed);
 		formData.url = '';

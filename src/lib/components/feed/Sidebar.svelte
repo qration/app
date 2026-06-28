@@ -6,7 +6,7 @@
 	import AddNew from './AddNew.svelte';
 	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
-	import type { Feed } from '$lib/util/interfaces';
+	import { feedStore } from '$lib/stores/feeds.svelte';
 	import Settings from './Settings.svelte';
 
 	let collapsed = $state(false);
@@ -14,10 +14,7 @@
 	let addNewOpen = $state(false);
 	let settingsOpen = $state(false);
 
-	let {
-		onfilterchange,
-		data,
-	}: { onfilterchange: (filter: string) => void; data: { feeds: Feed[] } } =
+	let { onfilterchange }: { onfilterchange: (filter: string) => void } =
 		$props();
 
 	setContext('sidebar', {
@@ -97,7 +94,7 @@
 			{#if !collapsed}
 				<div class="text-xl text-text">Subscriptions</div>
 			{/if}
-			{#each data.feeds as feed (feed.id)}
+			{#each feedStore.data.feeds as feed (feed.id)}
 				<SidebarButton
 					text={feed.name}
 					icon={getFeedIcon(feed.type)}

@@ -33,8 +33,8 @@
 			bind:input={search} />
 	</div>
 	<div
-		class="flex flex-col gap-4 py-4 px-2 text-text text-4xl overflow-y-scroll
-			justify-start h-full scrollbar-gutter-both">
+		class="flex flex-col gap-4 p-4 text-text text-4xl overflow-y-scroll
+			justify-start h-full">
 		{#each filteredArticles as article (article.id)}
 			{@const articleFeed = feedStore.data.feeds.find(
 				(f) => f.id == article.feed_id,

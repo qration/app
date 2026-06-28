@@ -34,12 +34,12 @@
 <div
 	class="border-r-2 font-medium border-r-border bg-bg px-3.75 py-4
 		overflow-x-hidden {collapsed ? 'w-16' : 'w-70'} flex flex-col shrink-0
-		justify-between transition-all duration-1000">
+		justify-between transition-all duration-500">
 	<div class="flex flex-col gap-4 shrink-0">
 		<div class="flex flex-col">
 			<div class="relative flex items-center h-10">
 				<div
-					class="overflow-hidden transition-all duration-1000
+					class="overflow-hidden transition-all duration-500
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
 					<a href={resolve('/')}>
 						<Wordmark

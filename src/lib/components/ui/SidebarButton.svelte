@@ -53,17 +53,18 @@
 	{#if !collapsed}
 		<div
 			class="whitespace-nowrap flex flex-row justify-between w-full"
-			transition:fade={{ duration: 1000 }}>
+			transition:fade={{ duration: 500 }}>
 			{text}
 			{#if starrable}
 				<div class="m-0">
 					<div
-						class="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
+						class="opacity-0 group-hover:opacity-100
+							group-focus-within:opacity-100"
 						class:opacity-100={selected}>
 						<IconButton
 							icon="tabler:star{starred ? '-filled' : ''}"
 							label="Star {text}"
-							class="-m-1 group-hover:bg-bg-hover {selected
+							class="-m-1 group-hover:bg-bg-hover{selected
 								? 'bg-bg-hover!'
 								: ''}"
 							onclick={handleOnStar} />

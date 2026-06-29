@@ -21,6 +21,7 @@
 		if (!a) return;
 
 		href = a.getAttribute('href') || '';
+		href = href.replace(/\s+/g, '');
 		if (!href) return;
 		externalLinkOpen = true;
 		e.preventDefault();

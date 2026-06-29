@@ -45,7 +45,7 @@
 		console.log('hi');
 
 		const ch = await invoke<FeedWithArticles>('new_feed', {
-			url: formData.url,
+			urlString: formData.url,
 		}).catch((err: string) => {
 			errorData.url = `Error: ${err}`;
 		});

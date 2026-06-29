@@ -4,9 +4,9 @@ import { invoke as __TAURI_INVOKE } from '@tauri-apps/api/core';
 
 /** Commands */
 export const commands = {
-	newFeed: (url: string) =>
+	newFeed: (urlString: string) =>
 		typedError<FeedWithArticles, FeedError>(
-			__TAURI_INVOKE('new_feed', { url }),
+			__TAURI_INVOKE('new_feed', { urlString }),
 		),
 };
 

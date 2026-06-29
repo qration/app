@@ -7,11 +7,13 @@
 		title = '',
 		onclose,
 		children,
+		maxW = '[90vw]',
 	}: {
 		open: boolean;
 		title?: string;
 		onclose?: () => void;
 		children: Snippet;
+		maxW?: string;
 	} = $props();
 
 	let dialog: HTMLDialogElement | null = $state(null);
@@ -36,7 +38,7 @@
 <dialog
 	bind:this={dialog}
 	class="static mx-auto my-auto bg-bg text-text border-2 border-border
-		rounded-xl p-6 min-w-96 max-w-[90vw] shadow-lg backdrop:bg-black/50
+		rounded-xl p-6 min-w-96 max-w-{maxW} shadow-lg backdrop:bg-black/50
 		backdrop:backdrop-blur-xs"
 	aria-modal="true"
 	aria-label={title || 'Dialog'}

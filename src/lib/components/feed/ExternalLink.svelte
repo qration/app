@@ -21,9 +21,9 @@
 	}
 </script>
 
-<Modal bind:open title="Open External Link">
+<Modal bind:open title="Open External Link" maxW="[40vw]">
 	<div class="flex flex-col gap-2">
-		<div class="">This link is taking you to the following website:</div>
+		<div>This link is taking you to the following website:</div>
 		<div
 			class="font-mono px-4 py-2 rounded border-border border-2 bg-bg-secondary
 				wrap-anywhere">

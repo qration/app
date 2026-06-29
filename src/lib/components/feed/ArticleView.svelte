@@ -41,7 +41,7 @@
 				{/if}
 			</div>
 		</div>
-		<div class="p-4 w-full h-full flex flex-col gap-2 overflow-y-scroll">
+		<div class="px-10 py-5 w-full h-full flex flex-col gap-2 overflow-y-scroll">
 			{#if article.media_type == 'video'}
 				<iframe
 					title={article.name}
@@ -63,6 +63,7 @@
 	.feed-content :global(img) {
 		display: block;
 		margin: 0 auto;
-		max-width: 100%;
+		max-width: 80%;
+		padding: 1rem 0rem;
 	}
 </style>

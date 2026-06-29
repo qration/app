@@ -43,7 +43,10 @@ fn _new_rss_feed(channel: Channel) -> Result<FeedWithArticles, FeedError> {
       .map(|i| Article {
         id: nanoid!(),
         name: i.title.clone(),
-        content: i.description,
+        description: _html_to_desc(&i.description.clone().unwrap_or_default()),
+        content: i.content
+          .or_else(|| i.description.clone())
+          .map(|html| ammonia::clean(&html)),
         feed_id: feed_id.clone(),
         media_type: MediaType::Text,
         read: false,
@@ -83,9 +86,11 @@ fn _new_atom_feed(atomfeed: AtomFeed) -> Result<FeedWithArticles, FeedError> {
       .map(|e| Article {
         id: nanoid!(),
         name: Some(e.title.to_string()),
+        description: _html_to_desc(&e.summary.clone().unwrap_or_default()),
         content: e.content
           .and_then(|c| c.value)
-          .or_else(|| e.summary.map(|s| s.to_string())),
+          .or_else(|| e.summary.clone().map(|s| s.to_string()))
+          .map(|html| ammonia::clean(&html)),
         feed_id: feed_id.clone(),
         media_type: MediaType::Text,
         read: false,
@@ -103,4 +108,13 @@ fn _new_atom_feed(atomfeed: AtomFeed) -> Result<FeedWithArticles, FeedError> {
 
 fn _pick_link(links: &Vec<Link>, rel: &str) -> Option<Link> {
   return links.iter().cloned().find(|l| l.rel == rel)
+}
+
+fn _html_to_desc(html: &str) -> Option<String> {
+  let text = match html2text::from_read(html.as_bytes(), usize::MAX) {
+    Ok(t) => t,
+    Err(_) => return None,
+  };
+
+  Some(text.split_whitespace().collect::<Vec<&str>>().join(" "))
 }

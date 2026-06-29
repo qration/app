@@ -32,11 +32,13 @@
 			min-w-0 max-w-full">
 		{article.read ? '' : '\u2022 '}{article.name}
 	</div>
-	<div
-		class="line-clamp-2 min-w-0 max-w-full text-left text-text-secondary
-			text-base">
-		{article.content}
-	</div>
+	{#if article.description}
+		<div
+			class="line-clamp-2 min-w-0 max-w-full text-left text-text-secondary
+				text-base">
+			{article.description}
+		</div>
+	{/if}
 	<div class="flex flex-row justify-between w-full text-base">
 		<div class="flex flex-row gap-2 items-center">
 			<Icon {icon} />

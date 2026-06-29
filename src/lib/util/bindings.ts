@@ -16,6 +16,7 @@ export type Article = {
 	feed_id: string;
 	guid: string;
 	name: string | null;
+	description: string | null;
 	content: string | null;
 	url: string | null;
 	date: string | null;

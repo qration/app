@@ -41,6 +41,7 @@ pub struct Article {
 	pub feed_id: String,
 	pub guid: String,
 	pub name: Option<String>,
+	pub description: Option<String>,
 	pub content: Option<String>,
 	pub url: Option<String>,
 	pub date: Option<String>,

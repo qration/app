@@ -3,6 +3,7 @@
 	import IconButton from '../ui/IconButton.svelte';
 	import { feedStore } from '$lib/stores/feeds.svelte';
 	import { openUrl } from '@tauri-apps/plugin-opener';
+	import ExternalLink from './ExternalLink.svelte';
 
 	let { articleId }: { articleId: string } = $props();
 	let article: Article | undefined = $derived(
@@ -11,6 +12,19 @@
 	let feed: Feed | undefined = $derived(
 		feedStore.data.feeds.find((f) => f.id == article?.feed_id),
 	);
+
+	let externalLinkOpen = $state(false);
+	let href = $state('');
+
+	function handleLinkClick(e: MouseEvent) {
+		const a = (e.target as HTMLElement).closest('a');
+		if (!a) return;
+
+		href = a.getAttribute('href') || '';
+		if (!href) return;
+		externalLinkOpen = true;
+		e.preventDefault();
+	}
 </script>
 
 {#if article && feed}
@@ -42,7 +56,7 @@
 			</div>
 		</div>
 		<div class="px-10 py-5 w-full h-full flex flex-col gap-2 overflow-y-scroll">
-			{#if article.media_type == 'video'}
+			<!-- {#if article.media_type == 'video'}
 				<iframe
 					title={article.name}
 					src={article.enclosure!.url}
@@ -50,8 +64,11 @@
 					height="allowfullscreen"
 					frameborder="0"
 					class="aspect-video"></iframe>
-			{/if}
-			<div class="h-min feed-content">
+			{/if} -->
+			<div
+				onclick={handleLinkClick}
+				role="presentation"
+				class="h-min feed-content">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html article.content}
 			</div>
@@ -59,11 +76,25 @@
 	</div>
 {/if}
 
+<ExternalLink bind:open={externalLinkOpen} {href} />
+
 <style>
 	.feed-content :global(img) {
 		display: block;
 		margin: 0 auto;
 		max-width: 80%;
-		padding: 1rem 0rem;
+		padding: 0.5rem 0rem;
+	}
+
+	.feed-content :global(p) {
+		padding: 0.5rem 0rem;
+	}
+
+	.feed-content :global(a) {
+		text-decoration: underline;
+	}
+
+	.feed-content :global(a:hover) {
+		color: var(--color-text-secondary);
 	}
 </style>

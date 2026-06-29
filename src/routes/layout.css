@@ -2,10 +2,6 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-* {
-	font-family: 'Atkinson Hyperlegible Next';
-}
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -13,6 +9,8 @@
 }
 
 @theme {
+	--font-sans: 'Atkinson Hyperlegible Next', sans-serif;
+	--font-mono: 'Atkinson Hyperlegible Mono', monospace;
 	--color-light-theme: var(--color-slate-50);
 	--color-dark-theme: var(--color-slate-950);
 	--color-error: var(--color-red-500);
@@ -25,6 +23,9 @@
 	--color-text-muted: var(--color-slate-700);
 	--color-text-secondary: var(--color-slate-500);
 	--color-border: var(--color-slate-400);
+
+	--color-button-primary: var(--color-slate-950);
+	--color-button-secondary: var(--color-slate-300);
 }
 
 .dark {
@@ -36,4 +37,7 @@
 	--color-text-muted: var(--color-slate-200);
 	--color-text-secondary: var(--color-slate-400);
 	--color-border: var(--color-slate-500);
+
+	--color-button-primary: var(--color-slate-50);
+	--color-button-secondary: var(--color-slate-700);
 }

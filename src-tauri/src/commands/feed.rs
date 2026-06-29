@@ -1,6 +1,7 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use rss::Channel;
+use atom_syndication::{Feed as AtomFeed, Link};
 use nanoid::nanoid;
 use crate::types::*;
 
@@ -14,9 +15,16 @@ pub async fn new_feed(url: String) -> Result<FeedWithArticles, FeedError> {
     .await
     .map_err(|_| FeedError::StreamFailed)?;
 
-  let channel = Channel::read_from(&bytes[..])
-  .map_err(|_| FeedError::ParseFailed)?;
+  if let Ok(channel) = Channel::read_from(&bytes[..]) {
+    _new_rss_feed(channel)
+  } else if let Ok(atomfeed) = AtomFeed::read_from(&bytes[..]) {
+    _new_atom_feed(atomfeed)
+  } else {
+    Err(FeedError::ParseFailed)
+  }
+}
 
+fn _new_rss_feed(channel: Channel) -> Result<FeedWithArticles, FeedError> {
   println!("channel items: {:?}", channel.items);
   let feed_id = nanoid!();
   Ok(FeedWithArticles {
@@ -51,4 +59,48 @@ pub async fn new_feed(url: String) -> Result<FeedWithArticles, FeedError> {
       })
       .collect::<Vec<Article>>(),
   })
+}
+
+fn _new_atom_feed(atomfeed: AtomFeed) -> Result<FeedWithArticles, FeedError> {
+  println!("atomfeed entries: {:?}", atomfeed.entries);
+  let feed_id = nanoid!();
+  Ok(FeedWithArticles {
+    feed: Feed {
+      id: feed_id.clone(),
+      name: atomfeed.title.to_string(),
+      feed_type: FeedType::Atom,
+      favourited: false,
+      url: _pick_link(&atomfeed.links, "alternate")
+        .or_else(|| atomfeed.links.first().cloned())
+        .map(|l| l.href.clone())
+        .unwrap_or_default(),
+      last_fetched: Some(SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0)),
+    },
+    articles: atomfeed.entries.into_iter()
+      .map(|e| Article {
+        id: nanoid!(),
+        name: Some(e.title.to_string()),
+        content: e.content
+          .and_then(|c| c.value)
+          .or_else(|| e.summary.map(|s| s.to_string())),
+        feed_id: feed_id.clone(),
+        media_type: MediaType::Text,
+        read: false,
+        saved: false,
+        date: Some(e.published.unwrap_or(e.updated).to_rfc3339()),
+        url: _pick_link(&e.links, "alternate")
+          .or_else(|| e.links.first().cloned())
+          .map(|l| l.href.clone()),
+        enclosure: None,
+        guid: e.id,
+      })
+      .collect::<Vec<Article>>(),
+  })
+}
+
+fn _pick_link(links: &Vec<Link>, rel: &str) -> Option<Link> {
+  return links.iter().cloned().find(|l| l.rel == rel)
 }

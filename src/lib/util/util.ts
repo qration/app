@@ -1,12 +1,14 @@
-import type { Feed, Article } from '$lib/util/bindings';
+import type { Feed, Article, FeedType } from '$lib/util/bindings';
 
-export function getFeedIcon(type: string): string {
-	if (type == 'rss') {
+export function getFeedIcon(feedType: FeedType): string {
+	if (feedType == 'rss') {
 		return 'tabler:rss';
-	} else if (type == 'youtube') {
-		return 'tabler:brand-youtube';
+		// } else if (feedType == 'youtube') {
+		// 	return 'tabler:brand-youtube';
+	} else if (feedType == 'atom') {
+		return 'tabler:atom-2';
 	}
-	return '';
+	return 'tabler:question-mark';
 }
 
 // this is only a temporary function, i'll move this to the backend when we implement it

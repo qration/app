@@ -17,6 +17,7 @@
 		starred = false,
 		onclick,
 		onstar,
+		ondelete,
 	}: {
 		text: string;
 		icon: string;
@@ -25,6 +26,7 @@
 		starred?: boolean;
 		onclick?: (e?: MouseEvent) => void;
 		onstar?: () => void;
+		ondelete?: () => void;
 	} = $props();
 
 	// eslint-disable-next-line no-useless-assignment
@@ -72,7 +74,7 @@
 								: ''} group-hover:bg-bg-hover"
 							onclick={(e) => e.stopPropagation()} />
 					</div>
-					<DetailsList {menuId} {starred} {onstar} />
+					<DetailsList {menuId} {starred} {onstar} {ondelete} />
 				</div>
 			{/if}
 		</div>

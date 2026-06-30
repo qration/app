@@ -8,11 +8,15 @@
 	import { getFeedIcon } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
 	import Settings from './Settings.svelte';
+	import ConfirmDelete from './ConfirmDelete.svelte';
+	import type { Feed } from '$lib/util/bindings';
 
 	let collapsed = $state(false);
 	let selectedFilter = $state('feed-all');
+	let delFeed: Feed | undefined = $state();
 	let addNewOpen = $state(false);
 	let settingsOpen = $state(false);
+	let deleteOpen = $state(true);
 
 	let { onfilterchange }: { onfilterchange: (filter: string) => void } =
 		$props();
@@ -32,21 +36,21 @@
 </script>
 
 <div
-	class="border-r-2 font-medium border-r-border bg-bg px-3.75 py-4
-		overflow-x-hidden {collapsed ? 'w-16' : 'w-70'} flex flex-col shrink-0
+	class="overflow-x-hidden border-r-2 border-r-border bg-bg px-3.75 py-4
+		font-medium {collapsed ? 'w-16' : 'w-70'} flex shrink-0 flex-col
 		justify-between transition-all duration-500">
-	<div class="flex flex-col gap-4 shrink-0">
+	<div class="flex shrink-0 flex-col gap-4">
 		<div class="flex flex-col">
-			<div class="relative flex items-center h-10">
+			<div class="relative flex h-10 items-center">
 				<div
 					class="overflow-hidden transition-all duration-500
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
 					<a href={resolve('/')}>
 						<Wordmark
-							class="fill-text max-w-none shrink-0 h-10 cursor-pointer" />
+							class="h-10 max-w-none shrink-0 cursor-pointer fill-text" />
 					</a>
 				</div>
-				<div class="absolute right-1 w-6 flex justify-center">
+				<div class="absolute right-1 flex w-6 justify-center">
 					<IconButton
 						icon="tabler:layout-sidebar-left-{collapsed
 							? 'expand'
@@ -102,7 +106,11 @@
 					onclick={() => setSelectedFilter(feed.id)}
 					starrable={true}
 					starred={feed.favourited}
-					onstar={() => (feed.favourited = !feed.favourited)} />
+					onstar={() => (feed.favourited = !feed.favourited)}
+					ondelete={() => {
+						delFeed = feed;
+						deleteOpen = true;
+					}} />
 			{/each}
 		</div>
 	</div>
@@ -117,3 +125,4 @@
 
 <AddNew bind:open={addNewOpen} />
 <Settings bind:open={settingsOpen} />
+<ConfirmDelete feed={delFeed} bind:open={deleteOpen} />

@@ -25,9 +25,9 @@
 		onclose?.();
 	}
 
-	function onDialogClick(e: MouseEvent) {
-		if (e.target === dialog) close();
-	}
+	// function onDialogClick(e: MouseEvent) {
+	// 	if (e.target === dialog) close();
+	// }
 
 	$effect(() => {
 		console.log('what');
@@ -44,7 +44,7 @@
 	aria-modal="true"
 	aria-label={title || 'Dialog'}
 	onclose={close}
-	onclick={onDialogClick}>
+	closedby="any">
 	<div class="mb-4 flex items-center justify-between">
 		<div class="text-xl font-medium">{title}</div>
 		<IconButton icon="tabler:x" label="Close" onclick={close} />

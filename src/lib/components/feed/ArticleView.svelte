@@ -1,9 +1,11 @@
 <script lang="ts">
-	import type { Article, Feed } from '$lib/util/bindings';
-	import IconButton from '../ui/IconButton.svelte';
-	import { feedStore } from '$lib/stores/feeds.svelte';
+	import IconButton from '$lib/components/ui/IconButton.svelte';
+	import ExternalLink from './dialogs/ExternalLink.svelte';
+
 	import { openUrl } from '@tauri-apps/plugin-opener';
-	import ExternalLink from './ExternalLink.svelte';
+	import { feedStore } from '$lib/stores/feeds.svelte';
+
+	import type { Article, Feed } from '$lib/util/bindings';
 
 	let { articleId }: { articleId: string } = $props();
 	let article: Article | undefined = $derived(
@@ -29,18 +31,18 @@
 </script>
 
 {#if article && feed}
-	<div class="flex flex-col min-w-0 w-full h-full">
+	<div class="flex h-full w-full min-w-0 flex-col">
 		<div
-			class="flex flex-row justify-between items-center border-b-2 border-border
-				p-2 shrink-0 min-w-0 max-w-full">
+			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
+				justify-between border-b-2 border-border p-2">
 			<div
-				class="flex flex-row text-text font-medium px-2 text-2xl min-w-0
-					max-w-full items-center">
+				class="flex max-w-full min-w-0 flex-row items-center px-2 text-2xl
+					font-medium text-text">
 				<span class="min-w-0">{article.name}</span>
 				<span
-					class="font-light text-text-secondary whitespace-nowrap shrink-0 px-2"
+					class="shrink-0 px-2 font-light whitespace-nowrap text-text-secondary"
 					>&#8729;</span>
-				<span class="font-light text-text-secondary whitespace-nowrap shrink-0"
+				<span class="shrink-0 font-light whitespace-nowrap text-text-secondary"
 					>{feed.name}</span>
 			</div>
 			<div class="flex flex-row justify-end gap-1">
@@ -56,7 +58,7 @@
 				{/if}
 			</div>
 		</div>
-		<div class="px-10 py-5 w-full h-full flex flex-col gap-2 overflow-y-scroll">
+		<div class="flex h-full w-full flex-col gap-2 overflow-y-scroll px-10 py-5">
 			<!-- {#if article.media_type == 'video'}
 				<iframe
 					title={article.name}
@@ -69,7 +71,7 @@
 			<div
 				onclick={handleLinkClick}
 				role="presentation"
-				class="h-min feed-content">
+				class="feed-content h-min">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html article.content}
 			</div>

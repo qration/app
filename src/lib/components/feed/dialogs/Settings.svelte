@@ -1,8 +1,9 @@
 <script lang="ts">
+	import Modal from '$lib/components/ui/Modal.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Swatch from '$lib/components/ui/Swatch.svelte';
+
 	import { mode, setMode } from 'mode-watcher';
-	import Modal from '../ui/Modal.svelte';
-	import Button from '../ui/Button.svelte';
-	import Swatch from '../ui/Swatch.svelte';
 
 	let {
 		open = $bindable(false),

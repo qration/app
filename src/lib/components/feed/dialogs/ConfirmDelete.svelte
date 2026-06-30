@@ -1,7 +1,9 @@
 <script lang="ts">
-	import Button from '../ui/Button.svelte';
-	import Modal from '../ui/Modal.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
+
 	import { feedStore } from '$lib/stores/feeds.svelte';
+
 	import type { Feed } from '$lib/util/bindings';
 
 	let {

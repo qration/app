@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	let {
@@ -18,8 +19,8 @@
 
 <button
 	{...rest}
-	class="p-1 flex justify-center rounded text-2xl h-min cursor-pointer
-		text-text-muted bg-bg hover:text-text {cls} hover:bg-bg-hover"
+	class="flex h-min cursor-pointer justify-center rounded bg-bg p-1
+		text-2xl text-text-muted hover:text-text {cls} hover:bg-bg-hover"
 	aria-label={label}
 	{onclick}
 	type="button">

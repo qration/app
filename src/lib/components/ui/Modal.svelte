@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import IconButton from './IconButton.svelte';
+
+	import type { Snippet } from 'svelte';
 
 	let {
 		open = $bindable(false),
@@ -37,14 +38,14 @@
 
 <dialog
 	bind:this={dialog}
-	class="static mx-auto my-auto bg-bg text-text border-2 border-border
-		rounded-xl p-6 min-w-96 max-w-{maxW} shadow-lg backdrop:bg-black/50
+	class="static mx-auto my-auto min-w-96 rounded-xl border-2 border-border
+		bg-bg p-6 text-text max-w-{maxW} shadow-lg backdrop:bg-black/50
 		backdrop:backdrop-blur-xs"
 	aria-modal="true"
 	aria-label={title || 'Dialog'}
 	onclose={close}
 	onclick={onDialogClick}>
-	<div class="flex justify-between items-center mb-4">
+	<div class="mb-4 flex items-center justify-between">
 		<div class="text-xl font-medium">{title}</div>
 		<IconButton icon="tabler:x" label="Close" onclick={close} />
 	</div>

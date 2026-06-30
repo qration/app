@@ -1,7 +1,8 @@
 <script lang="ts">
+	import Button from '$lib/components/ui/Button.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
+
 	import { openUrl } from '@tauri-apps/plugin-opener';
-	import Button from '../ui/Button.svelte';
-	import Modal from '../ui/Modal.svelte';
 
 	let {
 		open = $bindable(false),
@@ -25,7 +26,7 @@
 	<div class="flex flex-col gap-2">
 		<div>This link is taking you to the following website:</div>
 		<div
-			class="font-mono px-4 py-2 rounded border-border border-2 bg-bg-secondary
+			class="rounded border-2 border-border bg-bg-secondary px-4 py-2 font-mono
 				wrap-anywhere">
 			{href}
 		</div>

@@ -4,10 +4,11 @@
 
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { getContext } from 'svelte';
-	import { fade } from 'svelte/transition';
 	import IconButton from './IconButton.svelte';
 	import DetailsList from './DetailsList.svelte';
+
+	import { getContext } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	let {
 		text,

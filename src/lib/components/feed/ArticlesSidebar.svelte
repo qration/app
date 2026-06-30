@@ -1,6 +1,7 @@
 <script lang="ts">
 	import TextInput from '$lib/components/ui/TextInput.svelte';
 	import ArticleButton from '$lib/components/ui/ArticleButton.svelte';
+
 	import { dateStrParse, filterArticles, getFeedIcon } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
 
@@ -26,19 +27,19 @@
 </script>
 
 <div
-	class="flex flex-col gap bg-bg text-text text-4xl justify-start h-full
-		border-border border-r-2 shrink-0 w-100">
+	class="gap flex h-full w-100 shrink-0 flex-col justify-start border-r-2
+		border-border bg-bg text-4xl text-text">
 	<div
-		class="sticky top-0 py-4 w-full px-4 border-2 border-x-transparent
-			border-t-transparent border-b-border">
+		class="sticky top-0 w-full border-2 border-x-transparent border-t-transparent border-b-border
+			px-4 py-4">
 		<TextInput
 			placeholder="Search..."
 			icon="tabler:search"
 			bind:input={search} />
 	</div>
 	<div
-		class="flex flex-col gap-4 p-4 text-text text-4xl overflow-y-scroll
-			justify-start h-full">
+		class="flex h-full flex-col justify-start gap-4 overflow-y-scroll p-4
+			text-4xl text-text">
 		{#each filteredArticles as article (article.id)}
 			{@const articleFeed = feedStore.data.feeds.find(
 				(f) => f.id == article.feed_id,

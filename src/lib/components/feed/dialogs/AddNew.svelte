@@ -1,12 +1,14 @@
 <script lang="ts">
-	import type { AddNewFormFields } from '$lib/util/interfaces';
-	import Button from '../ui/Button.svelte';
-	import Modal from '../ui/Modal.svelte';
 	import Icon from '@iconify/svelte';
-	import TextInput from '../ui/TextInput.svelte';
-	import { isValidURL } from '$lib/util/util';
+	import Button from '$lib/components/ui/Button.svelte';
+	import Modal from '$lib/components/ui/Modal.svelte';
+	import TextInput from '$lib/components/ui/TextInput.svelte';
+
 	import { invoke } from '@tauri-apps/api/core';
+	import { isValidURL } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
+
+	import type { AddNewFormFields } from '$lib/util/interfaces';
 	import type { FeedWithArticles } from '$lib/util/bindings';
 
 	let {
@@ -85,7 +87,7 @@
 					error={errorData.url != ''}
 					oninput={() => clearError('url')} />
 				{#if errorData.url}
-					<span class="text-error flex flex-row items-center gap-1">
+					<span class="flex flex-row items-center gap-1 text-error">
 						<Icon icon="tabler:circle-x" />
 						{errorData.url}
 					</span>
@@ -100,7 +102,7 @@
 					}}
 					class="h-10"
 					type="submit">
-					<span class="flex justify-center items-center w-15">
+					<span class="flex w-15 items-center justify-center">
 						{#if loading}
 							<Icon icon="tabler:loader-2" class="block animate-spin" />
 						{:else}

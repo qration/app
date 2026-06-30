@@ -1,14 +1,17 @@
 <script lang="ts">
 	import Wordmark from '$lib/assets/qration-wordmark.svg?component';
+	import IconButton from '$lib/components/ui/IconButton.svelte';
+	import SidebarButton from '$lib/components/ui/SidebarButton.svelte';
+
+	import AddNew from './dialogs/AddNew.svelte';
+	import Settings from './dialogs/Settings.svelte';
+	import ConfirmDelete from './dialogs/ConfirmDelete.svelte';
+
 	import { setContext } from 'svelte';
-	import IconButton from '../ui/IconButton.svelte';
-	import SidebarButton from '../ui/SidebarButton.svelte';
-	import AddNew from './AddNew.svelte';
 	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
-	import Settings from './Settings.svelte';
-	import ConfirmDelete from './ConfirmDelete.svelte';
+
 	import type { Feed } from '$lib/util/bindings';
 
 	let collapsed = $state(false);

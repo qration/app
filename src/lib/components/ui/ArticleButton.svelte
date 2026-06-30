@@ -1,8 +1,10 @@
 <script lang="ts">
-	import type { Article } from '$lib/util/bindings';
+	import Icon from '@iconify/svelte';
+
 	import { getRelativeTime } from '$lib/util/date';
 	import { dateStrParse } from '$lib/util/util';
-	import Icon from '@iconify/svelte';
+
+	import type { Article } from '$lib/util/bindings';
 
 	let {
 		article,
@@ -22,27 +24,27 @@
 </script>
 
 <button
-	class="flex flex-col text-lg border-2 border-border items-start
-		text-text-muted hover:text-text gap-1
-		{selected ? 'bg-bg-hover' : 'bg-bg-secondary'} hover:bg-bg-hover rounded
-		px-3 py-2 cursor-pointer min-w-0 max-w-full"
+	class="flex flex-col items-start gap-1 border-2 border-border
+		text-lg text-text-muted hover:text-text
+		{selected ? 'bg-bg-hover' : 'bg-bg-secondary'} max-w-full min-w-0
+		cursor-pointer rounded px-3 py-2 hover:bg-bg-hover"
 	{onclick}>
 	<div
 		class="truncate text-left {article.read ? 'font-regular' : 'font-bold'}
-			min-w-0 max-w-full">
+			max-w-full min-w-0">
 		{article.read ? '' : '\u2022 '}{article.name}
 	</div>
 	{#if article.description}
 		<div
-			class="line-clamp-2 min-w-0 max-w-full text-left text-text-secondary
-				text-base">
+			class="line-clamp-2 max-w-full min-w-0 text-left text-base
+				text-text-secondary">
 			{article.description}
 		</div>
 	{/if}
-	<div class="flex flex-row justify-between w-full text-base">
-		<div class="flex flex-row gap-2 items-center">
+	<div class="flex w-full flex-row justify-between text-base">
+		<div class="flex flex-row items-center gap-2">
 			<Icon {icon} />
-			<span class="truncate min-w-0 max-w-full">
+			<span class="max-w-full min-w-0 truncate">
 				{author}
 			</span>
 		</div>

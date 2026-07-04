@@ -32,7 +32,7 @@
 </script>
 
 {#if feed}
-	<Modal bind:open title="Delete {feed.name}" maxW="[30vw]">
+	<Modal bind:open title="Delete {feed.name}">
 		<div class="flex flex-col gap-2">
 			<div>
 				Are you sure you want to delete <span class="font-bold"

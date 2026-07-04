@@ -32,11 +32,12 @@
 </script>
 
 {#if feed}
-	<Modal bind:open title="Open External Link" maxW="[40vw]">
+	<Modal bind:open title="Delete {feed.name}" maxW="[30vw]">
 		<div class="flex flex-col gap-2">
 			<div>
 				Are you sure you want to delete <span class="font-bold"
-					>{feed.name}</span> from your feeds?
+					>{feed.name}</span> from your feeds? This will remove all its articles as
+				well!
 			</div>
 			<div class="flex flex-row gap-1 self-end">
 				<Button onclick={cancelDelete} display="secondary">Cancel</Button>

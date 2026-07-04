@@ -4,13 +4,16 @@
 
 	import { dateStrParse, filterArticles, getFeedIcon } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
+	import IconButton from '../ui/IconButton.svelte';
 
 	let {
 		filter,
 		onarticleselect,
+		onsidebarcollapse,
 	}: {
 		filter: string;
 		onarticleselect: (article: string) => void;
+		onsidebarcollapse: () => void;
 	} = $props();
 	let selectedArticle = $state('');
 	let search = $state('');
@@ -27,11 +30,16 @@
 </script>
 
 <div
-	class="gap flex h-full w-100 shrink-0 flex-col justify-start border-r-2
-		border-border bg-bg text-4xl text-text">
+	class="gap flex h-full w-full shrink-0 flex-col justify-start border-r-2 border-border
+		bg-bg text-4xl text-text lg:w-100">
 	<div
-		class="sticky top-0 w-full border-2 border-x-transparent border-t-transparent border-b-border
-			px-4 py-4">
+		class="sticky top-0 flex w-full flex-row
+			items-center gap-4 border-b-2 border-border px-4 py-4">
+		<IconButton
+			icon="tabler:layout-sidebar-left-expand"
+			label="Uncollapse"
+			onclick={() => onsidebarcollapse()}
+			class="lg:hidden" />
 		<TextInput
 			placeholder="Search..."
 			icon="tabler:search"

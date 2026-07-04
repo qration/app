@@ -8,7 +8,6 @@
 	import DetailsList from './DetailsList.svelte';
 
 	import { getContext } from 'svelte';
-	import { fade } from 'svelte/transition';
 
 	let {
 		text,
@@ -55,29 +54,28 @@
 	<div class="flex shrink-0 items-center justify-center text-2xl leading-none">
 		<Icon {icon} />
 	</div>
-	{#if !collapsed}
-		<div
-			class="flex w-full flex-row justify-between whitespace-nowrap"
-			transition:fade={{ duration: 500 }}>
-			{text}
-			{#if starrable}
-				<div class="m-0">
-					<div
-						class="opacity-0 group-focus-within:opacity-100 group-hover:opacity-100
-              group-has-[:popover-open]:opacity-100"
-						class:opacity-100={selected}>
-						<IconButton
-							icon="tabler:dots-vertical"
-							label="Details for {text}"
-							popovertarget={menuId}
-							class="-m-1 {selected
-								? 'bg-bg-hover!'
-								: ''} group-hover:bg-bg-hover"
-							onclick={(e) => e.stopPropagation()} />
-					</div>
-					<DetailsList {menuId} {starred} {onstar} {ondelete} />
+	<div
+		class="flex w-full flex-row justify-between whitespace-nowrap transition-opacity duration-500 {collapsed
+			? 'opacity-0'
+			: 'opacity-100'}">
+		{text}
+		{#if starrable}
+			<div class="m-0">
+				<div
+					class="opacity-100 group-focus-within:opacity-100 group-hover:opacity-100 group-has-[:popover-open]:opacity-100
+						lg:opacity-0"
+					class:opacity-100={selected}>
+					<IconButton
+						icon="tabler:dots-vertical"
+						label="Details for {text}"
+						popovertarget={menuId}
+						class="-m-1 {selected
+							? 'bg-bg-hover!'
+							: ''} group-hover:bg-bg-hover"
+						onclick={(e) => e.stopPropagation()} />
 				</div>
-			{/if}
-		</div>
-	{/if}
+				<DetailsList {menuId} {starred} {onstar} {ondelete} />
+			</div>
+		{/if}
+	</div>
 </div>

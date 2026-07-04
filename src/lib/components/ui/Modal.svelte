@@ -8,13 +8,11 @@
 		title = '',
 		onclose,
 		children,
-		maxW = '[90vw]',
 	}: {
 		open: boolean;
 		title?: string;
 		onclose?: () => void;
 		children: Snippet;
-		maxW?: string;
 	} = $props();
 
 	let dialog: HTMLDialogElement | null = $state(null);
@@ -25,10 +23,6 @@
 		onclose?.();
 	}
 
-	// function onDialogClick(e: MouseEvent) {
-	// 	if (e.target === dialog) close();
-	// }
-
 	$effect(() => {
 		console.log('what');
 		if (!open) dialog?.close();
@@ -38,8 +32,8 @@
 
 <dialog
 	bind:this={dialog}
-	class="static mx-auto my-auto min-w-96 rounded-xl border-2 border-border
-		bg-bg p-6 text-text max-w-{maxW} shadow-lg backdrop:bg-black/50
+	class="static mx-auto my-auto w-100 rounded-xl border-2
+		border-border bg-bg p-6 text-text shadow-lg backdrop:bg-black/50
 		backdrop:backdrop-blur-xs"
 	aria-modal="true"
 	aria-label={title || 'Dialog'}

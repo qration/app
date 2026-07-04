@@ -7,46 +7,66 @@
 	import Settings from './dialogs/Settings.svelte';
 	import ConfirmDelete from './dialogs/ConfirmDelete.svelte';
 
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
 	import { feedStore } from '$lib/stores/feeds.svelte';
 
 	import type { Feed } from '$lib/util/bindings';
 
-	let collapsed = $state(false);
 	let selectedFilter = $state('feed-all');
 	let delFeed: Feed | undefined = $state();
 	let addNewOpen = $state(false);
 	let settingsOpen = $state(false);
 	let deleteOpen = $state(true);
 
-	let { onfilterchange }: { onfilterchange: (filter: string) => void } =
-		$props();
+	let sidebarRef: HTMLElement;
+
+	let {
+		onfilterchange,
+		collapsed,
+		oncollapse,
+	}: {
+		onfilterchange: (filter: string) => void;
+		collapsed: boolean;
+		oncollapse: () => void;
+	} = $props();
 
 	setContext('sidebar', {
 		isCollapsed: () => collapsed,
 	});
 
-	function toggleSidebarCollapse() {
-		collapsed = !collapsed;
-	}
-
 	function setSelectedFilter(filter: string) {
 		selectedFilter = filter;
 		onfilterchange(filter);
 	}
+
+	onMount(() => {
+		const observer = new ResizeObserver(() => {
+			if (!sidebarRef) return;
+			sidebarRef.style.transition = 'none';
+			void sidebarRef.offsetHeight;
+			sidebarRef.style.transition = '';
+		});
+
+		observer.observe(document.body);
+
+		return () => observer.disconnect();
+	});
 </script>
 
 <div
+	bind:this={sidebarRef}
 	class="overflow-x-hidden border-r-2 border-r-border bg-bg px-3.75 py-4
-		font-medium {collapsed ? 'w-16' : 'w-70'} flex shrink-0 flex-col
-		justify-between transition-all duration-500">
+		font-medium {collapsed
+		? '-translate-x-full lg:w-16'
+		: 'translate-x-0 lg:w-70'} fixed inset-y-0 z-50 flex
+		h-full w-70 shrink-0 flex-col justify-between transition-all duration-500 lg:static lg:translate-x-0">
 	<div class="flex shrink-0 flex-col gap-4">
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center">
 				<div
-					class="overflow-hidden transition-all duration-500
+					class="overflow-hidden duration-500 lg:transition-opacity
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
 					<a href={resolve('/')}>
 						<Wordmark
@@ -59,7 +79,7 @@
 							? 'expand'
 							: 'collapse'}"
 						label="Collapse"
-						onclick={() => toggleSidebarCollapse()} />
+						onclick={() => oncollapse()} />
 				</div>
 			</div>
 		</div>
@@ -97,10 +117,11 @@
 				onclick={() => setSelectedFilter('article-saved')} />
 		</div>
 
-		<div class="flex flex-col gap-0.5">
-			{#if !collapsed}
-				<div class="text-xl text-text">Subscriptions</div>
-			{/if}
+		<div
+			class="flex flex-col gap-0.5 transition-opacity duration-500 {collapsed
+				? 'opacity-0'
+				: 'opacity-100'}">
+			<div class="text-xl text-text">Subscriptions</div>
 			{#each feedStore.data.feeds as feed (feed.id)}
 				<SidebarButton
 					text={feed.name}

@@ -6,8 +6,19 @@
 	import { feedStore } from '$lib/stores/feeds.svelte';
 
 	import type { Article, Feed } from '$lib/util/bindings';
+	import { onMount } from 'svelte';
 
-	let { articleId }: { articleId: string } = $props();
+	let {
+		articleId,
+		isOpen,
+		onclose,
+		ontransitionend,
+	}: {
+		articleId: string;
+		isOpen: boolean;
+		onclose: () => void;
+		ontransitionend: () => void;
+	} = $props();
 	let article: Article | undefined = $derived(
 		feedStore.data.articles.find((a) => a.id == articleId),
 	);
@@ -17,6 +28,8 @@
 
 	let externalLinkOpen = $state(false);
 	let href = $state('');
+
+	let articleViewRef: HTMLElement;
 
 	function handleLinkClick(e: MouseEvent) {
 		const a = (e.target as HTMLElement).closest('a');
@@ -28,23 +41,42 @@
 		externalLinkOpen = true;
 		e.preventDefault();
 	}
+
+	function handleTransitionEnd() {
+		if (!isOpen) {
+			ontransitionend();
+		}
+	}
+
+	onMount(() => {
+		const observer = new ResizeObserver(() => {
+			if (!articleViewRef) return;
+			articleViewRef.style.transition = 'none';
+			void articleViewRef.offsetHeight;
+			articleViewRef.style.transition = '';
+		});
+
+		observer.observe(document.body);
+
+		return () => observer.disconnect();
+	});
 </script>
 
-{#if article && feed}
-	<div class="flex h-full w-full min-w-0 flex-col">
+<div
+	bind:this={articleViewRef}
+	ontransitionend={handleTransitionEnd}
+	class="fixed inset-y-0 z-50 flex h-full w-full min-w-0 flex-col transition-all duration-500 lg:static lg:translate-x-0 {isOpen
+		? 'translate-x-0'
+		: 'translate-x-full'} bg-bg">
+	{#if article && feed}
 		<div
 			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
-				justify-between border-b-2 border-border p-2">
-			<div
-				class="flex max-w-full min-w-0 flex-row items-center px-2 text-2xl
-					font-medium text-text">
-				<span class="min-w-0">{article.name}</span>
-				<span
-					class="shrink-0 px-2 font-light whitespace-nowrap text-text-secondary"
-					>&#8729;</span>
-				<span class="shrink-0 font-light whitespace-nowrap text-text-secondary"
-					>{feed.name}</span>
-			</div>
+				justify-between border-b-2 border-border p-2 lg:justify-end">
+			<IconButton
+				icon="tabler:arrow-left"
+				label="Back"
+				onclick={() => onclose()}
+				class="lg:hidden" />
 			<div class="flex flex-row justify-end gap-1">
 				<IconButton
 					icon="tabler:bookmark{article.saved ? '-filled' : ''}"
@@ -59,6 +91,14 @@
 			</div>
 		</div>
 		<div class="flex h-full w-full flex-col gap-2 overflow-y-scroll px-10 py-5">
+			<div
+				class="flex max-w-full min-w-0 flex-col
+					font-medium text-text">
+				<span class="min-w-0 text-3xl font-bold">{article.name}</span>
+				<span
+					class="shrink-0 text-2xl font-light whitespace-nowrap text-text-secondary"
+					>{feed.name}</span>
+			</div>
 			<!-- {#if article.media_type == 'video'}
 				<iframe
 					title={article.name}
@@ -76,8 +116,8 @@
 				{@html article.content}
 			</div>
 		</div>
-	</div>
-{/if}
+	{/if}
+</div>
 
 <ExternalLink bind:open={externalLinkOpen} {href} />
 
@@ -85,8 +125,13 @@
 	.feed-content :global(img) {
 		display: block;
 		margin: 0 auto;
-		max-width: 80%;
 		padding: 0.5rem 0rem;
+	}
+
+	@media screen and (min-width: 48rem) {
+		.feed-content :global(img) {
+			max-width: 80%;
+		}
 	}
 
 	.feed-content :global(p) {

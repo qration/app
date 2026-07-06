@@ -7,9 +7,11 @@
 	let {
 		open = $bindable(false),
 		href,
+		onclose,
 	}: {
 		open: boolean;
 		href: string;
+		onclose: () => void;
 	} = $props();
 
 	async function openLink() {
@@ -22,7 +24,7 @@
 	}
 </script>
 
-<Modal bind:open title="Open External Link">
+<Modal bind:open title="Open External Link" {onclose}>
 	<div class="flex flex-col gap-2">
 		<div>This link is taking you to the following website:</div>
 		<div

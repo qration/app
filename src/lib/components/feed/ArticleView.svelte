@@ -7,6 +7,7 @@
 
 	import type { Article, Feed } from '$lib/util/bindings';
 	import { onMount } from 'svelte';
+	import ImageView from '../ui/ImageView.svelte';
 
 	let {
 		articleId,
@@ -27,19 +28,49 @@
 	);
 
 	let externalLinkOpen = $state(false);
+	let imageViewOpen = $state(false);
+	let suppressClick = $state(false);
 	let href = $state('');
+	let src = $state('');
+	let alt = $state('');
 
 	let articleViewRef: HTMLElement;
 
+	function onDialogClose() {
+		suppressClick = true;
+		setTimeout(() => (suppressClick = false), 0);
+	}
+
+	function handleArticleClick(e: MouseEvent) {
+		e.stopPropagation();
+		e.preventDefault();
+		console.log(externalLinkOpen, imageViewOpen);
+		if (suppressClick) return;
+		if (handleLinkClick(e)) return;
+		if (handleImageClick(e)) return;
+	}
+
 	function handleLinkClick(e: MouseEvent) {
 		const a = (e.target as HTMLElement).closest('a');
-		if (!a) return;
+		if (!a) return false;
 
 		href = a.getAttribute('href') || '';
 		href = href.replace(/\s+/g, '');
-		if (!href) return;
+		if (!href) return false;
 		externalLinkOpen = true;
-		e.preventDefault();
+		return true;
+	}
+
+	function handleImageClick(e: MouseEvent) {
+		const img = (e.target as HTMLElement).closest('img');
+		if (!img) return false;
+
+		src = img.getAttribute('src') || '';
+		src = src.replace(/\s+/g, '');
+		if (!src) return false;
+		alt = img.getAttribute('alt') || '';
+		imageViewOpen = true;
+		return true;
 	}
 
 	function handleTransitionEnd() {
@@ -67,7 +98,8 @@
 	ontransitionend={handleTransitionEnd}
 	class="fixed inset-y-0 z-50 flex h-full w-full min-w-0 flex-col transition-all duration-500 lg:static lg:translate-x-0 {isOpen
 		? 'translate-x-0'
-		: 'translate-x-full'} bg-bg pt-safe-top pb-safe-bottom">
+		: 'translate-x-full'} bg-bg pt-safe-top pb-safe-bottom"
+	inert={externalLinkOpen || imageViewOpen}>
 	{#if article && feed}
 		<div
 			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
@@ -109,7 +141,7 @@
 					class="aspect-video"></iframe>
 			{/if} -->
 			<div
-				onclick={handleLinkClick}
+				onclick={handleArticleClick}
 				role="presentation"
 				class="feed-content h-min">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -119,7 +151,8 @@
 	{/if}
 </div>
 
-<ExternalLink bind:open={externalLinkOpen} {href} />
+<ExternalLink bind:open={externalLinkOpen} {href} onclose={onDialogClose} />
+<ImageView bind:open={imageViewOpen} {src} {alt} onclose={onDialogClose} />
 
 <style>
 	.feed-content :global(img) {

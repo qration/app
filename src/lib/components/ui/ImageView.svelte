@@ -1,18 +1,16 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 
-	import type { Snippet } from 'svelte';
-
 	let {
 		open = $bindable(false),
-		title = '',
+		alt = '',
+		src = '',
 		onclose,
-		children,
 	}: {
 		open: boolean;
-		title?: string;
+		alt?: string;
+		src?: string;
 		onclose?: () => void;
-		children: Snippet;
 	} = $props();
 
 	let dialog: HTMLDialogElement | null = $state(null);
@@ -21,6 +19,10 @@
 		open = false;
 		dialog?.close();
 		onclose?.();
+	}
+
+	function handleClick(e: MouseEvent) {
+		if (!(e.target as HTMLElement).closest('img')) close();
 	}
 
 	$effect(() => {
@@ -32,18 +34,21 @@
 
 <dialog
 	bind:this={dialog}
-	class="mx-auto my-auto w-100 rounded-xl border-2
-		border-border bg-bg p-6 text-text shadow-lg backdrop:bg-black/50
-		backdrop:backdrop-blur-xs"
+	class="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-text
+    backdrop:bg-black/50 backdrop:backdrop-blur-xs"
 	aria-modal="true"
-	aria-label={title || 'Dialog'}
+	aria-label={alt || 'Image'}
 	onclose={close}
+	onclick={handleClick}
 	closedby="any">
-	<div class="mb-4 flex items-center justify-between">
-		<div class="text-xl font-medium">{title}</div>
-		<IconButton icon="tabler:x" label="Close" onclick={close} />
+	<IconButton
+		class="fixed top-2 left-4 z-50 pt-safe-top pl-safe-left"
+		icon="tabler:x"
+		label="Close"
+		onclick={close} />
+	<div class="flex h-full w-full items-center justify-center p-4">
+		<img {src} {alt} class="max-h-full" />
 	</div>
-	{@render children()}
 </dialog>
 
 <style>

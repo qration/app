@@ -52,3 +52,8 @@
 	--color-button-primary: var(--color-slate-50);
 	--color-button-secondary: var(--color-slate-700);
 }
+
+html,
+body {
+	height: 100%;
+}

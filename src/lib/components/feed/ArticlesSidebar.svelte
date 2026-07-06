@@ -30,8 +30,8 @@
 </script>
 
 <div
-	class="gap flex h-full w-full shrink-0 flex-col justify-start border-r-2 border-border
-		bg-bg text-4xl text-text lg:w-100">
+	class="gap flex h-full min-h-0 w-full shrink-0 touch-none flex-col justify-start overflow-y-auto
+		border-r-2 border-border bg-bg text-4xl text-text lg:w-100">
 	<div
 		class="sticky top-0 flex w-full flex-row
 			items-center gap-4 border-b-2 border-border px-4 py-4">
@@ -46,8 +46,8 @@
 			bind:input={search} />
 	</div>
 	<div
-		class="flex h-full flex-col justify-start gap-4 overflow-y-scroll p-4
-			text-4xl text-text">
+		class="flex h-full flex-col justify-start gap-4 overflow-scroll
+			p-4 text-4xl text-text">
 		{#each filteredArticles as article (article.id)}
 			{@const articleFeed = feedStore.data.feeds.find(
 				(f) => f.id == article.feed_id,

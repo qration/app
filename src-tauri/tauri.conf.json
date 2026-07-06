@@ -2,9 +2,9 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Qration",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "net.qration",
   "build": {
-    "frontendDist": "..",
+    "frontendDist": "../build",
     "devUrl": "http://localhost:5173",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"

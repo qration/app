@@ -3,16 +3,15 @@ mod types;
 
 use commands::*;
 use tauri_specta::collect_commands;
-use specta_typescript::Typescript;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   let builder = tauri_specta::Builder::<tauri::Wry>::new()
     .commands(collect_commands![new_feed]);
 
-  #[cfg(debug_assertions)]
+  #[cfg(all(debug_assertions, not(any(target_os = "android", target_os = "ios"))))]
   builder
-    .export(Typescript::default(), "../src/lib/util/bindings.ts")
+    .export(specta_typescript::Typescript::default(), "../src/lib/util/bindings.ts")
     .expect("Failed to export TypeScript bindings!");
 
   tauri::Builder::default()

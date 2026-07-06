@@ -60,8 +60,8 @@
 	class="overflow-x-hidden border-r-2 border-r-border bg-bg px-3.75 py-4
 		font-medium {collapsed
 		? '-translate-x-full lg:w-16'
-		: 'translate-x-0 lg:w-70'} fixed inset-y-0 z-50 flex
-		h-full w-70 shrink-0 flex-col justify-between transition-all duration-500 lg:static lg:translate-x-0">
+		: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70
+		shrink-0 flex-col justify-between pt-safe-top pb-safe-bottom transition-all duration-500 lg:static lg:translate-x-0">
 	<div class="flex shrink-0 flex-col gap-4">
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center">

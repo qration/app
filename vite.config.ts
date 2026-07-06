@@ -4,7 +4,22 @@ import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import svg from '@poppanator/sveltekit-svg';
 
+const host = process.env.TAURI_DEV_HOST;
+
 export default defineConfig({
+	clearScreen: false,
+	server: {
+		host: host || false,
+		port: 5173,
+		strictPort: true,
+		hmr: host
+			? {
+					protocol: 'ws',
+					host,
+					port: 5174,
+				}
+			: undefined,
+	},
 	plugins: [
 		tailwindcss(),
 		sveltekit(),

@@ -67,7 +67,7 @@
 	ontransitionend={handleTransitionEnd}
 	class="fixed inset-y-0 z-50 flex h-full w-full min-w-0 flex-col transition-all duration-500 lg:static lg:translate-x-0 {isOpen
 		? 'translate-x-0'
-		: 'translate-x-full'} bg-bg">
+		: 'translate-x-full'} bg-bg pt-safe-top pb-safe-bottom">
 	{#if article && feed}
 		<div
 			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
@@ -90,7 +90,7 @@
 				{/if}
 			</div>
 		</div>
-		<div class="flex h-full w-full flex-col gap-2 overflow-y-scroll px-10 py-5">
+		<div class="flex h-full w-full flex-col gap-2 overflow-y-scroll p-5">
 			<div
 				class="flex max-w-full min-w-0 flex-col
 					font-medium text-text">

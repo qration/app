@@ -13,6 +13,7 @@
 		onclose?: () => void;
 	} = $props();
 
+	let zoomed = $state(false);
 	let dialog: HTMLDialogElement | null = $state(null);
 
 	function close() {
@@ -30,24 +31,35 @@
 		if (!open) dialog?.close();
 		else dialog?.showModal();
 	});
+
+	function zoom() {
+		zoomed = !zoomed;
+	}
 </script>
 
 <dialog
 	bind:this={dialog}
-	class="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-text
-    backdrop:bg-black/50 backdrop:backdrop-blur-xs"
+	class="m-0 h-dvh max-h-none w-screen max-w-none overflow-hidden bg-transparent
+    pt-safe-top pl-safe-left text-text backdrop:bg-black/50 backdrop:backdrop-blur-xs"
 	aria-modal="true"
 	aria-label={alt || 'Image'}
 	onclose={close}
 	onclick={handleClick}
 	closedby="any">
 	<IconButton
-		class="fixed top-2 left-4 z-50 pt-safe-top pl-safe-left"
+		class="fixed top-4 left-4 z-50 bg-bg-secondary"
 		icon="tabler:x"
 		label="Close"
 		onclick={close} />
 	<div class="flex h-full w-full items-center justify-center p-4">
-		<img {src} {alt} class="max-h-full" />
+		<img
+			{src}
+			{alt}
+			class="max-h-full {zoomed
+				? 'scale-200 cursor-zoom-out'
+				: 'scale-100 cursor-zoom-in'} transition-scale duration-200"
+			onclick={zoom}
+			role="presentation" />
 	</div>
 </dialog>
 

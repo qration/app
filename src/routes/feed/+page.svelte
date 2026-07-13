@@ -30,7 +30,7 @@
 	}
 </script>
 
-<div class="relative flex h-full w-full flex-row overflow-hidden bg-bg">
+<div class="relative flex h-full w-full flex-row overflow-hidden bg-bg p-0">
 	{#if !sidebarCollapsed}
 		<div
 			class="fixed inset-0 bg-black/50 lg:hidden"

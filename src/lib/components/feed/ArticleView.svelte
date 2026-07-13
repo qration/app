@@ -158,7 +158,7 @@
 	.feed-content :global(img) {
 		display: block;
 		margin: 0 auto;
-		padding: 0.5rem 0rem;
+		padding: 1rem 0rem;
 	}
 
 	@media screen and (min-width: 48rem) {
@@ -167,15 +167,24 @@
 		}
 	}
 
-	.feed-content :global(p) {
-		padding: 0.5rem 0rem;
+	.feed-content > :global(*) {
+		padding: 1rem 2rem;
 	}
 
 	.feed-content :global(a) {
-		text-decoration: underline;
+		color: var(--color-text-link);
 	}
 
 	.feed-content :global(a:hover) {
-		color: var(--color-text-secondary);
+		text-decoration: underline;
+	}
+
+	.feed-content :global(ul) {
+		list-style: disc;
+		padding-left: 2rem;
+	}
+
+	.feed-content :global(ul > li) {
+		padding-left: 0.5rem;
 	}
 </style>

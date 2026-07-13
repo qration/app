@@ -28,15 +28,16 @@
 	--color-text: var(--color-slate-950);
 	--color-text-muted: var(--color-slate-700);
 	--color-text-secondary: var(--color-slate-500);
+	--color-text-link: var(--color-cyan-500);
 	--color-border: var(--color-slate-400);
 
 	--color-button-primary: var(--color-slate-950);
 	--color-button-secondary: var(--color-slate-300);
 
-	--spacing-safe-top: env(safe-area-inset-top, 0px);
-	--spacing-safe-bottom: env(safe-area-inset-bottom, 0px);
-	--spacing-safe-left: env(safe-area-inset-left, 0px);
-	--spacing-safe-right: env(safe-area-inset-right, 0px);
+	--spacing-safe-top: env(safe-area-inset-top, 2rem);
+	--spacing-safe-bottom: env(safe-area-inset-bottom, 2rem);
+	--spacing-safe-left: env(safe-area-inset-left, 2rem);
+	--spacing-safe-right: env(safe-area-inset-right, 2rem);
 }
 
 .dark {

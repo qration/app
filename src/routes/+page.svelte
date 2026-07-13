@@ -1,9 +1,9 @@
 <script lang="ts">
-	import logo from '$lib/assets/qration.svg';
+	import Logo from '$lib/assets/favicon.svg?component';
 	import { resolve } from '$app/paths';
 </script>
 
 <div class="align-center p-safe flex h-full w-full justify-center">
-	<img src={logo} alt="Logo" />
+	<Logo />
 	<a href={resolve('/feed')}>Go to your feed</a>
 </div>

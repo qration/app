@@ -32,6 +32,7 @@ thiserror = "2.0.18"
 specta-typescript = "0.0.12"
 nanoid = "0.5.0"
 atom_syndication = "0.12.7"
-ammonia = "4.0.1"
+ammonia = "4.1.2"
 html2text = "0.17.1"
 url = "2.5.8"
+sea-orm = { version = "1.1.20", features = [ "sqlx-sqlite", "macros" ] }

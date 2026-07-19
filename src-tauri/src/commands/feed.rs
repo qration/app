@@ -28,7 +28,6 @@ pub async fn new_feed(url_string: String) -> Result<FeedWithArticles, FeedError>
 }
 
 fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<FeedWithArticles, FeedError> {
-  println!("channel items: {:?}", channel.items);
   let feed_id = nanoid!();
   Ok(FeedWithArticles {
     feed: Feed {
@@ -68,7 +67,6 @@ fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<FeedWithArticles, Fe
 }
 
 fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url) -> Result<FeedWithArticles, FeedError> {
-  println!("atomfeed entries: {:?}", atomfeed.entries);
   let feed_id = nanoid!();
   Ok(FeedWithArticles {
     feed: Feed {

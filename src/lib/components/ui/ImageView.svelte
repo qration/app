@@ -1,5 +1,6 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
+	import Panzoom, { type PanzoomObject } from '@panzoom/panzoom';
 
 	let {
 		open = $bindable(false),
@@ -13,12 +14,20 @@
 		onclose?: () => void;
 	} = $props();
 
-	let zoomed = $state(false);
+	const DELTA = 5;
+
+	let zoomed: boolean = $state(false);
+	let mouseStartX: number = $state(0);
+	let mouseStartY: number = $state(0);
 	let dialog: HTMLDialogElement | null = $state(null);
+	let img: HTMLImageElement | null = $state(null);
+	let panzoom: PanzoomObject | null = $state(null);
 
 	function close() {
 		open = false;
 		dialog?.close();
+		zoomed = false;
+		panzoom?.reset();
 		onclose?.();
 	}
 
@@ -26,15 +35,52 @@
 		if (!(e.target as HTMLElement).closest('img')) close();
 	}
 
-	$effect(() => {
-		console.log('what');
-		if (!open) dialog?.close();
-		else dialog?.showModal();
-	});
-
-	function zoom() {
-		zoomed = !zoomed;
+	function onWheel(e: WheelEvent) {
+		if (!panzoom) return;
+		const s = panzoom.getScale();
+		if (s <= 1) return;
+		e.preventDefault();
+		panzoom.pan(-e.deltaX / s, -e.deltaY / s, {
+			relative: true,
+			animate: false,
+		});
 	}
+
+	function onPointerUp(e: MouseEvent) {
+		let diffX = Math.abs(e.pageX - mouseStartX);
+		let diffY = Math.abs(e.pageY - mouseStartY);
+		console.log(mouseStartX, mouseStartY);
+		if (diffX < DELTA && diffY < DELTA) {
+			if (!zoomed) panzoom?.zoom(2);
+			else panzoom?.reset();
+			zoomed = !zoomed;
+		}
+		mouseStartX = 0;
+		mouseStartY = 0;
+	}
+
+	$effect(() => {
+		if (!img) return;
+		if (!open) return dialog?.close();
+		else dialog?.showModal();
+		let pz = Panzoom(img, {
+			animate: true,
+			maxScale: 2,
+			minScale: 1,
+			overflow: 'visible',
+			contain: 'outside',
+			easing: 'ease-in-out',
+			cursor: 'zoom-in',
+			handleStartEvent: (e) => e.preventDefault(),
+		});
+		panzoom = pz;
+
+		return () => {
+			pz.destroy();
+			panzoom = null;
+			zoomed = false;
+		};
+	});
 </script>
 
 <dialog
@@ -44,22 +90,29 @@
 	aria-modal="true"
 	aria-label={alt || 'Image'}
 	onclose={close}
-	onclick={handleClick}
+	onpointerup={handleClick}
 	closedby="any">
 	<IconButton
 		class="fixed top-4 left-4 z-50 bg-bg-secondary"
 		icon="tabler:x"
 		label="Close"
 		onclick={close} />
-	<div class="flex h-full w-full items-center justify-center p-4">
-		<img
-			{src}
-			{alt}
-			class="max-h-full {zoomed
-				? 'scale-200 cursor-zoom-out'
-				: 'scale-100 cursor-zoom-in'} transition-scale duration-200"
-			onclick={zoom}
-			role="presentation" />
+	<div
+		class="grid h-full w-full place-items-center overflow-hidden"
+		onwheel={onWheel}>
+		<div class="h-fit w-fit">
+			<img
+				{src}
+				{alt}
+				bind:this={img}
+				class="block max-h-dvh max-w-full select-none"
+				onpointerdown={(e) => {
+					mouseStartX = e.pageX;
+					mouseStartY = e.pageY;
+				}}
+				onpointerup={onPointerUp}
+				role="presentation" />
+		</div>
 	</div>
 </dialog>
 

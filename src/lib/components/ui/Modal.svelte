@@ -24,7 +24,6 @@
 	}
 
 	$effect(() => {
-		console.log('what');
 		if (!open) dialog?.close();
 		else dialog?.showModal();
 	});

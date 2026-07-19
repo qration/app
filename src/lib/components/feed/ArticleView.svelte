@@ -44,7 +44,6 @@
 	function handleArticleClick(e: MouseEvent) {
 		e.stopPropagation();
 		e.preventDefault();
-		console.log(externalLinkOpen, imageViewOpen);
 		if (suppressClick) return;
 		if (handleLinkClick(e)) return;
 		if (handleImageClick(e)) return;
@@ -159,6 +158,7 @@
 		display: block;
 		margin: 0 auto;
 		padding: 1rem 0rem;
+		cursor: pointer;
 	}
 
 	@media screen and (min-width: 48rem) {

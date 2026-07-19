@@ -44,21 +44,15 @@
 			return;
 		}
 
-		console.log('hi');
-
 		const ch = await invoke<FeedWithArticles>('new_feed', {
 			urlString: formData.url,
 		}).catch((err: string) => {
 			errorData.url = `Error: ${err}`;
 		});
 
-		console.log(ch);
-
 		if (errorData.url || !ch) return;
 		feedStore.data.feeds.push(ch.feed);
 		feedStore.data.articles = feedStore.data.articles.concat(ch.articles);
-
-		console.log(feedStore);
 
 		onconfirm?.(trimmed);
 		formData.url = '';

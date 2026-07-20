@@ -2,19 +2,24 @@
 	import ArticlesSidebar from '$lib/components/feed/ArticlesSidebar.svelte';
 	import Sidebar from '$lib/components/feed/Sidebar.svelte';
 	import ArticleView from '$lib/components/feed/ArticleView.svelte';
+	import { tick } from 'svelte';
 
 	let articleFilter = $state('feed-all');
 	let selectedArticleId = $state('');
 	let sidebarCollapsed = $state(true);
 	let articleOpen = $state(false);
 
+	let ac: HTMLDivElement | null = $state(null);
+
 	function filterChange(filter: string) {
 		articleFilter = filter;
 	}
 
-	function articleSelect(articleId: string) {
+	async function articleSelect(articleId: string) {
 		selectedArticleId = articleId;
 		articleOpen = true;
+		await tick();
+		ac?.focus({ preventScroll: true });
 	}
 
 	function closeArticle() {
@@ -48,6 +53,7 @@
 		onarticleselect={articleSelect}
 		onsidebarcollapse={collapseSidebar} />
 	<ArticleView
+		bind:articleContainer={ac}
 		articleId={selectedArticleId}
 		isOpen={articleOpen}
 		onclose={closeArticle}

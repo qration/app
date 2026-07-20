@@ -68,7 +68,7 @@
 				<div
 					class="overflow-hidden duration-500 lg:transition-opacity
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
-					<a href={resolve('/')}>
+					<a href={resolve('/')} tabindex={collapsed ? -1 : 0}>
 						<Wordmark
 							class="h-10 max-w-none shrink-0 cursor-pointer fill-text" />
 					</a>
@@ -130,6 +130,7 @@
 					onclick={() => setSelectedFilter(feed.id)}
 					starrable={true}
 					starred={feed.favourited}
+					tabindex={collapsed ? -1 : 0}
 					onstar={() => (feed.favourited = !feed.favourited)}
 					ondelete={() => {
 						delFeed = feed;

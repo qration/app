@@ -11,11 +11,13 @@
 
 	let {
 		articleId,
+		articleContainer = $bindable(),
 		isOpen,
 		onclose,
 		ontransitionend,
 	}: {
 		articleId: string;
+		articleContainer: HTMLDivElement | null;
 		isOpen: boolean;
 		onclose: () => void;
 		ontransitionend: () => void;
@@ -85,6 +87,7 @@
 			void articleViewRef.offsetHeight;
 			articleViewRef.style.transition = '';
 		});
+		console.log(articleContainer);
 
 		observer.observe(document.body);
 
@@ -142,7 +145,9 @@
 			<div
 				onclick={handleArticleClick}
 				role="presentation"
-				class="feed-content h-min">
+				class="feed-content h-min"
+				tabindex="-1"
+				bind:this={articleContainer}>
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html article.content}
 			</div>

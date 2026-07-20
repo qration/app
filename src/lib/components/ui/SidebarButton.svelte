@@ -15,6 +15,7 @@
 		selected = false,
 		starrable = false,
 		starred = false,
+		tabindex = 0,
 		onclick,
 		onstar,
 		ondelete,
@@ -24,6 +25,7 @@
 		selected?: boolean;
 		starrable?: boolean;
 		starred?: boolean;
+		tabindex?: number;
 		onclick?: (e?: MouseEvent) => void;
 		onstar?: () => void;
 		ondelete?: () => void;
@@ -45,7 +47,7 @@
 
 <div
 	role="button"
-	tabindex="0"
+	{tabindex}
 	class="group flex w-full cursor-pointer flex-row items-center gap-2 p-1
     text-text-muted {selected ? 'bg-bg-hover' : 'bg-bg'} rounded hover:text-text
     [&:hover:not(:has(button:hover)):not(:has(:popover-open))]:bg-bg-hover"
@@ -55,9 +57,9 @@
 		<Icon {icon} />
 	</div>
 	<div
-		class="flex w-full flex-row justify-between whitespace-nowrap transition-opacity duration-500 {collapsed
-			? 'opacity-0'
-			: 'opacity-100'}">
+		class="flex flex-row justify-between whitespace-nowrap transition-all duration-500 {collapsed
+			? 'w-0 overflow-hidden opacity-0'
+			: 'w-full opacity-100'}">
 		{text}
 		{#if starrable}
 			<div class="m-0">
@@ -67,6 +69,7 @@
 					class:opacity-100={selected}>
 					<IconButton
 						icon="tabler:dots-vertical"
+						{tabindex}
 						label="Details for {text}"
 						popovertarget={menuId}
 						class="-m-1 {selected

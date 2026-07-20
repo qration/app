@@ -6,7 +6,8 @@
 
 	import { invoke } from '@tauri-apps/api/core';
 	import { isValidURL } from '$lib/util/util';
-	import { feedStore } from '$lib/stores/feeds.svelte';
+	import { getFeedStore } from '$lib/context/context.svelte';
+	const feedStore = getFeedStore();
 
 	import type { AddNewFormFields } from '$lib/util/interfaces';
 	import type { FeedWithArticles } from '$lib/util/bindings';
@@ -51,8 +52,9 @@
 		});
 
 		if (errorData.url || !ch) return;
-		feedStore.data.feeds.push(ch.feed);
-		feedStore.data.articles = feedStore.data.articles.concat(ch.articles);
+		feedStore.feeds.push(ch.feed);
+		feedStore.articles = feedStore.articles.concat(ch.articles);
+		console.log(feedStore);
 
 		onconfirm?.(trimmed);
 		formData.url = '';

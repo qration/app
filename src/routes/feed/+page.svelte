@@ -3,11 +3,18 @@
 	import Sidebar from '$lib/components/feed/Sidebar.svelte';
 	import ArticleView from '$lib/components/feed/ArticleView.svelte';
 	import { tick } from 'svelte';
+	import { setMQ, setFeedStore, FeedStore } from '$lib/context/context.svelte';
+	import { MediaQuery } from 'svelte/reactivity';
 
 	let articleFilter = $state('feed-all');
 	let selectedArticleId = $state('');
 	let sidebarCollapsed = $state(true);
 	let articleOpen = $state(false);
+
+	const MQ = new MediaQuery('width >= 64rem', true);
+	const feedStore = setFeedStore(new FeedStore());
+	setFeedStore(feedStore);
+	setMQ(MQ);
 
 	let ac: HTMLDivElement | null = $state(null);
 
@@ -51,7 +58,8 @@
 	<ArticlesSidebar
 		filter={articleFilter}
 		onarticleselect={articleSelect}
-		onsidebarcollapse={collapseSidebar} />
+		onsidebarcollapse={collapseSidebar}
+		inert={!MQ.current && (!sidebarCollapsed || articleOpen)} />
 	<ArticleView
 		bind:articleContainer={ac}
 		articleId={selectedArticleId}

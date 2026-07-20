@@ -2,7 +2,8 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 
-	import { feedStore } from '$lib/stores/feeds.svelte';
+	import { getFeedStore } from '$lib/context/context.svelte';
+	const feedStore = getFeedStore();
 
 	import type { Feed } from '$lib/util/bindings';
 
@@ -16,10 +17,8 @@
 
 	async function deleteFeed() {
 		if (feed) {
-			feedStore.data.feeds = feedStore.data.feeds.filter(
-				(f) => f.id != feed.id,
-			);
-			feedStore.data.articles = feedStore.data.articles.filter(
+			feedStore.feeds = feedStore.feeds.filter((f) => f.id != feed.id);
+			feedStore.articles = feedStore.articles.filter(
 				(a) => a.feed_id != feed.id,
 			);
 		}

@@ -3,7 +3,7 @@
 	import ExternalLink from './dialogs/ExternalLink.svelte';
 
 	import { openUrl } from '@tauri-apps/plugin-opener';
-	import { feedStore } from '$lib/stores/feeds.svelte';
+	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
 
 	import type { Article, Feed } from '$lib/util/bindings';
 	import { onMount } from 'svelte';
@@ -22,11 +22,15 @@
 		onclose: () => void;
 		ontransitionend: () => void;
 	} = $props();
+
+	const feedStore = getFeedStore();
+	const MQ = getMQ();
+
 	let article: Article | undefined = $derived(
-		feedStore.data.articles.find((a) => a.id == articleId),
+		feedStore.articles.find((a) => a.id == articleId),
 	);
 	let feed: Feed | undefined = $derived(
-		feedStore.data.feeds.find((f) => f.id == article?.feed_id),
+		feedStore.feeds.find((f) => f.id == article?.feed_id),
 	);
 
 	let externalLinkOpen = $state(false);
@@ -51,6 +55,13 @@
 		if (handleImageClick(e)) return;
 	}
 
+	function handleArticleKeydown(e: KeyboardEvent) {
+		if (e.key != 'Enter') return;
+		e.stopPropagation();
+		e.preventDefault();
+		if (handleImageKeydown(e)) return;
+	}
+
 	function handleLinkClick(e: MouseEvent) {
 		const a = (e.target as HTMLElement).closest('a');
 		if (!a) return false;
@@ -65,7 +76,16 @@
 	function handleImageClick(e: MouseEvent) {
 		const img = (e.target as HTMLElement).closest('img');
 		if (!img) return false;
+		return openImage(img);
+	}
 
+	function handleImageKeydown(e: KeyboardEvent) {
+		const img = (e.target as HTMLElement).closest('img');
+		if (!img) return false;
+		return openImage(img);
+	}
+
+	function openImage(img: HTMLImageElement) {
 		src = img.getAttribute('src') || '';
 		src = src.replace(/\s+/g, '');
 		if (!src) return false;
@@ -93,6 +113,19 @@
 
 		return () => observer.disconnect();
 	});
+
+	$effect(() => {
+		void article?.content;
+		if (!articleContainer) return;
+		for (const img of articleContainer.querySelectorAll('img')) {
+			img.tabIndex = 0;
+			img.setAttribute('role', 'button');
+			img.setAttribute(
+				'aria-label',
+				`View image${img.alt ? `: ${img.alt}` : ''}`,
+			);
+		}
+	});
 </script>
 
 <div
@@ -101,7 +134,7 @@
 	class="fixed inset-y-0 z-50 flex h-full w-full min-w-0 flex-col transition-all duration-500 lg:static lg:translate-x-0 {isOpen
 		? 'translate-x-0'
 		: 'translate-x-full'} bg-bg pt-safe-top pb-safe-bottom"
-	inert={externalLinkOpen || imageViewOpen}>
+	inert={!MQ.current && !isOpen}>
 	{#if article && feed}
 		<div
 			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
@@ -144,6 +177,7 @@
 			{/if} -->
 			<div
 				onclick={handleArticleClick}
+				onkeydown={handleArticleKeydown}
 				role="presentation"
 				class="feed-content h-min"
 				tabindex="-1"

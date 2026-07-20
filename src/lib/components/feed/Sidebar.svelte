@@ -10,7 +10,7 @@
 	import { onMount, setContext } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
-	import { feedStore } from '$lib/stores/feeds.svelte';
+	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
 
 	import type { Feed } from '$lib/util/bindings';
 
@@ -35,6 +35,9 @@
 	setContext('sidebar', {
 		isCollapsed: () => collapsed,
 	});
+
+	const feedStore = getFeedStore();
+	const MQ = getMQ();
 
 	function setSelectedFilter(filter: string) {
 		selectedFilter = filter;
@@ -61,7 +64,8 @@
 		font-medium {collapsed
 		? '-translate-x-full lg:w-16'
 		: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70
-		shrink-0 flex-col justify-between transition-all duration-500 lg:static lg:translate-x-0">
+		shrink-0 flex-col justify-between transition-all duration-500 lg:static lg:translate-x-0"
+	inert={collapsed && !MQ.current}>
 	<div class="flex shrink-0 flex-col gap-4 pt-safe-top pb-safe-bottom">
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center">
@@ -122,7 +126,7 @@
 				? 'opacity-0'
 				: 'opacity-100'}">
 			<div class="text-xl text-text">Subscriptions</div>
-			{#each feedStore.data.feeds as feed (feed.id)}
+			{#each feedStore.feeds as feed (feed.id)}
 				<SidebarButton
 					text={feed.name}
 					icon={getFeedIcon(feed.feed_type)}

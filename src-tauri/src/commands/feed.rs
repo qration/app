@@ -27,6 +27,8 @@ pub async fn new_feed(url_string: String) -> Result<FeedWithArticles, FeedError>
   }
 }
 
+// delete_feed function here as well
+
 fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<FeedWithArticles, FeedError> {
   let feed_id = nanoid!();
   Ok(FeedWithArticles {

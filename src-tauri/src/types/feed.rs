@@ -1,7 +1,6 @@
 use serde::{Serialize, Deserialize};
 use specta::Type;
 use specta_typescript::Number;
-use thiserror::Error;
 
 #[derive(Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
@@ -55,14 +54,4 @@ pub struct Article {
 pub struct FeedWithArticles {
 	pub feed: Feed,
 	pub articles: Vec<Article>,
-}
-
-#[derive(Debug, Error, Serialize, Type)]
-pub enum FeedError {
-	#[error("request failed")]
-  RequestFailed,
-  #[error("stream failed")]
-  StreamFailed,
-  #[error("parse failed")]
-  ParseFailed,
 }

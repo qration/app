@@ -18,21 +18,20 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2.6.2", features = [] }
 
 [dependencies]
-serde_json = "1.0"
-serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.151"
+serde = { version = "1.0.229", features = ["derive"] }
 log = "0.4"
-tauri = { version = "2.11.2", features = [] }
-tauri-plugin-log = "2"
+tauri = { version = "2.11.5", features = [] }
+tauri-plugin-log = "2.9.0"
 tauri-plugin-opener = "2.0.0"
 tauri-specta = { version = "=2.0.0-rc.25", features = ["typescript"] }
 specta = { version = "=2.0.0-rc.25", features = ["derive"] }
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-webpki-roots"] }
-rss = { version = "2.0.13", features = ["serde"] }
-thiserror = "2.0.18"
+rss = { version = "2.1.0", features = ["serde"] }
+thiserror = "2.0.19"
 specta-typescript = "0.0.12"
 nanoid = "0.5.0"
-atom_syndication = "0.12.7"
-ammonia = "4.1.2"
+atom_syndication = "0.12.9"
+ammonia = "4.1.4"
 html2text = "0.17.1"
 url = "2.5.8"
-sea-orm = { version = "1.1.20", features = [ "sqlx-sqlite", "macros" ] }

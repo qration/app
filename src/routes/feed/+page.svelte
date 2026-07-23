@@ -2,7 +2,7 @@
 	import ArticlesSidebar from '$lib/components/feed/ArticlesSidebar.svelte';
 	import Sidebar from '$lib/components/feed/Sidebar.svelte';
 	import ArticleView from '$lib/components/feed/ArticleView.svelte';
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { setMQ, setFeedStore, FeedStore } from '$lib/context/context.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 
@@ -40,6 +40,10 @@
 	function collapseSidebar() {
 		sidebarCollapsed = !sidebarCollapsed;
 	}
+
+	onMount(() => {
+		feedStore.load();
+	});
 </script>
 
 <div class="relative flex h-full w-full flex-row overflow-hidden bg-bg p-0">

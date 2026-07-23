@@ -10,4 +10,6 @@ pub enum FeedError {
   StreamFailed,
   #[error("parse failed")]
   ParseFailed,
+  #[error("db failed")]
+  DbFailed,
 }

@@ -164,7 +164,7 @@
 				<span class="min-w-0 text-3xl font-bold">{article.name}</span>
 				<span
 					class="shrink-0 text-2xl font-light whitespace-nowrap text-text-secondary"
-					>{feed.name}</span>
+					>{feed.feed_name}</span>
 			</div>
 			<!-- {#if article.media_type == 'video'}
 				<iframe

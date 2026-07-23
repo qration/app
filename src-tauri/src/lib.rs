@@ -1,31 +1,25 @@
 mod commands;
 mod types;
+mod db;
 
-use sqlx::{Error, sqlite::SqlitePoolOptions};
+use commands::*;
+use std::path::PathBuf;
+use std::time::Duration;
+use std::error::Error;
+use sqlx::{Pool, Sqlite};
+use sqlx::sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions};
+use tauri::Manager;
 use tauri_specta::collect_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub async fn run() -> Result<(), Error> {
+pub fn run() -> Result<(), Box<dyn Error>> {
   let builder = tauri_specta::Builder::<tauri::Wry>::new()
-    .commands(collect_commands![commands::new_feed]);
+    .commands(collect_commands![new_feed, fetch_feeds]);
 
   #[cfg(all(debug_assertions, not(any(target_os = "android", target_os = "ios"))))]
   builder
     .export(specta_typescript::Typescript::default(), "../src/lib/util/bindings.ts")
     .expect("Failed to export TypeScript bindings!");
-
-  let pool = SqlitePoolOptions::new()
-    .max_connections(1)
-    .connect("sqlite::memory:")
-    .await?;
-
-  sqlx::query(
-    "CREATE TABLE IF NOT EXISTS feed (
-
-    )",
-  )
-  .execute(&pool)
-  .await?;
 
   tauri::Builder::default()
     .plugin(tauri_plugin_opener::init())  // <-- this line
@@ -39,6 +33,12 @@ pub async fn run() -> Result<(), Error> {
         )?;
       }
 
+      let dir = app.path().data_dir()?;
+      std::fs::create_dir_all(&dir)?;
+
+      let pool = _db_setup(dir)?;
+
+      app.manage(pool);
       builder.mount_events(app);
       Ok(())
     })
@@ -46,4 +46,24 @@ pub async fn run() -> Result<(), Error> {
     .expect("error while running tauri application");
 
     Ok(())
+}
+
+fn _db_setup(dir: PathBuf) -> Result<Pool<Sqlite>, Box<dyn Error>> {
+  let sqlx_opts = SqliteConnectOptions::new()
+    .filename(dir.join("app.db"))
+    .create_if_missing(true)
+    .journal_mode(SqliteJournalMode::Wal)
+    .busy_timeout(Duration::from_secs(5));
+
+  let pool = tauri::async_runtime::block_on(async {
+    let pool = SqlitePoolOptions::new()
+      .max_connections(4)
+      .connect_with(sqlx_opts)
+      .await?;
+
+    sqlx::migrate!("./migrations").run(&pool).await?;
+    Ok::<_, Box<dyn Error>>(pool)
+  })?;
+
+  Ok(pool)
 }

@@ -1,10 +1,9 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use sqlx::{Error};
+use std::error::Error;
 
-#[tokio::main]
-async fn main() -> Result<(), Error> {
-  app_lib::run().await?;
+fn main() -> Result<(), Box<dyn Error>> {
+  app_lib::run()?;
   Ok(())
 }

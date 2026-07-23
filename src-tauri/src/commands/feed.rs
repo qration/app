@@ -3,12 +3,14 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use rss::Channel;
 use atom_syndication::{Feed as AtomFeed, Link};
 use nanoid::nanoid;
+use sqlx::{Pool, Sqlite};
+use tauri::State;
 use url::Url;
-use crate::types::*;
+use crate::{db, types::*};
 
 #[tauri::command]
 #[specta::specta]
-pub async fn new_feed(url_string: String) -> Result<FeedWithArticles, FeedError> {
+pub async fn new_feed(pool: State<'_, Pool<Sqlite>>, url_string: String) -> Result<FeedWithArticles, FeedError> {
   let url_parsed = Url::parse(&url_string).unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
 
   let bytes = reqwest::get(url_string)
@@ -18,13 +20,25 @@ pub async fn new_feed(url_string: String) -> Result<FeedWithArticles, FeedError>
     .await
     .map_err(|_| FeedError::StreamFailed)?;
 
-  if let Ok(channel) = Channel::read_from(&bytes[..]) {
+  let fwa = if let Ok(channel) = Channel::read_from(&bytes[..]) {
     _new_rss_feed(channel, url_parsed)
   } else if let Ok(atomfeed) = AtomFeed::read_from(&bytes[..]) {
     _new_atom_feed(atomfeed, url_parsed)
   } else {
     Err(FeedError::ParseFailed)
-  }
+  }?;
+
+  db::add_feed(&pool, &fwa.feed).await?;
+  println!("worked?");
+
+  Ok(fwa)
+}
+
+
+#[tauri::command]
+#[specta::specta]
+pub async fn fetch_feeds(pool: State<'_, Pool<Sqlite>>) -> Result<Vec<Feed>, FeedError> {
+  db::fetch_feeds(&pool).await
 }
 
 // delete_feed function here as well
@@ -34,14 +48,14 @@ fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<FeedWithArticles, Fe
   Ok(FeedWithArticles {
     feed: Feed {
       id: feed_id.clone(),
-      name: channel.title,
+      feed_name: channel.title,
       feed_type: FeedType::Rss,
       favourited: false,
-      url: channel.link,
+      feed_url: channel.link,
       last_fetched: Some(SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|d| d.as_secs())
-        .unwrap_or(0)),
+        .unwrap_or(0) as i64),
     },
     articles: channel.items.into_iter()
       .map(|i| Article {
@@ -73,17 +87,17 @@ fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url) -> Result<FeedWithArticles,
   Ok(FeedWithArticles {
     feed: Feed {
       id: feed_id.clone(),
-      name: atomfeed.title.to_string(),
+      feed_name: atomfeed.title.to_string(),
       feed_type: FeedType::Atom,
       favourited: false,
-      url: _pick_link(&atomfeed.links, "alternate")
+      feed_url: _pick_link(&atomfeed.links, "alternate")
         .or_else(|| atomfeed.links.first().cloned())
         .map(|l| l.href.clone())
         .unwrap_or_default(),
       last_fetched: Some(SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|d| d.as_secs())
-        .unwrap_or(0)),
+        .unwrap_or(0) as i64),
     },
     articles: atomfeed.entries.into_iter()
       .map(|e| Article {

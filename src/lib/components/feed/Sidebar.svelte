@@ -128,7 +128,7 @@
 			<div class="text-xl text-text">Subscriptions</div>
 			{#each feedStore.feeds as feed (feed.id)}
 				<SidebarButton
-					text={feed.name}
+					text={feed.feed_name}
 					icon={getFeedIcon(feed.feed_type)}
 					selected={selectedFilter == feed.id}
 					onclick={() => setSelectedFilter(feed.id)}

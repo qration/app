@@ -8,6 +8,8 @@ export const commands = {
 		typedError<FeedWithArticles, FeedError>(
 			__TAURI_INVOKE('new_feed', { urlString }),
 		),
+	fetchFeeds: () =>
+		typedError<Feed[], FeedError>(__TAURI_INVOKE('fetch_feeds')),
 };
 
 /* Types */
@@ -34,14 +36,15 @@ export type Enclosure = {
 
 export type Feed = {
 	id: string;
-	name: string;
+	feed_name: string;
 	feed_type: FeedType;
 	favourited: boolean;
-	url: string;
+	feed_url: string;
 	last_fetched: number;
 };
 
-export type FeedError = 'RequestFailed' | 'StreamFailed' | 'ParseFailed';
+export type FeedError =
+	'RequestFailed' | 'StreamFailed' | 'ParseFailed' | 'DbFailed';
 
 export type FeedType = 'rss' | 'atom';
 

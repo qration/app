@@ -64,7 +64,7 @@
 			{#if articleFeed}
 				<ArticleButton
 					{article}
-					author={articleFeed.name}
+					author={articleFeed.feed_name}
 					icon={getFeedIcon(
 						feedStore.feeds.find((f) => f.id == article.feed_id)!.feed_type,
 					)}

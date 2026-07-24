@@ -15,28 +15,29 @@ export const commands = {
 /* Types */
 export type AddFeedResult = {
 	feed: Feed;
-	articles: Article[];
+	articles_light: ArticleLight[];
+	articles_content: ArticleContent[];
 };
 
-export type Article = {
+export type ArticleContent = {
+	id: string;
+	content: string | null;
+	enclosure_url: string | null;
+	enclosure_mime_type: string | null;
+	enclosure_length: number;
+};
+
+export type ArticleLight = {
 	id: string;
 	feed_id: string;
-	guid: string;
-	name: string | null;
-	description: string | null;
-	content: string | null;
-	url: string | null;
-	date: string | null;
+	article_guid: string;
+	article_name: string | null;
+	article_description: string | null;
+	article_url: string | null;
+	article_date: number;
 	media_type: MediaType;
-	enclosure: Enclosure | null;
-	read: boolean;
-	saved: boolean;
-};
-
-export type Enclosure = {
-	url: string;
-	mime_type: string | null;
-	length: number;
+	article_read: boolean;
+	article_saved: boolean;
 };
 
 export type Feed = {

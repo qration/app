@@ -21,7 +21,7 @@ CREATE TABLE articles_light (
 );
 
 CREATE TABLE articles_content (
-	id PRIMARY KEY NOT NULL REFERENCES articles_light(id) ON DELETE CASCADE,
+	id CHAR(21) PRIMARY KEY NOT NULL REFERENCES articles_light(id) ON DELETE CASCADE,
 	content TEXT,
 	enclosure_url TEXT,
 	enclosure_mime_type TEXT,

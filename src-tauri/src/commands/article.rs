@@ -11,5 +11,12 @@ pub async fn fetch_articles_light(pool: State<'_, Pool<Sqlite>>) -> Result<Vec<A
 #[tauri::command]
 #[specta::specta]
 pub async fn fetch_article_content(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<ArticleContent, FeedError> {
-  db::fetch_article_content(&pool, id).await
+  db::mark_article_read(&pool, id.clone()).await?;
+  db::fetch_article_content(&pool, id.clone()).await
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn set_save_article(pool: State<'_, Pool<Sqlite>>, id: String, save: bool) -> Result<(), FeedError> {
+  db::set_save_article(&pool, id, save).await
 }

@@ -53,3 +53,31 @@ pub async fn fetch_feed(pool: &Pool<Sqlite>, id: String) -> Result<Feed, FeedErr
 
   Ok(feed)
 }
+
+pub async fn set_star_feed(pool: &Pool<Sqlite>, id: String, star: bool) -> Result<(), FeedError> {
+  sqlx::query_as!(
+    ArticleContent,
+    "UPDATE feeds
+     SET favourited = ?
+     WHERE id = ?",
+    star,
+    id
+  )
+  .execute(pool)
+  .await
+  .map_err(|_| FeedError::DbFailed)?;
+
+  Ok(())
+}
+
+pub async fn delete_feed(pool: &Pool<Sqlite>, id: String) -> Result<(), FeedError> {
+  sqlx::query_as!(
+    Feed,
+    r#"DELETE FROM feeds
+       WHERE id = ?"#, id)
+  .execute(pool)
+  .await
+  .map_err(|_| FeedError::DbFailed)?;
+
+  Ok(())
+}

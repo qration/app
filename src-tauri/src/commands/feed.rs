@@ -47,7 +47,17 @@ pub async fn fetch_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<Fee
   db::fetch_feed(&pool, id).await
 }
 
-// delete_feed function here as well
+#[tauri::command]
+#[specta::specta]
+pub async fn set_star_feed(pool: State<'_, Pool<Sqlite>>, id: String, star: bool) -> Result<(), FeedError> {
+  db::set_star_feed(&pool, id, star).await
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn delete_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<(), FeedError> {
+  db::delete_feed(&pool, id).await
+}
 
 fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<AddFeedResult, FeedError> {
   let feed_id = nanoid!();

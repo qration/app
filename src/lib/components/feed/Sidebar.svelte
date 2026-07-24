@@ -12,7 +12,7 @@
 	import { getFeedIcon } from '$lib/util/util';
 	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
 
-	import type { Feed } from '$lib/util/bindings';
+	import { commands, type Feed } from '$lib/util/bindings';
 
 	let selectedFilter = $state('feed-all');
 	let delFeed: Feed | undefined = $state();
@@ -135,7 +135,10 @@
 					starrable={true}
 					starred={feed.favourited}
 					tabindex={collapsed ? -1 : 0}
-					onstar={() => (feed.favourited = !feed.favourited)}
+					onstar={async () => {
+						await commands.setStarFeed(feed.id, !feed.favourited);
+						feed.favourited = !feed.favourited;
+					}}
 					ondelete={() => {
 						delFeed = feed;
 						deleteOpen = true;

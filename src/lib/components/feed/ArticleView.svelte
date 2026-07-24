@@ -5,7 +5,12 @@
 	import { openUrl } from '@tauri-apps/plugin-opener';
 	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
 
-	import type { Article, Feed } from '$lib/util/bindings';
+	import {
+		commands,
+		type ArticleContent,
+		type ArticleLight,
+		type Feed,
+	} from '$lib/util/bindings';
 	import { onMount } from 'svelte';
 	import ImageView from '../ui/ImageView.svelte';
 
@@ -26,12 +31,14 @@
 	const feedStore = getFeedStore();
 	const MQ = getMQ();
 
-	let article: Article | undefined = $derived(
-		feedStore.articles.find((a) => a.id == articleId),
+	let article: ArticleLight | undefined = $derived(
+		feedStore.articles_light.find((a) => a.id == articleId),
 	);
 	let feed: Feed | undefined = $derived(
 		feedStore.feeds.find((f) => f.id == article?.feed_id),
 	);
+
+	let articleContent: ArticleContent | null = $state(null);
 
 	let externalLinkOpen = $state(false);
 	let imageViewOpen = $state(false);
@@ -107,7 +114,6 @@
 			void articleViewRef.offsetHeight;
 			articleViewRef.style.transition = '';
 		});
-		console.log(articleContainer);
 
 		observer.observe(document.body);
 
@@ -115,7 +121,11 @@
 	});
 
 	$effect(() => {
-		void article?.content;
+		commands.fetchArticleContent(articleId).then((res) => {
+			console.log(res);
+			if (res.status == 'ok') articleContent = res.data;
+		});
+
 		if (!articleContainer) return;
 		for (const img of articleContainer.querySelectorAll('img')) {
 			img.tabIndex = 0;
@@ -146,22 +156,29 @@
 				class="lg:hidden" />
 			<div class="flex flex-row justify-end gap-1">
 				<IconButton
-					icon="tabler:bookmark{article.saved ? '-filled' : ''}"
-					label="Save {article.name}"
-					onclick={() => (article.saved = !article.saved)} />
-				{#if article.url}
+					icon="tabler:bookmark{article.article_saved ? '-filled' : ''}"
+					label="Save {article.article_name}"
+					onclick={async () => {
+						console.log(article.article_saved);
+						await commands.setSaveArticle(articleId, !article.article_saved);
+						article.article_saved = !article.article_saved;
+					}} />
+				{#if article.article_url}
 					<IconButton
 						icon="tabler:external-link"
-						label="Open {article.name}"
-						onclick={async () => await openUrl(article.url!)} />
+						label="Open {article.article_name}"
+						onclick={async () => await openUrl(article.article_url!)} />
 				{/if}
 			</div>
 		</div>
-		<div class="flex h-full w-full flex-col gap-2 overflow-y-scroll p-5">
+		<div
+			class="flex h-full w-full flex-col gap-2 overflow-y-scroll p-5"
+			tabindex="-1"
+			bind:this={articleContainer}>
 			<div
 				class="flex max-w-full min-w-0 flex-col
 					font-medium text-text">
-				<span class="min-w-0 text-3xl font-bold">{article.name}</span>
+				<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
 				<span
 					class="shrink-0 text-2xl font-light whitespace-nowrap text-text-secondary"
 					>{feed.feed_name}</span>
@@ -179,11 +196,9 @@
 				onclick={handleArticleClick}
 				onkeydown={handleArticleKeydown}
 				role="presentation"
-				class="feed-content h-min"
-				tabindex="-1"
-				bind:this={articleContainer}>
+				class="feed-content h-min">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html article.content}
+				{@html articleContent?.content}
 			</div>
 		</div>
 	{/if}

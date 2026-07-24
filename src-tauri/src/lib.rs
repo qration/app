@@ -14,7 +14,16 @@ use tauri_specta::collect_commands;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() -> Result<(), Box<dyn Error>> {
   let builder = tauri_specta::Builder::<tauri::Wry>::new()
-    .commands(collect_commands![new_feed, fetch_feeds]);
+    .commands(collect_commands![
+      new_feed,
+      fetch_feeds,
+      fetch_feed,
+      fetch_article_content,
+      fetch_articles_light,
+      set_star_feed,
+      set_save_article,
+      delete_feed,
+  ]);
 
   #[cfg(all(debug_assertions, not(any(target_os = "android", target_os = "ios"))))]
   builder

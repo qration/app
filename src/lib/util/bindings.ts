@@ -10,6 +10,24 @@ export const commands = {
 		),
 	fetchFeeds: () =>
 		typedError<Feed[], FeedError>(__TAURI_INVOKE('fetch_feeds')),
+	fetchFeed: (id: string) =>
+		typedError<Feed, FeedError>(__TAURI_INVOKE('fetch_feed', { id })),
+	fetchArticleContent: (id: string) =>
+		typedError<ArticleContent, FeedError>(
+			__TAURI_INVOKE('fetch_article_content', { id }),
+		),
+	fetchArticlesLight: () =>
+		typedError<ArticleLight[], FeedError>(
+			__TAURI_INVOKE('fetch_articles_light'),
+		),
+	setStarFeed: (id: string, star: boolean) =>
+		typedError<null, FeedError>(__TAURI_INVOKE('set_star_feed', { id, star })),
+	setSaveArticle: (id: string, save: boolean) =>
+		typedError<null, FeedError>(
+			__TAURI_INVOKE('set_save_article', { id, save }),
+		),
+	deleteFeed: (id: string) =>
+		typedError<null, FeedError>(__TAURI_INVOKE('delete_feed', { id })),
 };
 
 /* Types */

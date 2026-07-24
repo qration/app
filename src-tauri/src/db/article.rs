@@ -90,3 +90,34 @@ pub async fn fetch_article_content(pool: &Pool<Sqlite>, id: String) -> Result<Ar
 
   Ok(ac)
 }
+
+pub async fn mark_article_read(pool: &Pool<Sqlite>, id: String) -> Result<(), FeedError> {
+  sqlx::query_as!(
+    ArticleContent,
+    "UPDATE articles_light
+     SET article_read = TRUE
+     WHERE id = ?",
+    id
+  )
+  .execute(pool)
+  .await
+  .map_err(|_| FeedError::DbFailed)?;
+
+  Ok(())
+}
+
+pub async fn set_save_article(pool: &Pool<Sqlite>, id: String, save: bool) -> Result<(), FeedError> {
+  sqlx::query_as!(
+    ArticleContent,
+    "UPDATE articles_light
+     SET article_saved = ?
+     WHERE id = ?",
+    save,
+    id
+  )
+  .execute(pool)
+  .await
+  .map_err(|_| FeedError::DbFailed)?;
+
+  Ok(())
+}

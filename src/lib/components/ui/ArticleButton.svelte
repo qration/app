@@ -2,9 +2,8 @@
 	import Icon from '@iconify/svelte';
 
 	import { getRelativeTime } from '$lib/util/date';
-	import { dateStrParse } from '$lib/util/util';
 
-	import type { Article } from '$lib/util/bindings';
+	import type { ArticleLight } from '$lib/util/bindings';
 
 	let {
 		article,
@@ -13,7 +12,7 @@
 		onclick,
 		selected,
 	}: {
-		article: Article;
+		article: ArticleLight;
 		author: string;
 		icon: string;
 		onclick?: (e: MouseEvent) => void;
@@ -30,15 +29,17 @@
 		cursor-pointer rounded px-3 py-2 hover:bg-bg-hover"
 	{onclick}>
 	<div
-		class="truncate text-left {article.read ? 'font-regular' : 'font-bold'}
+		class="truncate text-left {article.article_read
+			? 'font-regular'
+			: 'font-bold'}
 			max-w-full min-w-0">
-		{article.read ? '' : '\u2022 '}{article.name}
+		{article.article_read ? '' : '\u2022 '}{article.article_name}
 	</div>
-	{#if article.description}
+	{#if article.article_description}
 		<div
 			class="line-clamp-2 max-w-full min-w-0 text-left text-base
 				text-text-secondary">
-			{article.description}
+			{article.article_description}
 		</div>
 	{/if}
 	<div class="flex w-full flex-row justify-between text-base">
@@ -48,6 +49,6 @@
 				{author}
 			</span>
 		</div>
-		{getRelativeTime(dateStrParse(article.date) * 1000, rtf)}
+		{getRelativeTime(article.article_date * 1000, rtf)}
 	</div>
 </button>

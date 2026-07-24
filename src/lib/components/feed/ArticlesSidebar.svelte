@@ -25,7 +25,7 @@
 	let search = $state('');
 
 	let filteredArticles = $derived(
-		filterArticles(feedStore.feeds, feedStore.articles, filter)
+		filterArticles(feedStore.feeds, feedStore.articles_light, filter)
 			.filter((a) =>
 				a.article_name
 					? a.article_name.toLowerCase().includes(search.toLowerCase())

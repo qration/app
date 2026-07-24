@@ -4,13 +4,12 @@
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import TextInput from '$lib/components/ui/TextInput.svelte';
 
-	import { invoke } from '@tauri-apps/api/core';
 	import { isValidURL } from '$lib/util/util';
 	import { getFeedStore } from '$lib/context/context.svelte';
 	const feedStore = getFeedStore();
 
 	import type { AddNewFormFields } from '$lib/util/interfaces';
-	import type { FeedWithArticles } from '$lib/util/bindings';
+	import { commands } from '$lib/util/bindings';
 
 	let {
 		open = $bindable(false),
@@ -45,15 +44,18 @@
 			return;
 		}
 
-		const ch = await invoke<FeedWithArticles>('new_feed', {
-			urlString: formData.url,
-		}).catch((err: string) => {
-			errorData.url = `Error: ${err}`;
-		});
+		const res = await commands.newFeed(formData.url);
+		if (res.status == 'error') {
+			errorData.url = `Error: ${res.error}`;
+			return;
+		}
 
-		if (errorData.url || !ch) return;
+		const ch = res.data;
+
 		feedStore.feeds.push(ch.feed);
-		feedStore.articles = feedStore.articles.concat(ch.articles);
+		feedStore.articles_light = feedStore.articles_light.concat(
+			ch.articles_light,
+		);
 		console.log(feedStore);
 
 		onconfirm?.(trimmed);

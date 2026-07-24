@@ -1,42 +1,23 @@
-# sv
+# Qration
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+<img src="./logo.svg" align="right" alt="Qration Logo" width="100"/>
 
-## Creating a project
+Qration is a privacy-first RSS+ feed reader. Read, watch and listen to exactly what you care about, whenever you want to, without distractions.
 
-If you're seeing this, you've probably already done this step. Congrats!
+Qration is, and always will be, 100% free and open source.
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Feed Support
 
-To recreate this project with the same configuration:
+- [x] RSS
+- [x] Atom
+- [ ] YouTube
+- [ ] Bluesky
+- [ ] Podcasts
 
-```sh
-# recreate this project
-npx sv@0.15.2 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" sveltekit-adapter="adapter:auto" vitest="usages:unit,component" playwright --install npm qration
-```
+## Planned Features
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- [ ] Support for RSS+ feeds
+- [ ] OPML import/export
+- [ ] Opt-in account system
+- [ ] Opt-in cloud sync
+- [ ] Article snippet sharing

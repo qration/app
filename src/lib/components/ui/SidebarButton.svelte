@@ -57,12 +57,14 @@
 		<Icon {icon} />
 	</div>
 	<div
-		class="flex flex-row justify-between whitespace-nowrap transition-all duration-500 {collapsed
+		class="flex min-w-0 flex-1 flex-row justify-between gap-5 whitespace-nowrap transition-all duration-500 {collapsed
 			? 'w-0 overflow-hidden opacity-0'
 			: 'w-full opacity-100'}">
-		{text}
+		<div class="min-w-0 truncate">
+			{text}
+		</div>
 		{#if starrable}
-			<div class="m-0">
+			<div class="m-0 shrink-0">
 				<div
 					class="opacity-100 group-focus-within:opacity-100 group-hover:opacity-100 group-has-[:popover-open]:opacity-100
 						lg:opacity-0"

@@ -42,13 +42,16 @@
 			{article.article_description}
 		</div>
 	{/if}
-	<div class="flex w-full flex-row justify-between text-base">
-		<div class="flex flex-row items-center gap-2">
-			<Icon {icon} />
+	<div
+		class="flex w-full flex-row justify-between gap-5 overflow-hidden text-base">
+		<div class="flex flex-row items-center gap-2 truncate">
+			<Icon {icon} class="shrink-0" />
 			<span class="max-w-full min-w-0 truncate">
 				{author}
 			</span>
 		</div>
-		{getRelativeTime(article.article_date * 1000, rtf)}
+		<div class="shrink-0">
+			{getRelativeTime(article.article_date * 1000, rtf)}
+		</div>
 	</div>
 </button>

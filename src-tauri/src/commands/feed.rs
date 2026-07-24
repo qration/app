@@ -17,20 +17,7 @@ pub async fn new_feed(pool: State<'_, Pool<Sqlite>>, url_string: String) -> Resu
     return Err(FeedError::AlreadySubscribed);
   }
 
-  let bytes = reqwest::get(url_string)
-    .await
-    .map_err(|_| FeedError::RequestFailed)?
-    .bytes()
-    .await
-    .map_err(|_| FeedError::StreamFailed)?;
-
-  let afr = if let Ok(channel) = Channel::read_from(&bytes[..]) {
-    _new_rss_feed(channel, url_parsed)
-  } else if let Ok(atomfeed) = AtomFeed::read_from(&bytes[..]) {
-    _new_atom_feed(atomfeed, url_parsed)
-  } else {
-    Err(FeedError::ParseFailed)
-  }?;
+  let afr = _fetch_live_feed(url_parsed, None).await?;
 
   db::add_feed(&pool, &afr.feed).await?;
   db::add_articles(&pool, &afr.articles_light, &afr.articles_content).await?;
@@ -62,9 +49,40 @@ pub async fn delete_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<()
   db::delete_feed(&pool, id).await
 }
 
-fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<AddFeedResult, FeedError> {
-  let feed_id = nanoid!();
-  let feed= Feed {
+#[tauri::command]
+#[specta::specta]
+pub async fn refresh_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<AddFeedResult, FeedError> {
+  let f = db::fetch_feed(&pool, id).await?;
+  let url_parsed = Url::parse(&f.feed_url).unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
+  let afr = _fetch_live_feed(url_parsed, Some(f.id)).await?;
+
+  println!("{}", &afr.feed.feed_name);
+
+  db::add_articles(&pool, &afr.articles_light, &afr.articles_content).await?;
+  Ok(afr)
+}
+
+async fn _fetch_live_feed(url: Url, feed_id: Option<String>) -> Result<AddFeedResult, FeedError> {
+  let bytes = reqwest::get(url.clone())
+    .await
+    .map_err(|_| FeedError::RequestFailed)?
+    .bytes()
+    .await
+    .map_err(|_| FeedError::StreamFailed)?;
+
+  let feed_id = feed_id.unwrap_or(nanoid!());
+
+  if let Ok(channel) = Channel::read_from(&bytes[..]) {
+    _new_rss_feed(channel, url.clone(), feed_id.clone())
+  } else if let Ok(atomfeed) = AtomFeed::read_from(&bytes[..]) {
+    _new_atom_feed(atomfeed, url.clone(), feed_id.clone())
+  } else {
+    Err(FeedError::ParseFailed)
+  }
+}
+
+fn _new_rss_feed(channel: Channel, base_url: Url, feed_id: String) -> Result<AddFeedResult, FeedError> {
+  let feed = Feed {
     id: feed_id.clone(),
     feed_name: channel.title,
     feed_type: FeedType::Rss,
@@ -119,8 +137,7 @@ fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<AddFeedResult, FeedE
   })
 }
 
-fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url) -> Result<AddFeedResult, FeedError> {
-  let feed_id = nanoid!();
+fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url, feed_id: String) -> Result<AddFeedResult, FeedError> {
   let feed = Feed {
     id: feed_id.clone(),
     feed_name: atomfeed.title.to_string(),

@@ -19,6 +19,7 @@
 	let addNewOpen = $state(false);
 	let settingsOpen = $state(false);
 	let deleteOpen = $state(true);
+	let refreshAllLoading = $state(false);
 
 	let sidebarRef: HTMLElement;
 
@@ -42,6 +43,15 @@
 	function setSelectedFilter(filter: string) {
 		selectedFilter = filter;
 		onfilterchange(filter);
+	}
+
+	async function refreshAllFeeds() {
+		refreshAllLoading = true;
+		for (let feed of feedStore.feeds) {
+			await commands.refreshFeed(feed.id);
+		}
+		await feedStore.load();
+		refreshAllLoading = false;
 	}
 
 	onMount(() => {
@@ -92,6 +102,10 @@
 				text="Add New"
 				icon="tabler:plus"
 				onclick={() => (addNewOpen = true)} />
+			<SidebarButton
+				text={refreshAllLoading ? 'Refreshing...' : 'Refresh All'}
+				icon="tabler:reload"
+				onclick={refreshAllFeeds} />
 		</div>
 		<div class="flex flex-col gap-0.5">
 			<SidebarButton
@@ -142,6 +156,10 @@
 					ondelete={() => {
 						delFeed = feed;
 						deleteOpen = true;
+					}}
+					onrefresh={async () => {
+						await commands.refreshFeed(feed.id);
+						await feedStore.load();
 					}} />
 			{/each}
 		</div>

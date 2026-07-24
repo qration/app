@@ -19,6 +19,7 @@
 		onclick,
 		onstar,
 		ondelete,
+		onrefresh,
 	}: {
 		text: string;
 		icon: string;
@@ -29,6 +30,7 @@
 		onclick?: (e?: MouseEvent) => void;
 		onstar?: () => void;
 		ondelete?: () => void;
+		onrefresh?: () => void;
 	} = $props();
 
 	// eslint-disable-next-line no-useless-assignment
@@ -79,7 +81,7 @@
 							: ''} group-hover:bg-bg-hover"
 						onclick={(e) => e.stopPropagation()} />
 				</div>
-				<DetailsList {menuId} {starred} {onstar} {ondelete} />
+				<DetailsList {menuId} {starred} {onstar} {ondelete} {onrefresh} />
 			</div>
 		{/if}
 	</div>

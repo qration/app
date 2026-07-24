@@ -10,7 +10,8 @@ pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight
       "INSERT INTO articles_light
         (id, feed_id, article_guid, article_name, article_description,
         article_url, article_date, media_type, article_read, article_saved)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT DO NOTHING",
       al.id,
       al.feed_id,
       al.article_guid,
@@ -24,7 +25,10 @@ pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight
     )
     .execute(pool)
     .await
-    .map_err(|_| FeedError::DbError)?;
+    .map_err(|e| {
+      println!("{}", e);
+      FeedError::DbError
+    })?;
 
     if n.rows_affected() == 0 {
       continue;

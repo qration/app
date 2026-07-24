@@ -6,11 +6,13 @@
 		starred = false,
 		onstar,
 		ondelete,
+		onrefresh,
 	}: {
 		menuId: string;
 		starred?: boolean;
 		onstar?: () => void;
 		ondelete?: () => void;
+		onrefresh?: () => void;
 	} = $props();
 
 	function handleOnStar(e: MouseEvent | undefined) {
@@ -21,6 +23,11 @@
 	function handleOnDelete(e: MouseEvent | undefined) {
 		e?.stopPropagation();
 		ondelete?.();
+	}
+
+	function handleOnRefresh(e: MouseEvent | undefined) {
+		e?.stopPropagation();
+		onrefresh?.();
 	}
 </script>
 
@@ -37,6 +44,10 @@
 			icon={starred ? 'tabler:star-filled' : 'tabler:star'}
 			text={starred ? 'Unstar' : 'Star'}
 			onclick={handleOnStar} />
+		<DetailsListButton
+			icon="tabler:reload"
+			text="Refresh"
+			onclick={handleOnRefresh} />
 		<DetailsListButton
 			icon="tabler:trash"
 			text="Delete"

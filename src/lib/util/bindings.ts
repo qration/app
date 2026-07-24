@@ -28,6 +28,10 @@ export const commands = {
 		),
 	deleteFeed: (id: string) =>
 		typedError<null, FeedError>(__TAURI_INVOKE('delete_feed', { id })),
+	refreshFeed: (id: string) =>
+		typedError<AddFeedResult, FeedError>(
+			__TAURI_INVOKE('refresh_feed', { id }),
+		),
 };
 
 /* Types */

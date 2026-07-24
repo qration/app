@@ -23,6 +23,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
       set_star_feed,
       set_save_article,
       delete_feed,
+      refresh_feed,
   ]);
 
   #[cfg(all(debug_assertions, not(any(target_os = "android", target_os = "ios"))))]

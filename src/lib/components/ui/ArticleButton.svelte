@@ -51,7 +51,7 @@
 			</span>
 		</div>
 		<div class="shrink-0">
-			{getRelativeTime(article.article_date * 1000, rtf)}
+			{getRelativeTime(article.article_date, rtf)}
 		</div>
 	</div>
 </button>

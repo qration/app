@@ -5,7 +5,7 @@ import { invoke as __TAURI_INVOKE } from '@tauri-apps/api/core';
 /** Commands */
 export const commands = {
 	newFeed: (urlString: string) =>
-		typedError<FeedWithArticles, FeedError>(
+		typedError<AddFeedResult, FeedError>(
 			__TAURI_INVOKE('new_feed', { urlString }),
 		),
 	fetchFeeds: () =>
@@ -13,6 +13,11 @@ export const commands = {
 };
 
 /* Types */
+export type AddFeedResult = {
+	feed: Feed;
+	articles: Article[];
+};
+
 export type Article = {
 	id: string;
 	feed_id: string;
@@ -47,11 +52,6 @@ export type FeedError =
 	'RequestFailed' | 'StreamFailed' | 'ParseFailed' | 'DbFailed';
 
 export type FeedType = 'rss' | 'atom';
-
-export type FeedWithArticles = {
-	feed: Feed;
-	articles: Article[];
-};
 
 export type MediaType = 'text';
 

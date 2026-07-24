@@ -2,7 +2,7 @@
 	import TextInput from '$lib/components/ui/TextInput.svelte';
 	import ArticleButton from '$lib/components/ui/ArticleButton.svelte';
 
-	import { dateStrParse, filterArticles, getFeedIcon } from '$lib/util/util';
+	import { filterArticles, getFeedIcon } from '$lib/util/util';
 	import IconButton from '../ui/IconButton.svelte';
 	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
 
@@ -27,10 +27,12 @@
 	let filteredArticles = $derived(
 		filterArticles(feedStore.feeds, feedStore.articles, filter)
 			.filter((a) =>
-				a.name ? a.name.toLowerCase().includes(search.toLowerCase()) : false,
+				a.article_name
+					? a.article_name.toLowerCase().includes(search.toLowerCase())
+					: false,
 			)
 			.sort((a, b) =>
-				a.date && b.date ? dateStrParse(b.date) - dateStrParse(a.date) : 0,
+				a.article_date && b.article_date ? b.article_date - a.article_date : 0,
 			),
 	);
 </script>
@@ -70,7 +72,7 @@
 					)}
 					selected={selectedArticle == article.id}
 					onclick={() => {
-						article.read = true;
+						article.article_read = true;
 						selectedArticle = article.id;
 						onarticleselect(selectedArticle);
 					}} />

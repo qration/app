@@ -53,6 +53,7 @@ fn _db_setup(dir: PathBuf) -> Result<Pool<Sqlite>, Box<dyn Error>> {
     .filename(dir.join("app.db"))
     .create_if_missing(true)
     .journal_mode(SqliteJournalMode::Wal)
+    .foreign_keys(true)
     .busy_timeout(Duration::from_secs(5));
 
   let pool = tauri::async_runtime::block_on(async {

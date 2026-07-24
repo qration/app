@@ -24,7 +24,7 @@ pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight
     )
     .execute(pool)
     .await
-    .map_err(|_| FeedError::DbFailed)?;
+    .map_err(|_| FeedError::DbError)?;
 
     if n.rows_affected() == 0 {
       continue;
@@ -42,7 +42,7 @@ pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight
     )
     .execute(pool)
     .await
-    .map_err(|_| FeedError::DbFailed)?;
+    .map_err(|_| FeedError::DbError)?;
 
     inserted += 1;
   }
@@ -67,7 +67,7 @@ pub async fn fetch_articles_light(pool: &Pool<Sqlite>) -> Result<Vec<ArticleLigh
   )
   .fetch_all(pool)
   .await
-  .map_err(|_| FeedError::DbFailed)?;
+  .map_err(|_| FeedError::DbError)?;
 
   Ok(rows)
 }
@@ -86,7 +86,7 @@ pub async fn fetch_article_content(pool: &Pool<Sqlite>, id: String) -> Result<Ar
   )
   .fetch_one(pool)
   .await
-  .map_err(|_| FeedError::DbFailed)?;
+  .map_err(|_| FeedError::DbError)?;
 
   Ok(ac)
 }
@@ -101,7 +101,7 @@ pub async fn mark_article_read(pool: &Pool<Sqlite>, id: String) -> Result<(), Fe
   )
   .execute(pool)
   .await
-  .map_err(|_| FeedError::DbFailed)?;
+  .map_err(|_| FeedError::DbError)?;
 
   Ok(())
 }
@@ -117,7 +117,7 @@ pub async fn set_save_article(pool: &Pool<Sqlite>, id: String, save: bool) -> Re
   )
   .execute(pool)
   .await
-  .map_err(|_| FeedError::DbFailed)?;
+  .map_err(|_| FeedError::DbError)?;
 
   Ok(())
 }

@@ -3,8 +3,11 @@ CREATE TABLE feeds (
   feed_name TEXT NOT NULL,
   feed_type TEXT NOT NULL CHECK (feed_type IN ('rss', 'atom')),
   favourited BOOLEAN NOT NULL,
-  feed_url TEXT NOT NULL,
-  last_fetched INTEGER
+  feed_url TEXT NOT NULL UNIQUE,
+	site_url TEXT,
+  last_fetched INTEGER,
+
+	UNIQUE (id)
 );
 
 CREATE TABLE articles_light (
@@ -17,7 +20,9 @@ CREATE TABLE articles_light (
 	article_date BIGINT,
 	media_type TEXT NOT NULL CHECK (media_type IN ('text')),
 	article_read BOOLEAN NOT NULL,
-	article_saved BOOLEAN NOT NULL
+	article_saved BOOLEAN NOT NULL,
+
+	UNIQUE (feed_id, article_guid)
 );
 
 CREATE TABLE articles_content (

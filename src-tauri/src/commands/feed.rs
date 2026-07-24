@@ -13,6 +13,10 @@ use crate::{db, types::*};
 pub async fn new_feed(pool: State<'_, Pool<Sqlite>>, url_string: String) -> Result<AddFeedResult, FeedError> {
   let url_parsed = Url::parse(&url_string).unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
 
+  if let Ok(_) = db::fetch_feed_by_url(&pool, url_parsed.to_string()).await {
+    return Err(FeedError::AlreadySubscribed);
+  }
+
   let bytes = reqwest::get(url_string)
     .await
     .map_err(|_| FeedError::RequestFailed)?
@@ -30,7 +34,6 @@ pub async fn new_feed(pool: State<'_, Pool<Sqlite>>, url_string: String) -> Resu
 
   db::add_feed(&pool, &afr.feed).await?;
   db::add_articles(&pool, &afr.articles_light, &afr.articles_content).await?;
-  println!("worked?");
 
   Ok(afr)
 }
@@ -66,7 +69,8 @@ fn _new_rss_feed(channel: Channel, base_url: Url) -> Result<AddFeedResult, FeedE
     feed_name: channel.title,
     feed_type: FeedType::Rss,
     favourited: false,
-    feed_url: channel.link,
+    feed_url: base_url.to_string(),
+    site_url: Some(channel.link),
     last_fetched: Some(SystemTime::now()
       .duration_since(UNIX_EPOCH)
       .map(|d| d.as_secs())
@@ -122,10 +126,10 @@ fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url) -> Result<AddFeedResult, Fe
     feed_name: atomfeed.title.to_string(),
     feed_type: FeedType::Atom,
     favourited: false,
-    feed_url: _pick_link(&atomfeed.links, "alternate")
+    feed_url: base_url.to_string(),
+    site_url: _pick_link(&atomfeed.links, "alternate")
       .or_else(|| atomfeed.links.first().cloned())
-      .map(|l| l.href.clone())
-      .unwrap_or_default(),
+      .map(|l| l.href.clone()),
     last_fetched: Some(SystemTime::now()
       .duration_since(UNIX_EPOCH)
       .map(|d| d.as_secs())

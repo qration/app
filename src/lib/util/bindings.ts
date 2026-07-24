@@ -64,11 +64,16 @@ export type Feed = {
 	feed_type: FeedType;
 	favourited: boolean;
 	feed_url: string;
+	site_url: string | null;
 	last_fetched: number;
 };
 
 export type FeedError =
-	'RequestFailed' | 'StreamFailed' | 'ParseFailed' | 'DbFailed';
+	| 'RequestFailed'
+	| 'StreamFailed'
+	| 'ParseFailed'
+	| 'DbError'
+	| 'AlreadySubscribed';
 
 export type FeedType = 'rss' | 'atom';
 

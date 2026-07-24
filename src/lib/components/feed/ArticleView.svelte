@@ -121,8 +121,8 @@
 	});
 
 	$effect(() => {
+		if (!articleId) return;
 		commands.fetchArticleContent(articleId).then((res) => {
-			console.log(res);
 			if (res.status == 'ok') articleContent = res.data;
 		});
 

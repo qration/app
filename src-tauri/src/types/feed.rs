@@ -19,6 +19,7 @@ pub struct Feed {
 	pub feed_type: FeedType,
 	pub favourited: bool,
 	pub feed_url: String,
+	pub site_url: Option<String>,
 	#[specta(type = Number)]
 	pub last_fetched: Option<i64>,
 }

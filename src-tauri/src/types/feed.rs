@@ -12,6 +12,7 @@ use crate::types::*;
 pub enum FeedType {
 	Rss,
 	Atom,
+	Youtube,
 }
 
 #[derive(Serialize, Deserialize, Type, Clone)]

@@ -13,6 +13,7 @@
 	} from '$lib/util/bindings';
 	import { onMount } from 'svelte';
 	import ImageView from '../ui/ImageView.svelte';
+	import { youtubeVideoId } from '$lib/util/util';
 
 	let {
 		articleId,
@@ -40,6 +41,11 @@
 	);
 	let feed: Feed | undefined = $derived(
 		feedStore.feeds.find((f) => f.id == article?.feed_id),
+	);
+	let videoId: string | null = $derived(
+		feed?.feed_type == 'youtube'
+			? youtubeVideoId(article?.article_url ?? null)
+			: null,
 	);
 
 	let articleContent: ArticleContent | null = $state(null);
@@ -188,15 +194,14 @@
 					>{dtf.format(article.article_date * 1000)}</span>
 			</div>
 			<hr class="text-text-secondary" />
-			<!-- {#if article.media_type == 'video'}
+      {#if videoId}
 				<iframe
-					title={article.name}
-					src={article.enclosure!.url}
-					width="100%"
-					height="allowfullscreen"
-					frameborder="0"
-					class="aspect-video"></iframe>
-			{/if} -->
+					title={article.article_name}
+					src="https://www.youtube-nocookie.com/embed/{videoId}"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen
+					class="aspect-video w-full rounded-lg border-0"></iframe>
+			{/if}
 			<div
 				onclick={handleArticleClick}
 				onkeydown={handleArticleKeydown}

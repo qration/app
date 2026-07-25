@@ -3,8 +3,8 @@ import type { Feed, ArticleLight, FeedType } from '$lib/util/bindings';
 export function getFeedIcon(feedType: FeedType): string {
 	if (feedType == 'rss') {
 		return 'tabler:rss';
-		// } else if (feedType == 'youtube') {
-		// 	return 'tabler:brand-youtube';
+	} else if (feedType == 'youtube') {
+		return 'tabler:brand-youtube';
 	} else if (feedType == 'atom') {
 		return 'tabler:atom-2';
 	}
@@ -43,5 +43,16 @@ export function isValidURL(url: string): boolean {
 		return true;
 	} catch {
 		return false;
+	}
+}
+
+export function youtubeVideoId(url: string | null): string | null {
+	if (!url) return null;
+	try {
+		const u = new URL(url);
+		if (u.hostname == 'youtu.be') return u.pathname.slice(1) || null;
+		return u.searchParams.get('v');
+	} catch {
+		return null;
 	}
 }

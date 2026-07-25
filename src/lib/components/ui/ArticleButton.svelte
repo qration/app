@@ -4,6 +4,7 @@
 	import { getRelativeTime } from '$lib/util/date';
 
 	import type { ArticleLight } from '$lib/util/bindings';
+	import { getNow } from '$lib/context/context.svelte';
 
 	let {
 		article,
@@ -20,6 +21,7 @@
 	} = $props();
 
 	const rtf = new Intl.RelativeTimeFormat('en-CA');
+	let rel = $derived(getRelativeTime(article.article_date, rtf, getNow()));
 </script>
 
 <button
@@ -51,7 +53,7 @@
 			</span>
 		</div>
 		<div class="shrink-0">
-			{getRelativeTime(article.article_date, rtf)}
+			{rel}
 		</div>
 	</div>
 </button>

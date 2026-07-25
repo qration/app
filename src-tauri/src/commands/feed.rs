@@ -17,10 +17,16 @@ pub async fn new_feed(pool: State<'_, Pool<Sqlite>>, url_string: String) -> Resu
     return Err(FeedError::AlreadySubscribed);
   }
 
-  let afr = _fetch_live_feed(url_parsed, None).await?;
+  let pf = _fetch_live_feed(url_parsed, None).await?;
 
-  db::add_feed(&pool, &afr.feed).await?;
-  db::add_articles(&pool, &afr.articles_light, &afr.articles_content).await?;
+  db::add_feed(&pool, &pf.feed).await?;
+  let new_articles = db::add_articles(&pool, &pf.articles_light, &pf.articles_content).await?;
+
+  let afr = AddFeedResult {
+    feed: pf.feed,
+    new_count: new_articles.len(),
+    articles_light: pf.articles_light,
+  };
 
   Ok(afr)
 }
@@ -51,18 +57,45 @@ pub async fn delete_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<()
 
 #[tauri::command]
 #[specta::specta]
-pub async fn refresh_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<AddFeedResult, FeedError> {
+pub async fn refresh_feed(pool: State<'_, Pool<Sqlite>>, id: String) -> Result<RefreshFeedResult, FeedError> {
   let f = db::fetch_feed(&pool, id).await?;
   let url_parsed = Url::parse(&f.feed_url).unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
-  let afr = _fetch_live_feed(url_parsed, Some(f.id)).await?;
+  let pf = _fetch_live_feed(url_parsed, Some(f.id)).await?;
 
-  println!("{}", &afr.feed.feed_name);
+  let new_articles = db::add_articles(&pool, &pf.articles_light, &pf.articles_content).await?;
 
-  db::add_articles(&pool, &afr.articles_light, &afr.articles_content).await?;
-  Ok(afr)
+  let rfr = RefreshFeedResult {
+    new_count: new_articles.len(),
+    articles_light: new_articles,
+  };
+
+  Ok(rfr)
 }
 
-async fn _fetch_live_feed(url: Url, feed_id: Option<String>) -> Result<AddFeedResult, FeedError> {
+#[tauri::command]
+#[specta::specta]
+pub async fn refresh_feeds(pool: State<'_, Pool<Sqlite>>) -> Result<RefreshFeedResult, FeedError> {
+  let vf = db::fetch_feeds(&pool).await?;
+  let mut new_count = 0;
+  let mut articles_light = vec![];
+  for f in vf {
+    let url_parsed = Url::parse(&f.feed_url).unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
+    let pf = _fetch_live_feed(url_parsed, Some(f.id)).await?;
+
+    let new_articles = db::add_articles(&pool, &pf.articles_light, &pf.articles_content).await?;
+    new_count += new_articles.len();
+    articles_light.extend(new_articles);
+  }
+
+  let rfr = RefreshFeedResult {
+    new_count,
+    articles_light
+  };
+
+  Ok(rfr)
+}
+
+async fn _fetch_live_feed(url: Url, feed_id: Option<String>) -> Result<ParsedFeed, FeedError> {
   let bytes = reqwest::get(url.clone())
     .await
     .map_err(|_| FeedError::RequestFailed)?
@@ -81,7 +114,7 @@ async fn _fetch_live_feed(url: Url, feed_id: Option<String>) -> Result<AddFeedRe
   }
 }
 
-fn _new_rss_feed(channel: Channel, base_url: Url, feed_id: String) -> Result<AddFeedResult, FeedError> {
+fn _new_rss_feed(channel: Channel, base_url: Url, feed_id: String) -> Result<ParsedFeed, FeedError> {
   let feed = Feed {
     id: feed_id.clone(),
     feed_name: channel.title,
@@ -130,14 +163,14 @@ fn _new_rss_feed(channel: Channel, base_url: Url, feed_id: String) -> Result<Add
       )
     }).unzip();
 
-  Ok(AddFeedResult {
+  Ok(ParsedFeed {
     feed: feed,
     articles_light: al,
     articles_content: ac,
   })
 }
 
-fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url, feed_id: String) -> Result<AddFeedResult, FeedError> {
+fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url, feed_id: String) -> Result<ParsedFeed, FeedError> {
   let feed = Feed {
     id: feed_id.clone(),
     feed_name: atomfeed.title.to_string(),
@@ -185,7 +218,7 @@ fn _new_atom_feed(atomfeed: AtomFeed, base_url: Url, feed_id: String) -> Result<
       )
     }).unzip();
 
-  Ok(AddFeedResult {
+  Ok(ParsedFeed {
     feed: feed,
     articles_light: al,
     articles_content: ac,

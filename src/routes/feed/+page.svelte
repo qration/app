@@ -43,7 +43,16 @@
 
 	onMount(() => {
 		feedStore.load();
+		feedStore.refreshAll();
+		const interval = setInterval(
+			async () => await feedStore.refreshAll(),
+			15 * 60000,
+		);
+		return () => clearInterval(interval);
 	});
+
+	const onFocus = () => void feedStore.refreshAll();
+	window.addEventListener('focus', onFocus);
 </script>
 
 <div class="relative flex h-full w-full flex-row overflow-hidden bg-bg p-0">

@@ -47,10 +47,7 @@
 
 	async function refreshAllFeeds() {
 		refreshAllLoading = true;
-		for (let feed of feedStore.feeds) {
-			await commands.refreshFeed(feed.id);
-		}
-		await feedStore.load();
+		feedStore.refreshAll(true);
 		refreshAllLoading = false;
 	}
 

@@ -24,9 +24,23 @@ pub struct Feed {
 	pub last_fetched: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
-pub struct AddFeedResult {
-	pub feed: Feed,
+pub struct ParsedFeed {
+    pub feed: Feed,
 	pub articles_light: Vec<ArticleLight>,
 	pub articles_content: Vec<ArticleContent>,
+}
+
+#[derive(Serialize, Deserialize, Type, Clone)]
+pub struct AddFeedResult {
+    pub feed: Feed,
+	#[specta(type = Number)]
+    pub new_count: usize,
+	pub articles_light: Vec<ArticleLight>,
+}
+
+#[derive(Serialize, Deserialize, Type, Clone)]
+pub struct RefreshFeedResult {
+	#[specta(type = Number)]
+    pub new_count: usize,
+	pub articles_light: Vec<ArticleLight>,
 }

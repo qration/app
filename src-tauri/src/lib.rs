@@ -24,6 +24,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
       set_save_article,
       delete_feed,
       refresh_feed,
+      refresh_feeds,
   ]);
 
   #[cfg(all(debug_assertions, not(any(target_os = "android", target_os = "ios"))))]
@@ -33,6 +34,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
   tauri::Builder::default()
     .plugin(tauri_plugin_opener::init())  // <-- this line
+    .plugin(tauri_plugin_notification::init())  // <-- this line
     .invoke_handler(builder.invoke_handler())
     .setup(move |app| {
       if cfg!(debug_assertions) {

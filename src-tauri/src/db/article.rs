@@ -2,8 +2,8 @@ use sqlx::{Pool, Sqlite};
 
 use crate::types::{ArticleContent, ArticleLight, FeedError, MediaType};
 
-pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight>, articles_content: &Vec<ArticleContent>) -> Result<usize, FeedError> {
-  let mut inserted = 0;
+pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight>, articles_content: &Vec<ArticleContent>) -> Result<Vec<ArticleLight>, FeedError> {
+  let mut articles = vec![];
 
   for (al, ac) in articles_light.iter().zip(articles_content) {
     let n = sqlx::query!(
@@ -48,10 +48,10 @@ pub async fn add_articles(pool: &Pool<Sqlite>, articles_light: &Vec<ArticleLight
     .await
     .map_err(|_| FeedError::DbError)?;
 
-    inserted += 1;
+    articles.push(al.clone());
   }
 
-  Ok(inserted)
+  Ok(articles)
 }
 
 pub async fn fetch_articles_light(pool: &Pool<Sqlite>) -> Result<Vec<ArticleLight>, FeedError> {

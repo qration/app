@@ -5,6 +5,8 @@
 	import { onMount, tick } from 'svelte';
 	import { setMQ, setFeedStore, FeedStore } from '$lib/context/context.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
+	import { onNotificationClicked } from '@choochmeque/tauri-plugin-notifications-api';
+	import { getCurrentWindow } from '@tauri-apps/api/window';
 
 	let articleFilter = $state('feed-all');
 	let selectedArticleId = $state('');
@@ -48,7 +50,16 @@
 			async () => await feedStore.refreshAll(),
 			15 * 60000,
 		);
-		return () => clearInterval(interval);
+
+		let unlisten: () => Promise<void> | null;
+		onNotificationClicked(async () => {
+			await getCurrentWindow().setFocus();
+		}).then((u) => (unlisten = u.unregister));
+
+		return async () => {
+			clearInterval(interval);
+			await unlisten?.();
+		};
 	});
 
 	const onFocus = () => void feedStore.refreshAll();

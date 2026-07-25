@@ -6,7 +6,7 @@ import {
 	sendNotification,
 	isPermissionGranted,
 	requestPermission,
-} from '@tauri-apps/plugin-notification';
+} from '@choochmeque/tauri-plugin-notifications-api';
 
 export class FeedStore {
 	feeds: Feed[] = $state([]);
@@ -69,6 +69,7 @@ export class FeedStore {
 
 		if (res.data.new_count > 0 && this.notificationPermsGranted) {
 			sendNotification({
+				id: 1,
 				title: `Recieved ${res.data.new_count} new items`,
 				body: this.articles_light[0].article_name || '[]',
 			});

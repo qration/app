@@ -73,7 +73,8 @@ pub async fn fetch_articles_light(
               media_type AS "media_type!: MediaType",
               article_read,
               article_saved
-       FROM articles_light"#
+       FROM articles_light
+       ORDER BY article_date DESC"#
 	)
 	.fetch_all(pool)
 	.await

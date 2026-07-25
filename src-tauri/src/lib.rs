@@ -42,7 +42,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
 	tauri::Builder::default()
 		.plugin(tauri_plugin_opener::init()) // <-- this line
-		.plugin(tauri_plugin_notification::init()) // <-- this line
+		.plugin(tauri_plugin_notifications::init()) // <-- this line
 		.invoke_handler(builder.invoke_handler())
 		.setup(move |app| {
 			if cfg!(debug_assertions) {

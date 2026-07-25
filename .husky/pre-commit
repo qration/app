@@ -1,1 +1,8 @@
+#!/bin/sh
+
 npx lint-staged
+
+cd src-tauri
+cargo fmt
+
+git add .

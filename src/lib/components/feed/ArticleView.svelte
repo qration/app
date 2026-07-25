@@ -31,6 +31,10 @@
 
 	const feedStore = getFeedStore();
 	const MQ = getMQ();
+	const dtf = new Intl.DateTimeFormat('en-CA', {
+		dateStyle: 'long',
+		timeStyle: 'short',
+	});
 
 	let article: ArticleLight | undefined = $derived(
 		feedStore.articles_light.find((a) => a.id == articleId),
@@ -72,10 +76,11 @@
 		if (e.key != 'Enter') return;
 		e.stopPropagation();
 		e.preventDefault();
-		if (handleImageKeydown(e)) return;
+		if (handleLinkClick(e)) return;
+		if (handleImageClick(e)) return;
 	}
 
-	function handleLinkClick(e: MouseEvent) {
+	function handleLinkClick(e: Event) {
 		const a = (e.target as HTMLElement).closest('a');
 		if (!a) return false;
 
@@ -86,13 +91,7 @@
 		return true;
 	}
 
-	function handleImageClick(e: MouseEvent) {
-		const img = (e.target as HTMLElement).closest('img');
-		if (!img) return false;
-		return openImage(img);
-	}
-
-	function handleImageKeydown(e: KeyboardEvent) {
+	function handleImageClick(e: Event) {
 		const img = (e.target as HTMLElement).closest('img');
 		if (!img) return false;
 		return openImage(img);
@@ -127,11 +126,14 @@
 	});
 
 	$effect(() => {
+		if (!articleId) return;
 		commands.fetchArticleContent(articleId).then((res) => {
-			console.log(res);
 			if (res.status == 'ok') articleContent = res.data;
 		});
+	});
 
+	$effect(() => {
+		void articleContent?.content;
 		if (!articleContainer) return;
 		for (const img of articleContainer.querySelectorAll('img')) {
 			img.tabIndex = 0;
@@ -178,18 +180,21 @@
 			</div>
 		</div>
 		<div
-			class="flex h-full w-full flex-col gap-2 overflow-y-scroll p-5"
-			tabindex="-1"
+			class="flex h-full w-full flex-col gap-5 overflow-y-scroll px-5 py-7"
+			role="tabpanel"
+			tabindex="0"
 			bind:this={articleContainer}>
 			<div
 				class="flex max-w-full min-w-0 flex-col
-					font-medium text-text">
+					gap-0.5 font-medium text-text">
 				<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
-				<span
-					class="shrink-0 text-2xl font-light whitespace-nowrap text-text-secondary"
+				<span class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
 					>{feed.feed_name}</span>
+				<span class="shrink-0 text-lg font-light text-text-secondary"
+					>{dtf.format(article.article_date * 1000)}</span>
 			</div>
-			{#if videoId}
+			<hr class="text-text-secondary" />
+      {#if videoId}
 				<iframe
 					title={article.article_name}
 					src="https://www.youtube-nocookie.com/embed/{videoId}"
@@ -201,7 +206,7 @@
 				onclick={handleArticleClick}
 				onkeydown={handleArticleKeydown}
 				role="presentation"
-				class="feed-content h-min">
+				class="feed-content flex h-min flex-col gap-3">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html articleContent?.content}
 			</div>
@@ -216,7 +221,7 @@
 	.feed-content :global(img) {
 		display: block;
 		margin: 0 auto;
-		padding: 1rem 0rem;
+		margin: 1rem auto;
 		cursor: pointer;
 	}
 
@@ -224,10 +229,6 @@
 		.feed-content :global(img) {
 			max-width: 80%;
 		}
-	}
-
-	.feed-content > :global(*) {
-		padding: 1rem 2rem;
 	}
 
 	.feed-content :global(a) {
@@ -245,5 +246,6 @@
 
 	.feed-content :global(ul > li) {
 		padding-left: 0.5rem;
+		padding-bottom: 0.25rem;
 	}
 </style>

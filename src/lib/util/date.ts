@@ -10,8 +10,9 @@ const intervals: Array<[number, Intl.RelativeTimeFormatUnit]> = [
 export function getRelativeTime(
 	date: number,
 	rtf: Intl.RelativeTimeFormat,
+	now: number,
 ): string {
-	const minutes = (new Date().getTime() - date) / (1000 * 60);
+	const minutes = (now - date * 1000) / (1000 * 60);
 
 	for (const [threshold, unit] of intervals) {
 		const units = minutes / threshold;

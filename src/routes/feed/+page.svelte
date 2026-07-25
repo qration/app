@@ -5,6 +5,8 @@
 	import { onMount, tick } from 'svelte';
 	import { setMQ, setFeedStore, FeedStore } from '$lib/context/context.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
+	import { onNotificationClicked } from '@choochmeque/tauri-plugin-notifications-api';
+	import { getCurrentWindow } from '@tauri-apps/api/window';
 
 	let articleFilter = $state('feed-all');
 	let selectedArticleId = $state('');
@@ -43,7 +45,25 @@
 
 	onMount(() => {
 		feedStore.load();
+		feedStore.refreshAll();
+		const interval = setInterval(
+			async () => await feedStore.refreshAll(),
+			15 * 60000,
+		);
+
+		let unlisten: () => Promise<void> | null;
+		onNotificationClicked(async () => {
+			await getCurrentWindow().setFocus();
+		}).then((u) => (unlisten = u.unregister));
+
+		return async () => {
+			clearInterval(interval);
+			await unlisten?.();
+		};
 	});
+
+	const onFocus = () => void feedStore.refreshAll();
+	window.addEventListener('focus', onFocus);
 </script>
 
 <div class="relative flex h-full w-full flex-row overflow-hidden bg-bg p-0">

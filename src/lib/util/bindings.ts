@@ -28,13 +28,19 @@ export const commands = {
 		),
 	deleteFeed: (id: string) =>
 		typedError<null, FeedError>(__TAURI_INVOKE('delete_feed', { id })),
+	refreshFeed: (id: string) =>
+		typedError<RefreshFeedResult, FeedError>(
+			__TAURI_INVOKE('refresh_feed', { id }),
+		),
+	refreshFeeds: () =>
+		typedError<RefreshFeedResult, FeedError>(__TAURI_INVOKE('refresh_feeds')),
 };
 
 /* Types */
 export type AddFeedResult = {
 	feed: Feed;
+	new_count: number;
 	articles_light: ArticleLight[];
-	articles_content: ArticleContent[];
 };
 
 export type ArticleContent = {
@@ -64,15 +70,25 @@ export type Feed = {
 	feed_type: FeedType;
 	favourited: boolean;
 	feed_url: string;
+	site_url: string | null;
 	last_fetched: number;
 };
 
 export type FeedError =
-	'RequestFailed' | 'StreamFailed' | 'ParseFailed' | 'DbFailed';
+	| 'RequestFailed'
+	| 'StreamFailed'
+	| 'ParseFailed'
+	| 'DbError'
+	| 'AlreadySubscribed';
 
 export type FeedType = 'rss' | 'atom';
 
 export type MediaType = 'text';
+
+export type RefreshFeedResult = {
+	new_count: number;
+	articles_light: ArticleLight[];
+};
 
 /* Tauri Specta runtime */
 async function typedError<T, E>(

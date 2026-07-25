@@ -1,5 +1,4 @@
-
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use specta::Type;
 use specta_typescript::Number;
 
@@ -25,10 +24,12 @@ pub struct ArticleContent {
 	pub enclosure_url: Option<String>,
 	pub enclosure_mime_type: Option<String>,
 	#[specta(type = Number)]
-	pub enclosure_length: Option<i64>
+	pub enclosure_length: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type)]
+#[derive(
+	Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,
+)]
 #[serde(rename_all = "snake_case")]
 #[sqlx(rename_all = "snake_case")]
 pub enum MediaType {

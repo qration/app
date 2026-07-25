@@ -49,7 +49,6 @@
 	function onPointerUp(e: MouseEvent) {
 		let diffX = Math.abs(e.pageX - mouseStartX);
 		let diffY = Math.abs(e.pageY - mouseStartY);
-		console.log(mouseStartX, mouseStartY);
 		if (diffX < DELTA && diffY < DELTA) {
 			if (!zoomed) panzoom?.zoom(2);
 			else panzoom?.reset();

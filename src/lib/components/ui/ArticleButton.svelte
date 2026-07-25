@@ -4,6 +4,7 @@
 	import { getRelativeTime } from '$lib/util/date';
 
 	import type { ArticleLight } from '$lib/util/bindings';
+	import { getNow } from '$lib/context/context.svelte';
 
 	let {
 		article,
@@ -20,6 +21,7 @@
 	} = $props();
 
 	const rtf = new Intl.RelativeTimeFormat('en-CA');
+	let rel = $derived(getRelativeTime(article.article_date, rtf, getNow()));
 </script>
 
 <button
@@ -42,13 +44,16 @@
 			{article.article_description}
 		</div>
 	{/if}
-	<div class="flex w-full flex-row justify-between text-base">
-		<div class="flex flex-row items-center gap-2">
-			<Icon {icon} />
+	<div
+		class="flex w-full flex-row justify-between gap-5 overflow-hidden text-base">
+		<div class="flex flex-row items-center gap-2 truncate">
+			<Icon {icon} class="shrink-0" />
 			<span class="max-w-full min-w-0 truncate">
 				{author}
 			</span>
 		</div>
-		{getRelativeTime(article.article_date * 1000, rtf)}
+		<div class="shrink-0">
+			{rel}
+		</div>
 	</div>
 </button>

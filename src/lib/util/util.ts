@@ -3,8 +3,8 @@ import type { Feed, ArticleLight, FeedType } from '$lib/util/bindings';
 export function getFeedIcon(feedType: FeedType): string {
 	if (feedType == 'rss') {
 		return 'tabler:rss';
-		// } else if (feedType == 'youtube') {
-		// 	return 'tabler:brand-youtube';
+	} else if (feedType == 'youtube') {
+		return 'tabler:brand-youtube';
 	} else if (feedType == 'atom') {
 		return 'tabler:atom-2';
 	}

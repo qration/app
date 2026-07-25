@@ -1,8 +1,11 @@
-use sqlx::{Pool, Sqlite};
 use crate::types::{Feed, FeedError, FeedType};
+use sqlx::{Pool, Sqlite};
 
-pub async fn add_feed(pool: &Pool<Sqlite>, feed: &Feed) -> Result<(), FeedError> {
-  sqlx::query!(
+pub async fn add_feed(
+	pool: &Pool<Sqlite>,
+	feed: &Feed,
+) -> Result<(), FeedError> {
+	sqlx::query!(
     "INSERT INTO feeds (id, feed_name, feed_type, favourited, feed_url, last_fetched)
      VALUES (?, ?, ?, ?, ?, ?)
      ON CONFLICT (feed_url) DO NOTHING",
@@ -19,50 +22,35 @@ pub async fn add_feed(pool: &Pool<Sqlite>, feed: &Feed) -> Result<(), FeedError>
     _ => FeedError::DbError,
   })?;
 
-  Ok(())
+	Ok(())
 }
 
 pub async fn fetch_feeds(pool: &Pool<Sqlite>) -> Result<Vec<Feed>, FeedError> {
-  let rows = sqlx::query_as!(
-    Feed,
-    r#"SELECT id,
+	let rows = sqlx::query_as!(
+		Feed,
+		r#"SELECT id,
               feed_name,
               feed_type AS "feed_type!: FeedType",
               favourited,
               feed_url,
               site_url,
               last_fetched
-       FROM feeds"#)
-  .fetch_all(pool)
-  .await
-  .map_err(|_| FeedError::DbError)?;
+       FROM feeds"#
+	)
+	.fetch_all(pool)
+	.await
+	.map_err(|_| FeedError::DbError)?;
 
-  Ok(rows)
+	Ok(rows)
 }
 
-pub async fn fetch_feed(pool: &Pool<Sqlite>, id: String) -> Result<Feed, FeedError> {
-  let feed = sqlx::query_as!(
-    Feed,
-    r#"SELECT id,
-              feed_name,
-              feed_type AS "feed_type!: FeedType",
-              favourited,
-              feed_url,
-              site_url,
-              last_fetched
-       FROM feeds
-       WHERE id = ?"#, id)
-  .fetch_one(pool)
-  .await
-  .map_err(|_| FeedError::DbError)?;
-
-  Ok(feed)
-}
-
-pub async fn fetch_feed_by_url(pool: &Pool<Sqlite>, url: String) -> Result<Feed, FeedError> {
-  let feed = sqlx::query_as!(
-    Feed,
-    r#"SELECT id,
+pub async fn fetch_feed(
+	pool: &Pool<Sqlite>,
+	id: String,
+) -> Result<Feed, FeedError> {
+	let feed = sqlx::query_as!(
+		Feed,
+		r#"SELECT id,
               feed_name,
               feed_type AS "feed_type!: FeedType",
               favourited,
@@ -70,39 +58,73 @@ pub async fn fetch_feed_by_url(pool: &Pool<Sqlite>, url: String) -> Result<Feed,
               site_url,
               last_fetched
        FROM feeds
-       WHERE feed_url = ?"#, url)
-  .fetch_one(pool)
-  .await
-  .map_err(|_| FeedError::DbError)?;
+       WHERE id = ?"#,
+		id
+	)
+	.fetch_one(pool)
+	.await
+	.map_err(|_| FeedError::DbError)?;
 
-  Ok(feed)
+	Ok(feed)
 }
 
+pub async fn fetch_feed_by_url(
+	pool: &Pool<Sqlite>,
+	url: String,
+) -> Result<Feed, FeedError> {
+	let feed = sqlx::query_as!(
+		Feed,
+		r#"SELECT id,
+              feed_name,
+              feed_type AS "feed_type!: FeedType",
+              favourited,
+              feed_url,
+              site_url,
+              last_fetched
+       FROM feeds
+       WHERE feed_url = ?"#,
+		url
+	)
+	.fetch_one(pool)
+	.await
+	.map_err(|_| FeedError::DbError)?;
 
-pub async fn set_star_feed(pool: &Pool<Sqlite>, id: String, star: bool) -> Result<(), FeedError> {
-  sqlx::query_as!(
-    ArticleContent,
-    "UPDATE feeds
+	Ok(feed)
+}
+
+pub async fn set_star_feed(
+	pool: &Pool<Sqlite>,
+	id: String,
+	star: bool,
+) -> Result<(), FeedError> {
+	sqlx::query_as!(
+		ArticleContent,
+		"UPDATE feeds
      SET favourited = ?
      WHERE id = ?",
-    star,
-    id
-  )
-  .execute(pool)
-  .await
-  .map_err(|_| FeedError::DbError)?;
+		star,
+		id
+	)
+	.execute(pool)
+	.await
+	.map_err(|_| FeedError::DbError)?;
 
-  Ok(())
+	Ok(())
 }
 
-pub async fn delete_feed(pool: &Pool<Sqlite>, id: String) -> Result<(), FeedError> {
-  sqlx::query_as!(
-    Feed,
-    r#"DELETE FROM feeds
-       WHERE id = ?"#, id)
-  .execute(pool)
-  .await
-  .map_err(|_| FeedError::DbError)?;
+pub async fn delete_feed(
+	pool: &Pool<Sqlite>,
+	id: String,
+) -> Result<(), FeedError> {
+	sqlx::query_as!(
+		Feed,
+		r#"DELETE FROM feeds
+       WHERE id = ?"#,
+		id
+	)
+	.execute(pool)
+	.await
+	.map_err(|_| FeedError::DbError)?;
 
-  Ok(())
+	Ok(())
 }

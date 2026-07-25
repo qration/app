@@ -3,6 +3,7 @@
 	"singleQuote": true,
 	"bracketSameLine": true,
 	"tabWidth": 2,
+	"printWidth": 80,
 	"plugins": [
 		"prettier-plugin-svelte",
 		"prettier-plugin-tailwindcss"

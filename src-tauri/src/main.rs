@@ -4,6 +4,6 @@
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-  app_lib::run()?;
-  Ok(())
+	app_lib::run()?;
+	Ok(())
 }

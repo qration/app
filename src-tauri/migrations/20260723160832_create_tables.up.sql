@@ -1,7 +1,7 @@
 CREATE TABLE feeds (
   id CHAR(21) PRIMARY KEY NOT NULL,
   feed_name TEXT NOT NULL,
-  feed_type TEXT NOT NULL CHECK (feed_type IN ('rss', 'atom')),
+  feed_type TEXT NOT NULL CHECK (feed_type IN ('rss', 'atom', 'youtube')),
   favourited BOOLEAN NOT NULL,
   feed_url TEXT NOT NULL UNIQUE,
 	site_url TEXT,
@@ -18,7 +18,7 @@ CREATE TABLE articles_light (
 	article_description TEXT,
 	article_url TEXT,
 	article_date BIGINT,
-	media_type TEXT NOT NULL CHECK (media_type IN ('text')),
+	media_type TEXT NOT NULL CHECK (media_type IN ('text', 'video')),
 	article_read BOOLEAN NOT NULL,
 	article_saved BOOLEAN NOT NULL,
 

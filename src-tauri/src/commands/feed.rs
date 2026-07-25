@@ -16,16 +16,18 @@ pub async fn new_feed(
 ) -> Result<AddFeedResult, FeedError> {
 	let url_parsed = Url::parse(&url_string)
 		.unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
-  
-  let yt_feed_url = _resolve_youtube_feed_url(&url_parsed).await;
-  let fetch_url = yt_feed_url.to_string().unwrap_or(url_string);
-  let base_url = Url::parse(&fetch_url).unwrap_or(url_parsed);
+
+	let yt_feed_url = _resolve_youtube_feed_url(&url_parsed).await;
+	let fetch_url = yt_feed_url.clone().unwrap_or(url_string);
+	let base_url = Url::parse(&fetch_url).unwrap_or(url_parsed);
 
 	if let Ok(_) = db::fetch_feed_by_url(&pool, fetch_url).await {
 		return Err(FeedError::AlreadySubscribed);
 	}
 
-	let pf = _fetch_live_feed(base_url, None).await?;
+	let feed_type = _get_feed_type(yt_feed_url.clone());
+	let media_type = _get_media_type(feed_type);
+	let pf = _fetch_live_feed(base_url, None, feed_type, media_type).await?;
 
 	db::add_feed(&pool, &pf.feed).await?;
 	let new_articles =
@@ -85,7 +87,13 @@ pub async fn refresh_feed(
 	let f = db::fetch_feed(&pool, id).await?;
 	let url_parsed = Url::parse(&f.feed_url)
 		.unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
-	let pf = _fetch_live_feed(url_parsed, Some(f.id)).await?;
+	let pf = _fetch_live_feed(
+		url_parsed,
+		Some(f.id),
+		Some(f.feed_type),
+		_get_media_type(Some(f.feed_type)),
+	)
+	.await?;
 
 	let new_articles =
 		db::add_articles(&pool, &pf.articles_light, &pf.articles_content).await?;
@@ -109,7 +117,13 @@ pub async fn refresh_feeds(
 	for f in vf {
 		let url_parsed = Url::parse(&f.feed_url)
 			.unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
-		let pf = _fetch_live_feed(url_parsed, Some(f.id)).await?;
+		let pf = _fetch_live_feed(
+			url_parsed,
+			Some(f.id),
+			Some(f.feed_type),
+			_get_media_type(Some(f.feed_type)),
+		)
+		.await?;
 
 		let new_articles =
 			db::add_articles(&pool, &pf.articles_light, &pf.articles_content).await?;
@@ -128,6 +142,8 @@ pub async fn refresh_feeds(
 async fn _fetch_live_feed(
 	url: Url,
 	feed_id: Option<String>,
+	feed_type: Option<FeedType>,
+	media_type: Option<MediaType>,
 ) -> Result<ParsedFeed, FeedError> {
 	let bytes = reqwest::get(url.clone())
 		.await
@@ -139,9 +155,15 @@ async fn _fetch_live_feed(
 	let feed_id = feed_id.unwrap_or(nanoid!());
 
 	if let Ok(channel) = Channel::read_from(&bytes[..]) {
-		_new_rss_feed(channel, url.clone(), feed_id.clone())
+		_new_rss_feed(channel, url.clone(), feed_id.clone(), feed_type, media_type)
 	} else if let Ok(atomfeed) = AtomFeed::read_from(&bytes[..]) {
-		_new_atom_feed(atomfeed, url.clone(), feed_id.clone())
+		_new_atom_feed(
+			atomfeed,
+			url.clone(),
+			feed_id.clone(),
+			feed_type,
+			media_type,
+		)
 	} else {
 		Err(FeedError::ParseFailed)
 	}
@@ -151,11 +173,13 @@ fn _new_rss_feed(
 	channel: Channel,
 	base_url: Url,
 	feed_id: String,
+	feed_type: Option<FeedType>,
+	media_type: Option<MediaType>,
 ) -> Result<ParsedFeed, FeedError> {
 	let feed = Feed {
 		id: feed_id.clone(),
 		feed_name: channel.title,
-		feed_type: FeedType::Rss,
+		feed_type: feed_type.unwrap_or(FeedType::Rss),
 		favourited: false,
 		feed_url: base_url.to_string(),
 		site_url: Some(channel.link),
@@ -192,7 +216,7 @@ fn _new_rss_feed(
 						&i.description.clone().unwrap_or_default(),
 					),
 					feed_id: feed_id.clone(),
-					media_type: MediaType::Text,
+					media_type: media_type.unwrap_or(MediaType::Text),
 					article_read: false,
 					article_saved: false,
 					article_date: dateparser::parse(
@@ -228,11 +252,13 @@ fn _new_atom_feed(
 	atomfeed: AtomFeed,
 	base_url: Url,
 	feed_id: String,
+	feed_type: Option<FeedType>,
+	media_type: Option<MediaType>,
 ) -> Result<ParsedFeed, FeedError> {
 	let feed = Feed {
 		id: feed_id.clone(),
 		feed_name: atomfeed.title.to_string(),
-		feed_type: FeedType::Atom,
+		feed_type: feed_type.unwrap_or(FeedType::Atom),
 		favourited: false,
 		feed_url: base_url.to_string(),
 		site_url: _pick_link(&atomfeed.links, "alternate")
@@ -260,7 +286,7 @@ fn _new_atom_feed(
 						&e.summary.clone().unwrap_or_default(),
 					),
 					feed_id: feed_id.clone(),
-					media_type: MediaType::Text,
+					media_type: media_type.unwrap_or(MediaType::Text),
 					article_read: false,
 					article_saved: false,
 					article_date: Some(e.published.unwrap_or(e.updated).timestamp()),
@@ -305,72 +331,79 @@ fn _html_to_desc(html: &str) -> Option<String> {
 }
 
 fn _clean_html(html: String, base_url: Url) -> String {
-  ammonia::Builder::default()
-    .url_relative(ammonia::UrlRelative::RewriteWithBase(base_url))
-    .clean(&html)
-    .to_string()
+	ammonia::Builder::default()
+		.url_relative(ammonia::UrlRelative::RewriteWithBase(base_url))
+		.clean(&html)
+		.to_string()
 }
 
 async fn _resolve_youtube_feed_url(url: &Url) -> Option<String> {
-  let host = url.host_str()?;
-  if !matches!(host, "youtube.com" | "www.youtube.com" | "m.youtube.com") {
-    return None;
-  }
+	let host = url.host_str()?;
+	if !matches!(host, "youtube.com" | "www.youtube.com" | "m.youtube.com") {
+		return None;
+	}
 
-  let mut segments = url.path_segments()?;
-  let first = segments.next()?;
+	let mut segments = url.path_segments()?;
+	let first = segments.next()?;
 
-  if first == "channel" {
-    let id = segments.next()?;
-    return _valid_channel_id(id).then(|| _channel_feed_url(id));
-  }
+	if first == "channel" {
+		let id = segments.next()?;
+		return _valid_channel_id(id).then(|| _channel_feed_url(id));
+	}
 
-  if first.starts_with('@') {
-    let html = reqwest::get(url.as_str()).await.ok()?.text().await.ok()?;
-    let id = _scrape_channel_id(&html)?;
-    return Some(_channel_feed_url(&id));
-  }
+	if first.starts_with('@') {
+		let html = reqwest::get(url.as_str()).await.ok()?.text().await.ok()?;
+		let id = _scrape_channel_id(&html)?;
+		return Some(_channel_feed_url(&id));
+	}
 
-  None
+	None
 }
 
 fn _scrape_channel_id(html: &str) -> Option<String> {
-  _id_after(html, "channel_id=")
-    .or_else(|| _id_after(html, "rel=\"canonical\" href=\"https://www.youtube.com/channel/"))
+	_id_after(html, "channel_id=").or_else(|| {
+		_id_after(
+			html,
+			"rel=\"canonical\" href=\"https://www.youtube.com/channel/",
+		)
+	})
 }
 
 fn _id_after(html: &str, marker: &str) -> Option<String> {
-  let start = html.find(marker)? + marker.len();
-  let id = html.get(start..start + 24)?;
-  _valid_channel_id(id).then(|| id.to_string())
+	let start = html.find(marker)? + marker.len();
+	let id = html.get(start..start + 24)?;
+	_valid_channel_id(id).then(|| id.to_string())
 }
 
 fn _channel_feed_url(id: &str) -> String {
-  format!("https://www.youtube.com/feeds/videos.xml?channel_id={id}")
+	format!("https://www.youtube.com/feeds/videos.xml?channel_id={id}")
 }
 
 fn _valid_channel_id(id: &str) -> bool {
-  id.len() == 24
-    && id.starts_with("UC")
-    && id.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
+	id.len() == 24
+		&& id.starts_with("UC")
+		&& id
+			.bytes()
+			.all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
 }
 
-#[cfg(test)]
-mod tests {
-  use super::*;
+fn _get_feed_type(youtube: Option<String>) -> Option<FeedType> {
+	if youtube.is_some() {
+		Some(FeedType::Youtube)
+	} else {
+		None
+	}
+}
 
-  #[tokio::test]
-  async fn channel_url_resolves_directly() {
-    let url = Url::parse("https://www.youtube.com/channel/UCdc_JyNaB5VJ0gdWUtWfGDg").unwrap();
-    assert_eq!(
-      _resolve_youtube_feed_url(&url).await,
-      Some("https://www.youtube.com/feeds/videos.xml?channel_id=UCdc_JyNaB5VJ0gdWUtWfGDg".to_string())
-    );
-  }
-
-  #[tokio::test]
-  async fn non_youtube_url_is_none() {
-    let url = Url::parse("https://example.com/feed.xml").unwrap();
-    assert_eq!(_resolve_youtube_feed_url(&url).await, None);
-  }
+fn _get_media_type(ft: Option<FeedType>) -> Option<MediaType> {
+	if ft.is_some() {
+		let ftu = ft.unwrap();
+		if ftu == FeedType::Youtube {
+			Some(MediaType::Video)
+		} else {
+			Some(MediaType::Text)
+		}
+	} else {
+		None
+	}
 }

@@ -34,4 +34,5 @@ pub struct ArticleContent {
 #[sqlx(rename_all = "snake_case")]
 pub enum MediaType {
 	Text,
+	Video,
 }

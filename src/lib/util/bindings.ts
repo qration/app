@@ -81,9 +81,9 @@ export type FeedError =
 	| 'DbError'
 	| 'AlreadySubscribed';
 
-export type FeedType = 'rss' | 'atom';
+export type FeedType = 'rss' | 'atom' | 'youtube';
 
-export type MediaType = 'text';
+export type MediaType = 'text' | 'video';
 
 export type RefreshFeedResult = {
 	new_count: number;

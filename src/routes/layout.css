@@ -17,22 +17,22 @@
 @theme {
 	--font-sans: 'Atkinson Hyperlegible Next', sans-serif;
 	--font-mono: 'Atkinson Hyperlegible Mono', monospace;
-	--color-light-theme: var(--color-slate-50);
-	--color-dark-theme: var(--color-slate-950);
+	--color-light-theme: var(--color-gray-50);
+	--color-dark-theme: var(--color-gray-950);
 	--color-error: var(--color-red-500);
 
 	--color-bg: var(--color-light-theme);
-	--color-bg-hover: var(--color-slate-300);
-	--color-bg-secondary: var(--color-slate-100);
+	--color-bg-hover: var(--color-gray-300);
+	--color-bg-secondary: var(--color-gray-100);
 
-	--color-text: var(--color-slate-950);
-	--color-text-muted: var(--color-slate-700);
-	--color-text-secondary: var(--color-slate-500);
+	--color-text: var(--color-gray-950);
+	--color-text-muted: var(--color-gray-800);
+	--color-text-secondary: var(--color-gray-600);
 	--color-text-link: var(--color-cyan-500);
-	--color-border: var(--color-slate-400);
+	--color-border: var(--color-gray-400);
 
-	--color-button-primary: var(--color-slate-950);
-	--color-button-secondary: var(--color-slate-300);
+	--color-button-primary: var(--color-gray-950);
+	--color-button-secondary: var(--color-gray-300);
 
 	--spacing-safe-top: env(safe-area-inset-top, 2rem);
 	--spacing-safe-bottom: env(safe-area-inset-bottom, 2rem);
@@ -42,16 +42,16 @@
 
 .dark {
 	--color-bg: var(--color-dark-theme);
-	--color-bg-hover: var(--color-slate-700);
-	--color-bg-secondary: var(--color-slate-900);
+	--color-bg-hover: var(--color-gray-800);
+	--color-bg-secondary: var(--color-gray-900);
 
-	--color-text: var(--color-slate-50);
-	--color-text-muted: var(--color-slate-200);
-	--color-text-secondary: var(--color-slate-400);
-	--color-border: var(--color-slate-500);
+	--color-text: var(--color-gray-50);
+	--color-text-muted: var(--color-gray-200);
+	--color-text-secondary: var(--color-gray-400);
+	--color-border: var(--color-gray-500);
 
-	--color-button-primary: var(--color-slate-50);
-	--color-button-secondary: var(--color-slate-700);
+	--color-button-primary: var(--color-gray-50);
+	--color-button-secondary: var(--color-gray-700);
 }
 
 html,

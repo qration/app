@@ -35,17 +35,21 @@
 				a.article_date && b.article_date ? b.article_date - a.article_date : 0,
 			),
 	);
+
+	async function refreshAllFeeds() {
+		feedStore.refreshAll(true);
+	}
 </script>
 
 <div
-	class="gap flex h-full min-h-0 {MQ.current
+	class="flex h-full min-h-0 {MQ.current
 		? 'w-100'
 		: 'w-full'} shrink-0 touch-none flex-col justify-start
-		border-r-2 border-border bg-bg text-4xl text-text"
+		border-r border-border bg-bg text-4xl text-text"
 	{inert}>
 	<div
 		class="sticky top-0 flex w-full flex-row
-			items-center gap-4 border-b-2 border-border px-4 py-4">
+			items-center gap-4 px-4 py-4">
 		<IconButton
 			icon="tabler:layout-sidebar-left-expand"
 			label="Uncollapse"
@@ -55,10 +59,13 @@
 			placeholder="Search..."
 			icon="tabler:search"
 			bind:input={search} />
+		<IconButton
+			icon="tabler:reload"
+			label="Back"
+			onclick={() => refreshAllFeeds()} />
 	</div>
 	<div
-		class="flex h-full flex-col justify-start gap-4 overflow-y-scroll
-			p-4 text-4xl text-text">
+		class="mx-4 mb-2 flex h-full flex-col justify-start overflow-y-scroll rounded-lg bg-bg text-4xl text-text">
 		{#each filteredArticles as article (article.id)}
 			{@const articleFeed = feedStore.feeds.find(
 				(f) => f.id == article.feed_id,

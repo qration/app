@@ -26,19 +26,19 @@
 </script>
 
 <div
-	class="flex {cls} w-full flex-row items-center rounded border-2
-		{error ? 'border-error' : 'border-border'} text-xl bg-bg">
+	class="flex {cls} w-full flex-row items-center rounded-lg
+		{error ? 'border-error' : 'border-transparent'} border bg-bg-secondary text-xl">
 	{#if icon}
-		<div class="text-xl absolute pl-3 text-text-secondary">
+		<div class="absolute pl-3 text-xl text-text-secondary">
 			<Icon {icon} />
 		</div>
 	{/if}
 	<input
 		type="text"
 		{placeholder}
-		class="w-full rounded border-none bg-transparent py-2 text-lg
-			placeholder:text-text-secondary active:border-none text-text
-			focus:outline-none"
+		class="w-full rounded-lg border-none bg-bg-secondary py-2
+			text-lg text-text placeholder:text-text-secondary focus:outline-none
+			active:border-none"
 		class:pl-10={icon}
 		class:pr-10={clear}
 		bind:value={input}

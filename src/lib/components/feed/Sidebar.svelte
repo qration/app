@@ -19,7 +19,6 @@
 	let addNewOpen = $state(false);
 	let settingsOpen = $state(false);
 	let deleteOpen = $state(true);
-	let refreshAllLoading = $state(false);
 
 	let sidebarRef: HTMLElement;
 
@@ -45,12 +44,6 @@
 		onfilterchange(filter);
 	}
 
-	async function refreshAllFeeds() {
-		refreshAllLoading = true;
-		feedStore.refreshAll(true);
-		refreshAllLoading = false;
-	}
-
 	onMount(() => {
 		const observer = new ResizeObserver(() => {
 			if (!sidebarRef) return;
@@ -67,7 +60,7 @@
 
 <div
 	bind:this={sidebarRef}
-	class="overflow-x-hidden border-r-2 border-r-border bg-bg px-3.75 py-4
+	class="overflow-x-hidden border-r border-r-border bg-bg px-3.75 py-4
 		font-medium {collapsed
 		? '-translate-x-full lg:w-16'
 		: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70
@@ -93,16 +86,6 @@
 						onclick={() => oncollapse()} />
 				</div>
 			</div>
-		</div>
-		<div class="items-center">
-			<SidebarButton
-				text="Add New"
-				icon="tabler:plus"
-				onclick={() => (addNewOpen = true)} />
-			<SidebarButton
-				text={refreshAllLoading ? 'Refreshing...' : 'Refresh All'}
-				icon="tabler:reload"
-				onclick={refreshAllFeeds} />
 		</div>
 		<div class="flex flex-col gap-0.5">
 			<SidebarButton
@@ -136,7 +119,13 @@
 			class="flex flex-col gap-0.5 transition-opacity duration-500 {collapsed
 				? 'opacity-0'
 				: 'opacity-100'}">
-			<div class="text-xl text-text">Subscriptions</div>
+			<div class="flex flex-row items-center justify-between text-xl text-text">
+				<div>Subscriptions</div>
+				<IconButton
+					icon="tabler:plus"
+					label="Add Feed"
+					onclick={() => (addNewOpen = true)} />
+			</div>
 			{#each feedStore.feeds as feed (feed.id)}
 				<SidebarButton
 					text={feed.feed_name}

@@ -156,7 +156,7 @@
 	{#if article && feed}
 		<div
 			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
-				justify-between border-b-2 border-border p-2 lg:justify-end">
+				justify-between border-b border-border p-2 lg:justify-end">
 			<IconButton
 				icon="tabler:arrow-left"
 				label="Back"
@@ -184,17 +184,15 @@
 			role="tabpanel"
 			tabindex="0"
 			bind:this={articleContainer}>
-			<div
-				class="flex max-w-full min-w-0 flex-col
-					gap-0.5 font-medium text-text">
-				<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
+			<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
 				<span class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
 					>{feed.feed_name}</span>
+				<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
 				<span class="shrink-0 text-lg font-light text-text-secondary"
 					>{dtf.format(article.article_date * 1000)}</span>
 			</div>
-			<hr class="text-text-secondary" />
-      {#if videoId}
+			<hr class="text-border" />
+			{#if videoId}
 				<iframe
 					title={article.article_name}
 					src="https://www.youtube-nocookie.com/embed/{videoId}"

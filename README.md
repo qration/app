@@ -8,6 +8,8 @@ Qration is, and always will be, 100% free and open source.
 
 [Official Discord Server](https://discord.gg/9sudXdUdMx)
 
+![alt text](demo.png)
+
 ## Feed Support
 
 - [x] RSS
@@ -16,12 +18,13 @@ Qration is, and always will be, 100% free and open source.
 - [ ] Bluesky
 - [ ] Podcasts
 
-&dagger;**Partial support**. Videos can be embedded, but transcripts are not available yet. While we would have liked to add transcripts and such to the content, the Rust ecosystem for this stuff is pretty limited.
+&dagger;**Partial support**. Basic info is available, but transcripts are not.
 
 ## Planned Features
 
-- [ ] Support for RSS+ feeds
-- [ ] OPML import/export
+- [ ] YouTube transcript fetching
+- [ ] More support for RSS+ feeds
+- [ ] OPML impo!rt/export
 - [ ] Opt-in account system
 - [ ] Opt-in cloud sync
 - [ ] Article snippet sharing

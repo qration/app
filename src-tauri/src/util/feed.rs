@@ -1,4 +1,7 @@
-use crate::types::{article::*, error::*, feed::*};
+use crate::{
+	types::{article::*, error::*, feed::*},
+	util,
+};
 use atom_syndication::{Entry, Feed as AtomFeed, Link};
 use futures::future;
 use nanoid::nanoid;
@@ -148,15 +151,13 @@ async fn _new_atom_feed(
 			_get_atomfeed_content(e.clone(), base_url.clone(), feed_type)
 				.await
 				.unwrap();
-		println!("{:?}", article_content);
+		let article_description = _get_atomfeed_description(e.clone(), feed_type);
 
 		(
 			ArticleLight {
 				id: article_id.clone(),
 				article_name: Some(e.title.to_string()),
-				article_description: _html_to_desc(
-					&e.summary.clone().unwrap_or_default(),
-				),
+				article_description: article_description,
 				feed_id: feed_id.clone(),
 				media_type: media_type.unwrap_or(MediaType::Text),
 				article_read: false,
@@ -189,15 +190,6 @@ async fn _new_atom_feed(
 
 fn _pick_link(links: &Vec<Link>, rel: &str) -> Option<Link> {
 	return links.iter().cloned().find(|l| l.rel == rel);
-}
-
-fn _html_to_desc(html: &str) -> Option<String> {
-	let text = match html2text::from_read(html.as_bytes(), usize::MAX) {
-		Ok(t) => t,
-		Err(_) => return None,
-	};
-
-	Some(text.split_whitespace().collect::<Vec<&str>>().join(" "))
 }
 
 fn _clean_html(html: String, base_url: Url) -> String {
@@ -249,7 +241,7 @@ async fn _get_atomfeed_content(
 		// 	).collect::<Vec<String>>().join("\n"))),
 		// 	Err(e) => Ok(Some(e.to_string())),
 		// }
-		Ok(Some(String::from("")))
+		Ok(util::youtube::_get_yt_content(e))
 	} else {
 		Ok(
 			e.content
@@ -258,4 +250,24 @@ async fn _get_atomfeed_content(
 				.map(|html| _clean_html(html, base_url.clone())),
 		)
 	}
+}
+
+fn _get_atomfeed_description(
+	e: Entry,
+	feed_type: Option<FeedType>,
+) -> Option<String> {
+	if feed_type.is_some_and(|f| f == FeedType::Youtube) {
+		util::youtube::_get_yt_desc(e)
+	} else {
+		_html_to_desc(&e.summary.clone().unwrap_or_default())
+	}
+}
+
+fn _html_to_desc(html: &str) -> Option<String> {
+	let text = match html2text::from_read(html.as_bytes(), usize::MAX) {
+		Ok(t) => t,
+		Err(_) => return None,
+	};
+
+	Some(text.split_whitespace().collect::<Vec<&str>>().join(" "))
 }

@@ -1,4 +1,4 @@
-use atom_syndication::Entry;
+use atom_syndication::{extension::Extension, Entry};
 use url::Url;
 
 pub async fn _resolve_youtube_feed_url(url: &Url) -> Option<String> {
@@ -51,6 +51,10 @@ pub fn _valid_channel_id(id: &str) -> bool {
 			.all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
 }
 
+fn child<'a>(ext: &'a Extension, name: &str) -> Option<&'a Extension> {
+	ext.children().get(name)?.first()
+}
+
 pub fn _get_yt_video_id(e: Entry) -> String {
 	e.extensions()
 		.get("yt")
@@ -59,4 +63,28 @@ pub fn _get_yt_video_id(e: Entry) -> String {
 		.and_then(|ext| ext.value())
 		.unwrap_or_default()
 		.to_owned()
+}
+
+pub fn _get_yt_content(e: Entry) -> Option<String> {
+	let group = e.extensions().get("media")?.get("group")?.first()?;
+
+	let description = child(group, "description")?.value()?;
+
+	let cmm = child(group, "community")?;
+	let views = child(cmm, "statistics")?.attrs().get("views")?;
+	let likes = child(cmm, "starRating")?.attrs().get("count")?;
+
+	Some(format!(
+		"<p>{}</p>
+<p>{} views &bullet; {} likes</p>",
+		description, views, likes
+	))
+}
+
+pub fn _get_yt_desc(e: Entry) -> Option<String> {
+	let group = e.extensions().get("media")?.get("group")?.first()?;
+
+	let description = child(group, "description")?.value()?;
+
+	Some(description.to_owned())
 }

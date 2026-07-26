@@ -6,13 +6,17 @@ Qration is a privacy-first RSS+ feed reader. Read, watch and listen to exactly w
 
 Qration is, and always will be, 100% free and open source.
 
+[Official Discord Server](https://discord.gg/9sudXdUdMx)
+
 ## Feed Support
 
 - [x] RSS
 - [x] Atom
-- [ ] YouTube
+- [x] YouTube&dagger;
 - [ ] Bluesky
 - [ ] Podcasts
+
+&dagger;**Partial support**. Videos can be embedded, but transcripts are not available yet. While we would have liked to add transcripts and such to the content, the Rust ecosystem for this stuff is pretty limited.
 
 ## Planned Features
 

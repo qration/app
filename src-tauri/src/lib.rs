@@ -1,6 +1,7 @@
 mod commands;
 mod db;
 mod types;
+mod util;
 
 use commands::*;
 use sqlx::sqlite::{
@@ -17,16 +18,16 @@ use tauri_specta::collect_commands;
 pub fn run() -> Result<(), Box<dyn Error>> {
 	let builder =
 		tauri_specta::Builder::<tauri::Wry>::new().commands(collect_commands![
-			new_feed,
-			fetch_feeds,
-			fetch_feed,
-			fetch_article_content,
-			fetch_articles_light,
-			set_star_feed,
-			set_save_article,
-			delete_feed,
-			refresh_feed,
-			refresh_feeds,
+			feed::new_feed,
+			feed::fetch_feeds,
+			feed::fetch_feed,
+			article::fetch_article_content,
+			article::fetch_articles_light,
+			feed::set_star_feed,
+			article::set_save_article,
+			feed::delete_feed,
+			feed::refresh_feed,
+			feed::refresh_feeds,
 		]);
 
 	#[cfg(all(

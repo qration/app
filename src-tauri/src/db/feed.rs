@@ -1,4 +1,5 @@
-use crate::types::{Feed, FeedError, FeedType};
+use crate::types::error::FeedError;
+use crate::types::feed::{Feed, FeedType};
 use sqlx::{Pool, Sqlite};
 
 pub async fn add_feed(

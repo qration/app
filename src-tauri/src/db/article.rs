@@ -1,6 +1,7 @@
 use sqlx::{Pool, Sqlite};
 
-use crate::types::{ArticleContent, ArticleLight, FeedError, MediaType};
+use crate::types::article::*;
+use crate::types::error::FeedError;
 
 pub async fn add_articles(
 	pool: &Pool<Sqlite>,

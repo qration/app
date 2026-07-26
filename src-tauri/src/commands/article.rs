@@ -1,4 +1,5 @@
-use crate::{db, types::*};
+use crate::db;
+use crate::types::{article::*, error::*};
 use sqlx::{Pool, Sqlite};
 use tauri::State;
 
@@ -7,7 +8,7 @@ use tauri::State;
 pub async fn fetch_articles_light(
 	pool: State<'_, Pool<Sqlite>>,
 ) -> Result<Vec<ArticleLight>, FeedError> {
-	db::fetch_articles_light(&pool).await
+	db::article::fetch_articles_light(&pool).await
 }
 
 #[tauri::command]
@@ -16,8 +17,8 @@ pub async fn fetch_article_content(
 	pool: State<'_, Pool<Sqlite>>,
 	id: String,
 ) -> Result<ArticleContent, FeedError> {
-	db::mark_article_read(&pool, id.clone()).await?;
-	db::fetch_article_content(&pool, id.clone()).await
+	db::article::mark_article_read(&pool, id.clone()).await?;
+	db::article::fetch_article_content(&pool, id.clone()).await
 }
 
 #[tauri::command]
@@ -27,5 +28,5 @@ pub async fn set_save_article(
 	id: String,
 	save: bool,
 ) -> Result<(), FeedError> {
-	db::set_save_article(&pool, id, save).await
+	db::article::set_save_article(&pool, id, save).await
 }

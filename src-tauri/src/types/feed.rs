@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use specta_typescript::Number;
 
-use crate::types::*;
+use crate::types::article::*;
 
 #[derive(
 	Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,

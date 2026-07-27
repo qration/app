@@ -5,7 +5,6 @@ import type { SyncStatus } from '$lib/util/enums';
 import {
 	sendNotification,
 	isPermissionGranted,
-	requestPermission,
 } from '@choochmeque/tauri-plugin-notifications-api';
 import { mode } from 'mode-watcher';
 
@@ -61,12 +60,6 @@ export class FeedStore {
 		this.status = 'ready';
 		this.lastRefreshed = Date.now();
 		this.notificationPermsGranted = await isPermissionGranted();
-		console.log('okay', res.data.new_count, this.notificationPermsGranted);
-
-		if (!this.notificationPermsGranted) {
-			const permission = await requestPermission();
-			this.notificationPermsGranted = permission == 'granted';
-		}
 
 		if (res.data.new_count > 0 && this.notificationPermsGranted) {
 			sendNotification({

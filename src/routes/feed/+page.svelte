@@ -5,7 +5,10 @@
 	import { onMount, tick } from 'svelte';
 	import { setMQ, setFeedStore, FeedStore } from '$lib/context/context.svelte';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { onNotificationClicked } from '@choochmeque/tauri-plugin-notifications-api';
+	import {
+		onNotificationClicked,
+		requestPermission,
+	} from '@choochmeque/tauri-plugin-notifications-api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import 'overlayscrollbars/overlayscrollbars.css';
 
@@ -56,6 +59,10 @@
 		onNotificationClicked(async () => {
 			await getCurrentWindow().setFocus();
 		}).then((u) => (unlisten = u.unregister));
+
+		requestPermission().then((p) => {
+			feedStore.notificationPermsGranted = p == 'granted';
+		});
 
 		return async () => {
 			clearInterval(interval);

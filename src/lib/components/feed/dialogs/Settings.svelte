@@ -25,13 +25,13 @@
 			<span class="text-text-muted">Theme</span>
 			<div class="flex flex-row gap-4">
 				<Swatch
-					colour="bg-light-theme"
+					colour="bg-light-theme hover:bg-light-theme-hover"
 					name="theme"
 					id="light"
 					onclick={() => setMode('light')}
 					checked={mode.current == 'light'} />
 				<Swatch
-					colour="bg-dark-theme"
+					colour="bg-dark-theme hover:bg-dark-theme-hover"
 					name="theme"
 					id="dark"
 					onclick={() => setMode('dark')}

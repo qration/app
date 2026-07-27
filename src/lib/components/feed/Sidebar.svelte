@@ -73,7 +73,7 @@
 	inert={collapsed && !MQ.current}>
 	<div class="flex min-h-0 flex-1 flex-col gap-4 pt-safe-top pb-safe-bottom">
 		<div class="flex flex-col">
-			<div class="relative flex h-10 items-center">
+			<div class="relative flex h-10 items-center py-6">
 				<div
 					class="overflow-hidden duration-500 lg:transition-opacity
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">

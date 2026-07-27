@@ -160,8 +160,8 @@
 	inert={!MQ.current && !isOpen}>
 	{#if article && feed}
 		<div
-			class="flex max-w-full min-w-0 shrink-0 flex-row items-center
-				justify-between border-b border-border p-2 lg:justify-end">
+			class="m-4 flex max-w-full min-w-0 shrink-0 flex-row
+				items-center justify-between rounded-lg bg-bg-secondary p-2 lg:justify-end">
 			<IconButton
 				icon="tabler:arrow-left"
 				label="Back"
@@ -192,7 +192,7 @@
 				role="tabpanel"
 				tabindex={0}
 				bind:this={articleContainer}
-				class="flex w-full flex-col gap-5 px-5 py-7">
+				class="flex w-full flex-col gap-5 px-5 pb-5">
 				<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
 					<span class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
 						>{feed.feed_name}</span>

@@ -28,7 +28,7 @@
 	<div class="flex flex-col gap-2">
 		<div>This link is taking you to the following website:</div>
 		<div
-			class="rounded border-2 border-border bg-bg-secondary px-4 py-2 font-mono
+			class="rounded border border-border bg-bg-secondary px-4 py-2 font-mono
 				wrap-anywhere">
 			{href}
 		</div>

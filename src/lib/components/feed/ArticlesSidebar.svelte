@@ -54,7 +54,7 @@
 	{inert}>
 	<div
 		class="sticky top-0 flex w-full flex-row
-			items-center gap-4 px-4 py-4">
+			items-center gap-4 px-4 py-4.25">
 		<IconButton
 			icon="tabler:layout-sidebar-left-expand"
 			label="Uncollapse"

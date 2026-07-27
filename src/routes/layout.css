@@ -19,11 +19,13 @@
 	--font-sans: 'Atkinson Hyperlegible Next', sans-serif;
 	--font-mono: 'Atkinson Hyperlegible Mono', monospace;
 	--color-light-theme: var(--color-gray-50);
+	--color-light-theme-hover: var(--color-gray-300);
 	--color-dark-theme: var(--color-gray-950);
+	--color-dark-theme-hover: var(--color-gray-800);
 	--color-error: var(--color-red-500);
 
 	--color-bg: var(--color-light-theme);
-	--color-bg-hover: var(--color-gray-300);
+	--color-bg-hover: var(--color-light-theme-hover);
 	--color-bg-secondary: var(--color-gray-100);
 
 	--color-text: var(--color-gray-950);
@@ -33,7 +35,9 @@
 	--color-border: var(--color-gray-400);
 
 	--color-button-primary: var(--color-gray-950);
+	--color-button-primary-hover: var(--color-gray-700);
 	--color-button-secondary: var(--color-gray-300);
+	--color-button-secondary-hover: var(--color-gray-400);
 
 	--spacing-safe-top: env(safe-area-inset-top, 2rem);
 	--spacing-safe-bottom: env(safe-area-inset-bottom, 2rem);
@@ -43,7 +47,7 @@
 
 .dark {
 	--color-bg: var(--color-dark-theme);
-	--color-bg-hover: var(--color-gray-800);
+	--color-bg-hover: var(--color-dark-theme-hover);
 	--color-bg-secondary: var(--color-gray-900);
 
 	--color-text: var(--color-gray-50);
@@ -52,7 +56,9 @@
 	--color-border: var(--color-gray-500);
 
 	--color-button-primary: var(--color-gray-50);
+	--color-button-primary-hover: var(--color-gray-300);
 	--color-button-secondary: var(--color-gray-700);
+	--color-button-secondary-hover: var(--color-gray-800);
 }
 
 html,

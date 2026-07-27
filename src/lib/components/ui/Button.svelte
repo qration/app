@@ -24,8 +24,8 @@
 	{onclick}
 	class="rounded {cls}
 		{display == 'primary'
-		? 'bg-button-primary text-bg'
-		: 'bg-button-secondary text-text'}
+		? 'bg-button-primary text-bg hover:bg-button-primary-hover'
+		: 'bg-button-secondary text-text hover:bg-button-secondary-hover'}
 		hover:bg-text-800 cursor-pointer px-4 py-2 disabled:cursor-not-allowed
 		disabled:opacity-50">
 	{@render children()}

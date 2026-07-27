@@ -22,7 +22,7 @@
 		for={id}
 		class="h-15 w-15 rounded border border-border {colour} flex
 			cursor-pointer items-center justify-center peer-focus-visible:ring-2
-			peer-focus-visible:ring-blue-500 hover:border-text"
+			peer-focus-visible:ring-blue-500"
 		class:border-text={checked}>
 		{#if checked}
 			<Icon icon="tabler:check" class="text-3xl text-text" />

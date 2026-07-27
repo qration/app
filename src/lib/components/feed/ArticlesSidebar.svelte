@@ -75,7 +75,7 @@
 			onclick={() => refreshAllFeeds()}
 			iconClass={feedsRefreshing ? 'animate-spin' : ''} />
 	</div>
-	<div class="mx-4 mb-2 overflow-hidden rounded-lg">
+	<div class="mx-4 mb-3 overflow-hidden rounded-lg">
 		<OverlayScrollbarsComponent
 			defer
 			class="h-full w-full bg-bg text-4xl text-text"

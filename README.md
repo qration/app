@@ -24,7 +24,7 @@ Qration is, and always will be, 100% free and open source.
 
 - [ ] YouTube transcript fetching
 - [ ] More support for RSS+ feeds
-- [ ] OPML impo!rt/export
+- [ ] OPML import/export
 - [ ] Opt-in account system
 - [ ] Opt-in cloud sync
 - [ ] Article snippet sharing

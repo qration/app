@@ -184,41 +184,45 @@
 				{/if}
 			</div>
 		</div>
-		<OverlayScrollbarsComponent
-			defer
-			class="h-full w-full"
-			options={getOsbOptions()}>
-			<div
-				role="tabpanel"
-				tabindex={0}
-				bind:this={articleContainer}
-				class="flex w-full flex-col gap-5 px-5 pb-5">
-				<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
-					<span class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
-						>{feed.feed_name}</span>
-					<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
-					<span class="shrink-0 text-lg font-light text-text-secondary"
-						>{dtf.format(article.article_date * 1000)}</span>
-				</div>
-				<hr class="text-border" />
-				{#if videoId}
-					<iframe
-						title={article.article_name}
-						src="https://www.youtube-nocookie.com/embed/{videoId}"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen
-						class="aspect-video w-full rounded-lg border-0"></iframe>
-				{/if}
+		{#key articleId}
+			<OverlayScrollbarsComponent
+				defer
+				class="h-full w-full"
+				options={getOsbOptions()}>
 				<div
-					onclick={handleArticleClick}
-					onkeydown={handleArticleKeydown}
-					role="presentation"
-					class="feed-content flex h-full flex-col gap-3">
-					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-					{@html articleContent?.content}
+					role="tabpanel"
+					tabindex={0}
+					bind:this={articleContainer}
+					class="flex w-full flex-col gap-5 px-5 pb-5">
+					<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
+						<span
+							class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
+							>{feed.feed_name}</span>
+						<span class="min-w-0 text-3xl font-bold"
+							>{article.article_name}</span>
+						<span class="shrink-0 text-lg font-light text-text-secondary"
+							>{dtf.format(article.article_date * 1000)}</span>
+					</div>
+					<hr class="text-border" />
+					{#if videoId}
+						<iframe
+							title={article.article_name}
+							src="https://www.youtube-nocookie.com/embed/{videoId}"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen
+							class="aspect-video w-full rounded-lg border-0"></iframe>
+					{/if}
+					<div
+						onclick={handleArticleClick}
+						onkeydown={handleArticleKeydown}
+						role="presentation"
+						class="feed-content flex h-full flex-col gap-3">
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+						{@html articleContent?.content}
+					</div>
 				</div>
-			</div>
-		</OverlayScrollbarsComponent>
+			</OverlayScrollbarsComponent>
+		{/key}
 	{/if}
 </div>
 

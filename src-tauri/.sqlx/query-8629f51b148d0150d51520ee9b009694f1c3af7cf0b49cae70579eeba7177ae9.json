@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE articles_light\n     SET article_read = TRUE\n     WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "8629f51b148d0150d51520ee9b009694f1c3af7cf0b49cae70579eeba7177ae9"
+}

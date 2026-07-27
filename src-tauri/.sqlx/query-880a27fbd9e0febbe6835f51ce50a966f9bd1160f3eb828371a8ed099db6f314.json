@@ -1,0 +1,98 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id,\n              feed_name,\n              feed_type AS \"feed_type!: FeedType\",\n              favourited,\n              feed_url,\n              site_url,\n              last_fetched\n       FROM feeds\n       WHERE feed_url = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "feed_name",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "feed_name"
+          }
+        }
+      },
+      {
+        "name": "feed_type!: FeedType",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "feed_type"
+          }
+        }
+      },
+      {
+        "name": "favourited",
+        "ordinal": 3,
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "favourited"
+          }
+        }
+      },
+      {
+        "name": "feed_url",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "feed_url"
+          }
+        }
+      },
+      {
+        "name": "site_url",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "site_url"
+          }
+        }
+      },
+      {
+        "name": "last_fetched",
+        "ordinal": 6,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "feeds",
+            "name": "last_fetched"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    ]
+  },
+  "hash": "880a27fbd9e0febbe6835f51ce50a966f9bd1160f3eb828371a8ed099db6f314"
+}

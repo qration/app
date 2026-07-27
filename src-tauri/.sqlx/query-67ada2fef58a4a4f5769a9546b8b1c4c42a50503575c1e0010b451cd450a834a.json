@@ -1,0 +1,134 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id,\n              feed_id,\n              article_guid,\n              article_name,\n              article_description,\n              article_url,\n              article_date,\n              media_type AS \"media_type!: MediaType\",\n              article_read,\n              article_saved\n       FROM articles_light\n       ORDER BY article_date DESC",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "feed_id",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "feed_id"
+          }
+        }
+      },
+      {
+        "name": "article_guid",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_guid"
+          }
+        }
+      },
+      {
+        "name": "article_name",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_name"
+          }
+        }
+      },
+      {
+        "name": "article_description",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_description"
+          }
+        }
+      },
+      {
+        "name": "article_url",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_url"
+          }
+        }
+      },
+      {
+        "name": "article_date",
+        "ordinal": 6,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_date"
+          }
+        }
+      },
+      {
+        "name": "media_type!: MediaType",
+        "ordinal": 7,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "media_type"
+          }
+        }
+      },
+      {
+        "name": "article_read",
+        "ordinal": 8,
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_read"
+          }
+        }
+      },
+      {
+        "name": "article_saved",
+        "ordinal": 9,
+        "type_info": "Bool",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_saved"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "67ada2fef58a4a4f5769a9546b8b1c4c42a50503575c1e0010b451cd450a834a"
+}

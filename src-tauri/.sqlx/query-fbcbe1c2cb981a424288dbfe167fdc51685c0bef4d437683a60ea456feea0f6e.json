@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE articles_light\n     SET article_saved = ?\n     WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "fbcbe1c2cb981a424288dbfe167fdc51685c0bef4d437683a60ea456feea0f6e"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO feeds (id, feed_name, feed_type, favourited, feed_url, last_fetched)\n     VALUES (?, ?, ?, ?, ?, ?)\n     ON CONFLICT (feed_url) DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "8558d6f009021b48dd67517f3887b66133a76e42578eb5266175cf1c073ca22d"
+}

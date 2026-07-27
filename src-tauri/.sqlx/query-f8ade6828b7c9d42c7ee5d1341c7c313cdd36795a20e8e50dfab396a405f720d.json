@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE feeds\n     SET favourited = ?\n     WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "f8ade6828b7c9d42c7ee5d1341c7c313cdd36795a20e8e50dfab396a405f720d"
+}

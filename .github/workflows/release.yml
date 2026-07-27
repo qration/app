@@ -97,6 +97,7 @@ jobs:
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SQLX_OFFLINE: true
         with:
           tagName: qration-v__VERSION__
           releaseName: 'Qration v__VERSION__'

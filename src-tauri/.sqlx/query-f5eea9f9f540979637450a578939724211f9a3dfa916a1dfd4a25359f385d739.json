@@ -1,0 +1,74 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id,\n            content,\n            enclosure_url,\n            enclosure_mime_type,\n            enclosure_length\n    FROM articles_content\n    WHERE id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_content",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "content",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_content",
+            "name": "content"
+          }
+        }
+      },
+      {
+        "name": "enclosure_url",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_content",
+            "name": "enclosure_url"
+          }
+        }
+      },
+      {
+        "name": "enclosure_mime_type",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_content",
+            "name": "enclosure_mime_type"
+          }
+        }
+      },
+      {
+        "name": "enclosure_length",
+        "ordinal": 4,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "articles_content",
+            "name": "enclosure_length"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "f5eea9f9f540979637450a578939724211f9a3dfa916a1dfd4a25359f385d739"
+}

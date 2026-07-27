@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO articles_light\n        (id, feed_id, article_guid, article_name, article_description,\n        article_url, article_date, media_type, article_read, article_saved)\n      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n      ON CONFLICT DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 10
+    },
+    "nullable": []
+  },
+  "hash": "58333ff893757c292114c45d0450034c828d1578bb5fbfc8e718e3383777770a"
+}

@@ -8,7 +8,6 @@
 	import ConfirmDelete from './dialogs/ConfirmDelete.svelte';
 
 	import { onMount, setContext } from 'svelte';
-	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
 	import {
 		getFeedStore,
@@ -77,10 +76,7 @@
 				<div
 					class="overflow-hidden duration-500 lg:transition-opacity
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
-					<a href={resolve('/')} tabindex={collapsed ? -1 : 0}>
-						<Wordmark
-							class="h-10 max-w-none shrink-0 cursor-pointer fill-text" />
-					</a>
+					<Wordmark class="h-10 max-w-none shrink-0 cursor-pointer fill-text" />
 				</div>
 				<div class="absolute right-1 flex w-6 justify-center">
 					<IconButton

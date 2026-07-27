@@ -8,7 +8,7 @@ Qration is, and always will be, 100% free and open source.
 
 [Official Discord Server](https://discord.gg/9sudXdUdMx)
 
-![alt text](demo.png)
+![alt text](screenshot.png)
 
 ## Feed Support
 

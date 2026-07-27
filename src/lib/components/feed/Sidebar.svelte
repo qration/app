@@ -74,11 +74,11 @@
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center py-6">
 				<div
-					class="overflow-hidden duration-500 lg:transition-opacity
+					class="overflow-hidden duration-500 lg:transition-all
 						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
 					<Wordmark class="h-10 max-w-none shrink-0 cursor-pointer fill-text" />
 				</div>
-				<div class="absolute right-1 flex w-6 justify-center">
+				<div class="absolute right-1.25 flex w-6 justify-center">
 					<IconButton
 						icon="tabler:layout-sidebar-left-{collapsed
 							? 'expand'
@@ -116,22 +116,35 @@
 				onclick={() => setSelectedFilter('article-saved')} />
 		</div>
 
-		<div
-			class="flex flex-col gap-2 transition-opacity duration-500 {collapsed
-				? 'opacity-0'
-				: 'opacity-100'} min-h-0 flex-1">
-			<div
+		<div class="flex min-h-0 flex-1 flex-col gap-2">
+			<!-- <div
 				class="flex flex-row items-center justify-between text-xl text-text select-none">
-				<div>Subscriptions</div>
+				<div class="transition-all duration-500 {collapsed
+				? 'opacity-0 w-0'
+				: 'opacity-100 w-min'}">Subscriptions</div>
 				<IconButton
 					icon="tabler:plus"
 					label="Add Feed"
-					tabindex={collapsed ? -1 : 0}
 					onclick={() => (addNewOpen = true)} />
+			</div> -->
+			<div class="relative flex items-center text-xl text-text">
+				<div
+					class="overflow-hidden duration-500 lg:transition-all
+						{collapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'} shrink-0">
+					Subscriptions
+				</div>
+				<div class="absolute right-1.25 flex w-6 justify-center">
+					<IconButton
+						icon="tabler:plus"
+						label="Add Feed"
+						onclick={() => (addNewOpen = true)} />
+				</div>
 			</div>
 			<OverlayScrollbarsComponent
 				defer
-				class="min-h-0 flex-1"
+				class="min-h-0 flex-1 transition-all duration-500 {collapsed
+					? 'max-w-0 opacity-0'
+					: 'max-w-xs opacity-100'}"
 				options={getOsbOptions()}>
 				<div class="flex flex-col gap-0.5">
 					{#each feedStore.feeds as feed (feed.id)}

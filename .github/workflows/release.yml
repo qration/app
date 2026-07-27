@@ -34,8 +34,9 @@ jobs:
             args: ''
 
     runs-on: ${{ matrix.platform }}
+    env:
+      SQLX_OFFLINE: true
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
@@ -97,7 +98,6 @@ jobs:
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SQLX_OFFLINE: true
         with:
           tagName: qration-v__VERSION__
           releaseName: 'Qration v__VERSION__'

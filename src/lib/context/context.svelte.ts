@@ -7,6 +7,7 @@ import {
 	isPermissionGranted,
 	requestPermission,
 } from '@choochmeque/tauri-plugin-notifications-api';
+import { mode } from 'mode-watcher';
 
 export class FeedStore {
 	feeds: Feed[] = $state([]);
@@ -85,6 +86,14 @@ setInterval(() => {
 
 export function getNow() {
 	return now;
+}
+
+export function getOsbOptions() {
+	return {
+		scrollbars: {
+			theme: mode.current == 'dark' ? 'os-theme-light' : 'os-theme-dark',
+		},
+	};
 }
 
 export const [getFeedStore, setFeedStore] = createContext<FeedStore>();

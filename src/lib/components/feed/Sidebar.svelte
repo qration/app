@@ -10,9 +10,14 @@
 	import { onMount, setContext } from 'svelte';
 	import { resolve } from '$app/paths';
 	import { getFeedIcon } from '$lib/util/util';
-	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
+	import {
+		getFeedStore,
+		getMQ,
+		getOsbOptions,
+	} from '$lib/context/context.svelte';
 
 	import { commands, type Feed } from '$lib/util/bindings';
+	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	let selectedFilter = $state('feed-all');
 	let delFeed: Feed | undefined = $state();
@@ -63,10 +68,10 @@
 	class="overflow-x-hidden border-r border-r-border bg-bg px-3.75 py-4
 		font-medium {collapsed
 		? '-translate-x-full lg:w-16'
-		: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70
-		shrink-0 flex-col justify-between transition-all duration-500 lg:static lg:translate-x-0"
+		: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70 shrink-0
+		flex-col justify-between overflow-hidden transition-all duration-500 lg:static lg:translate-x-0"
 	inert={collapsed && !MQ.current}>
-	<div class="flex shrink-0 flex-col gap-4 pt-safe-top pb-safe-bottom">
+	<div class="flex min-h-0 flex-1 flex-col gap-4 pt-safe-top pb-safe-bottom">
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center">
 				<div
@@ -116,42 +121,50 @@
 		</div>
 
 		<div
-			class="flex flex-col gap-0.5 transition-opacity duration-500 {collapsed
+			class="flex flex-col gap-2 transition-opacity duration-500 {collapsed
 				? 'opacity-0'
-				: 'opacity-100'}">
+				: 'opacity-100'} min-h-0 flex-1">
 			<div class="flex flex-row items-center justify-between text-xl text-text">
 				<div>Subscriptions</div>
 				<IconButton
 					icon="tabler:plus"
 					label="Add Feed"
+					tabindex={collapsed ? -1 : 0}
 					onclick={() => (addNewOpen = true)} />
 			</div>
-			{#each feedStore.feeds as feed (feed.id)}
-				<SidebarButton
-					text={feed.feed_name}
-					icon={getFeedIcon(feed.feed_type)}
-					selected={selectedFilter == feed.id}
-					onclick={() => setSelectedFilter(feed.id)}
-					starrable={true}
-					starred={feed.favourited}
-					tabindex={collapsed ? -1 : 0}
-					onstar={async () => {
-						await commands.setStarFeed(feed.id, !feed.favourited);
-						feed.favourited = !feed.favourited;
-					}}
-					ondelete={() => {
-						delFeed = feed;
-						deleteOpen = true;
-					}}
-					onrefresh={async () => {
-						await commands.refreshFeed(feed.id);
-						await feedStore.load();
-					}} />
-			{/each}
+			<OverlayScrollbarsComponent
+				defer
+				class="min-h-0 flex-1"
+				options={getOsbOptions()}>
+				<div class="flex flex-col gap-0.5">
+					{#each feedStore.feeds as feed (feed.id)}
+						<SidebarButton
+							text={feed.feed_name}
+							icon={getFeedIcon(feed.feed_type)}
+							selected={selectedFilter == feed.id}
+							onclick={() => setSelectedFilter(feed.id)}
+							starrable={true}
+							starred={feed.favourited}
+							tabindex={collapsed ? -1 : 0}
+							onstar={async () => {
+								await commands.setStarFeed(feed.id, !feed.favourited);
+								feed.favourited = !feed.favourited;
+							}}
+							ondelete={() => {
+								delFeed = feed;
+								deleteOpen = true;
+							}}
+							onrefresh={async () => {
+								await commands.refreshFeed(feed.id);
+								await feedStore.load();
+							}} />
+					{/each}
+				</div>
+			</OverlayScrollbarsComponent>
 		</div>
 	</div>
 
-	<div class="flex flex-col">
+	<div class="mt-2 flex shrink-0 flex-col">
 		<SidebarButton
 			text="Settings"
 			icon="tabler:settings"

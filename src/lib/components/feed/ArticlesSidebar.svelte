@@ -4,7 +4,12 @@
 
 	import { filterArticles, getFeedIcon } from '$lib/util/util';
 	import IconButton from '../ui/IconButton.svelte';
-	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
+	import {
+		getFeedStore,
+		getMQ,
+		getOsbOptions,
+	} from '$lib/context/context.svelte';
+	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	let {
 		filter,
@@ -64,26 +69,36 @@
 			label="Back"
 			onclick={() => refreshAllFeeds()} />
 	</div>
-	<div
-		class="mx-4 mb-2 flex h-full flex-col justify-start overflow-y-scroll rounded-lg bg-bg text-4xl text-text">
-		{#each filteredArticles as article (article.id)}
-			{@const articleFeed = feedStore.feeds.find(
-				(f) => f.id == article.feed_id,
-			)}
-			{#if articleFeed}
-				<ArticleButton
-					{article}
-					author={articleFeed.feed_name}
-					icon={getFeedIcon(
-						feedStore.feeds.find((f) => f.id == article.feed_id)!.feed_type,
+	<div class="mx-4 mb-2 overflow-hidden rounded-lg">
+		<OverlayScrollbarsComponent
+			defer
+			class="h-full w-full bg-bg text-4xl text-text"
+			options={getOsbOptions()}>
+			<div class="flex flex-col justify-start divide-y divide-border">
+				{#each filteredArticles as article (article.id)}
+					{@const articleFeed = feedStore.feeds.find(
+						(f) => f.id == article.feed_id,
 					)}
-					selected={selectedArticle == article.id}
-					onclick={() => {
-						article.article_read = true;
-						selectedArticle = article.id;
-						onarticleselect(selectedArticle);
-					}} />
-			{/if}
-		{/each}
+					{#if articleFeed}
+						<ArticleButton
+							{article}
+							author={articleFeed.feed_name}
+							icon={getFeedIcon(
+								feedStore.feeds.find((f) => f.id == article.feed_id)!.feed_type,
+							)}
+							selected={selectedArticle == article.id}
+							onclick={() => {
+								article.article_read = true;
+								selectedArticle = article.id;
+								onarticleselect(selectedArticle);
+							}} />
+					{/if}
+				{/each}
+			</div>
+		</OverlayScrollbarsComponent>
+		<div
+			class="flex h-full flex-col justify-start overflow-y-scroll bg-bg text-4xl text-text"
+			style="scrollbar-color: #888888 transparent; scrollbar-gutter: stable overlay">
+		</div>
 	</div>
 </div>

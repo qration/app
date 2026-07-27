@@ -4,11 +4,16 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import { addCollection } from '@iconify/svelte';
 	import { icons } from '@iconify-json/tabler';
+	import 'overlayscrollbars/overlayscrollbars.css';
 
 	let { children } = $props();
 
 	// TODO: add only the necessary icons here
 	addCollection(icons);
+	import { OverlayScrollbars } from 'overlayscrollbars';
+	OverlayScrollbars.env().setDefaultOptions({
+		scrollbars: { theme: 'os-theme-dark' },
+	});
 </script>
 
 <ModeWatcher />

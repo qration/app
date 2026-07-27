@@ -7,6 +7,7 @@
 	import { MediaQuery } from 'svelte/reactivity';
 	import { onNotificationClicked } from '@choochmeque/tauri-plugin-notifications-api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
+	import 'overlayscrollbars/overlayscrollbars.css';
 
 	let articleFilter = $state('feed-all');
 	let selectedArticleId = $state('');
@@ -69,7 +70,7 @@
 <div class="relative flex h-full w-full flex-row overflow-hidden bg-bg p-0">
 	{#if !sidebarCollapsed}
 		<div
-			class="fixed inset-0 bg-black/50 lg:hidden"
+			class="fixed inset-0 z-49 bg-black/50 lg:hidden"
 			onclick={collapseSidebar}
 			role="presentation"
 			aria-hidden="true">

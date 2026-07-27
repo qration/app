@@ -3,7 +3,11 @@
 	import ExternalLink from './dialogs/ExternalLink.svelte';
 
 	import { openUrl } from '@tauri-apps/plugin-opener';
-	import { getFeedStore, getMQ } from '$lib/context/context.svelte';
+	import {
+		getFeedStore,
+		getMQ,
+		getOsbOptions,
+	} from '$lib/context/context.svelte';
 
 	import {
 		commands,
@@ -14,6 +18,7 @@
 	import { onMount } from 'svelte';
 	import ImageView from '../ui/ImageView.svelte';
 	import { youtubeVideoId } from '$lib/util/util';
+	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	let {
 		articleId,
@@ -179,36 +184,41 @@
 				{/if}
 			</div>
 		</div>
-		<div
-			class="flex h-full w-full flex-col gap-5 overflow-y-scroll px-5 py-7"
-			role="tabpanel"
-			tabindex="0"
-			bind:this={articleContainer}>
-			<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
-				<span class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
-					>{feed.feed_name}</span>
-				<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
-				<span class="shrink-0 text-lg font-light text-text-secondary"
-					>{dtf.format(article.article_date * 1000)}</span>
-			</div>
-			<hr class="text-border" />
-			{#if videoId}
-				<iframe
-					title={article.article_name}
-					src="https://www.youtube-nocookie.com/embed/{videoId}"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-					allowfullscreen
-					class="aspect-video w-full rounded-lg border-0"></iframe>
-			{/if}
+		<OverlayScrollbarsComponent
+			defer
+			class="h-full w-full"
+			options={getOsbOptions()}>
 			<div
-				onclick={handleArticleClick}
-				onkeydown={handleArticleKeydown}
-				role="presentation"
-				class="feed-content flex h-min flex-col gap-3">
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html articleContent?.content}
+				role="tabpanel"
+				tabindex={0}
+				bind:this={articleContainer}
+				class="flex w-full flex-col gap-5 px-5 py-7">
+				<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
+					<span class="shrink-0 text-2xl font-light whitespace-nowrap text-text"
+						>{feed.feed_name}</span>
+					<span class="min-w-0 text-3xl font-bold">{article.article_name}</span>
+					<span class="shrink-0 text-lg font-light text-text-secondary"
+						>{dtf.format(article.article_date * 1000)}</span>
+				</div>
+				<hr class="text-border" />
+				{#if videoId}
+					<iframe
+						title={article.article_name}
+						src="https://www.youtube-nocookie.com/embed/{videoId}"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+						class="aspect-video w-full rounded-lg border-0"></iframe>
+				{/if}
+				<div
+					onclick={handleArticleClick}
+					onkeydown={handleArticleKeydown}
+					role="presentation"
+					class="feed-content flex h-full flex-col gap-3">
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+					{@html articleContent?.content}
+				</div>
 			</div>
-		</div>
+		</OverlayScrollbarsComponent>
 	{/if}
 </div>
 

@@ -16,7 +16,7 @@
 		getOsbOptions,
 	} from '$lib/context/context.svelte';
 
-	import { commands, type Feed } from '$lib/util/bindings';
+	import type { Feed } from '$lib/util/bindings';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	let selectedFilter = $state('feed-all');
@@ -124,7 +124,8 @@
 			class="flex flex-col gap-2 transition-opacity duration-500 {collapsed
 				? 'opacity-0'
 				: 'opacity-100'} min-h-0 flex-1">
-			<div class="flex flex-row items-center justify-between text-xl text-text">
+			<div
+				class="flex flex-row items-center justify-between text-xl text-text select-none">
 				<div>Subscriptions</div>
 				<IconButton
 					icon="tabler:plus"
@@ -146,16 +147,12 @@
 							starrable={true}
 							starred={feed.favourited}
 							tabindex={collapsed ? -1 : 0}
-							onstar={async () => {
-								await commands.setStarFeed(feed.id, !feed.favourited);
-								feed.favourited = !feed.favourited;
-							}}
+							{feed}
 							ondelete={() => {
 								delFeed = feed;
 								deleteOpen = true;
 							}}
 							onrefresh={async () => {
-								await commands.refreshFeed(feed.id);
 								await feedStore.load();
 							}} />
 					{/each}

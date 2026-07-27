@@ -27,7 +27,9 @@
 
 <div
 	class="flex {cls} w-full flex-row items-center rounded-lg
-		{error ? 'border-error' : 'border-transparent'} border bg-bg-secondary text-xl">
+		{error
+		? 'border-error'
+		: 'border-transparent'} border bg-bg-secondary text-xl select-none">
 	{#if icon}
 		<div class="absolute pl-3 text-xl text-text-secondary">
 			<Icon {icon} />

@@ -32,8 +32,8 @@
 <dialog
 	bind:this={dialog}
 	class="mx-auto my-auto w-120 rounded-xl border
-		border-border bg-bg p-6 text-text shadow-lg backdrop:bg-black/50
-		backdrop:backdrop-blur-xs"
+		border-border bg-bg p-6 text-text shadow-lg select-none
+		backdrop:bg-black/50 backdrop:backdrop-blur-xs"
 	aria-modal="true"
 	aria-label={title || 'Dialog'}
 	onclose={close}

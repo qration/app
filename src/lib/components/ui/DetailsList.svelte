@@ -1,23 +1,29 @@
 <script lang="ts">
 	import DetailsListButton from './DetailsListButton.svelte';
+	import { commands, type Feed } from '$lib/util/bindings';
 
 	let {
 		menuId,
+		feed,
 		starred = false,
-		onstar,
-		ondelete,
 		onrefresh,
+		ondelete,
 	}: {
 		menuId: string;
+		feed?: Feed;
 		starred?: boolean;
-		onstar?: () => void;
+		onrefresh?: () => Promise<void>;
 		ondelete?: () => void;
-		onrefresh?: () => void;
 	} = $props();
 
-	function handleOnStar(e: MouseEvent | undefined) {
+	let feedRefreshing = $state(false);
+
+	async function handleOnStar(e: MouseEvent | undefined) {
 		e?.stopPropagation();
-		onstar?.();
+		if (feed) {
+			await commands.setStarFeed(feed.id, !feed.favourited);
+			feed.favourited = !feed.favourited;
+		}
 	}
 
 	function handleOnDelete(e: MouseEvent | undefined) {
@@ -25,9 +31,17 @@
 		ondelete?.();
 	}
 
-	function handleOnRefresh(e: MouseEvent | undefined) {
+	async function handleOnRefresh(e: MouseEvent | undefined) {
 		e?.stopPropagation();
-		onrefresh?.();
+		console.log('what');
+		if (feed && !feedRefreshing) {
+			console.log(feed.id);
+			feedRefreshing = true;
+			await commands.refreshFeed(feed.id);
+			await onrefresh?.();
+			feedRefreshing = false;
+			console.log(feed.id, 'done');
+		}
 	}
 </script>
 
@@ -47,7 +61,8 @@
 		<DetailsListButton
 			icon="tabler:reload"
 			text="Refresh"
-			onclick={handleOnRefresh} />
+			onclick={handleOnRefresh}
+			iconClass={feedRefreshing ? 'animate-spin' : ''} />
 		<DetailsListButton
 			icon="tabler:trash"
 			text="Delete"

@@ -27,15 +27,14 @@
 </script>
 
 <button
-	class="relative flex w-full flex-row
-		gap-4 text-lg text-text-muted hover:text-text
+	class="relative flex w-full flex-row text-lg text-text-muted hover:text-text
 		{selected
 		? 'bg-bg-hover inset-shadow-[6px_0]'
 		: 'bg-bg-secondary'} max-w-full min-w-0
-		cursor-pointer px-4 py-3 inset-shadow-text hover:bg-bg-hover"
+		cursor-pointer py-3 pr-4 inset-shadow-text select-none hover:bg-bg-hover"
 	{onclick}>
 	<div
-		class="mt-2.5 ml-1 shrink-0 {article.article_read
+		class="mx-4 mt-2.5 shrink-0 {article.article_read
 			? 'bg-transparent'
 			: 'bg-text'} h-2 w-2 rounded-4xl">
 	</div>

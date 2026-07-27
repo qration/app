@@ -28,6 +28,7 @@
 
 	let selectedArticle = $state('');
 	let search = $state('');
+	let feedsRefreshing = $state(false);
 
 	let filteredArticles = $derived(
 		filterArticles(feedStore.feeds, feedStore.articles_light, filter)
@@ -42,7 +43,11 @@
 	);
 
 	async function refreshAllFeeds() {
-		feedStore.refreshAll(true);
+		if (!feedsRefreshing) {
+			feedsRefreshing = true;
+			await feedStore.refreshAll(true);
+			feedsRefreshing = false;
+		}
 	}
 </script>
 
@@ -67,7 +72,8 @@
 		<IconButton
 			icon="tabler:reload"
 			label="Back"
-			onclick={() => refreshAllFeeds()} />
+			onclick={() => refreshAllFeeds()}
+			iconClass={feedsRefreshing ? 'animate-spin' : ''} />
 	</div>
 	<div class="mx-4 mb-2 overflow-hidden rounded-lg">
 		<OverlayScrollbarsComponent

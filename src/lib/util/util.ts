@@ -49,7 +49,7 @@ export function isValidURL(url: string): boolean {
 export function youtubeVideoId(url: string | null): string | null {
 	if (!url) return null;
 	try {
-		const u = new URL(url);
+		const u = new URL(url.replace('/shorts/', '/watch?v='));
 		if (u.hostname == 'youtu.be') return u.pathname.slice(1) || null;
 		return u.searchParams.get('v');
 	} catch {

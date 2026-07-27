@@ -8,6 +8,7 @@
 	import DetailsList from './DetailsList.svelte';
 
 	import { getContext } from 'svelte';
+	import type { Feed } from '$lib/util/bindings';
 
 	let {
 		text,
@@ -16,8 +17,8 @@
 		starrable = false,
 		starred = false,
 		tabindex = 0,
+		feed,
 		onclick,
-		onstar,
 		ondelete,
 		onrefresh,
 	}: {
@@ -27,10 +28,10 @@
 		starrable?: boolean;
 		starred?: boolean;
 		tabindex?: number;
+		feed?: Feed;
 		onclick?: (e?: MouseEvent) => void;
-		onstar?: () => void;
 		ondelete?: () => void;
-		onrefresh?: () => void;
+		onrefresh?: () => Promise<void>;
 	} = $props();
 
 	// eslint-disable-next-line no-useless-assignment
@@ -51,8 +52,8 @@
 	role="button"
 	{tabindex}
 	class="group flex w-full cursor-pointer flex-row items-center gap-2 p-1
-    text-text-muted {selected ? 'bg-bg-hover' : 'bg-bg'} rounded hover:text-text
-    [&:hover:not(:has(button:hover)):not(:has(:popover-open))]:bg-bg-hover"
+    text-text-muted {selected ? 'bg-bg-hover' : 'bg-bg'} rounded select-none
+    hover:text-text [&:hover:not(:has(button:hover)):not(:has(:popover-open))]:bg-bg-hover"
 	{onclick}
 	onkeydown={handleKeyDown}>
 	<div class="flex shrink-0 items-center justify-center text-2xl leading-none">
@@ -81,7 +82,7 @@
 							: ''} group-hover:bg-bg-hover"
 						onclick={(e) => e.stopPropagation()} />
 				</div>
-				<DetailsList {menuId} {starred} {onstar} {ondelete} {onrefresh} />
+				<DetailsList {menuId} {starred} {ondelete} {feed} {onrefresh} />
 			</div>
 		{/if}
 	</div>

@@ -29,7 +29,7 @@
 		<div>This link is taking you to the following website:</div>
 		<div
 			class="rounded border border-border bg-bg-secondary px-4 py-2 font-mono
-				wrap-anywhere">
+				wrap-anywhere select-text">
 			{href}
 		</div>
 		<div class="flex flex-row gap-1 self-end">

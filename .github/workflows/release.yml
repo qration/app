@@ -60,11 +60,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
+      - name: Set up Android SDK
         if: matrix.mobile == 'android'
         uses: android-actions/setup-android@v4
 
-      - name: Setup Android NDK
+      - name: Set up Android NDK
         if: matrix.mobile == 'android'
         uses: nttld/setup-ndk@v1
         id: setup-ndk
@@ -89,7 +89,7 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: init mobile project
+      - name: Initialise mobile project
         if: matrix.mobile != ''
         run: |
           npx @tauri-apps/cli ${{ matrix.mobile }} init
@@ -99,7 +99,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: qration-v__VERSION__
+          tagName: __VERSION__
           releaseName: 'Qration v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true

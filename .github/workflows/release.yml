@@ -30,6 +30,8 @@ jobs:
             mobile: 'android'
           - platform: 'windows-latest'
             args: ''
+          - platform: 'windows-latest'
+            args: '--target i686-pc-windows-msvc --bundles nsis'
           - platform: 'windows-11-arm'
             args: ''
 
@@ -42,7 +44,7 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      - name: Install Node.js LTS
+      - name: Install Node.js 24
         uses: actions/setup-node@v7
         with:
           node-version: 24
@@ -50,14 +52,14 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ (matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin') || (matrix.mobile == 'android' && 'aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android') || '' }}
+          targets: ${{ (matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin') || (matrix.mobile == 'android' && 'aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android') || (contains(matrix.args, 'i686-pc-windows-msvc') && 'i686-pc-windows-msvc') || '' }}
 
       # ANDROID
-      - name: Set up JDK
+      - name: Set up JDK 17
         if: matrix.mobile == 'android'
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Set up Android SDK
@@ -73,7 +75,7 @@ jobs:
           link-to-sdk: true
 
       # SYSTEM
-      - name: Rust Cache
+      - name: Rust cache
         uses: Swatinem/rust-cache@v2
         with:
           cache-on-failure: true
@@ -89,10 +91,14 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: Initialise mobile project
+      - name: Set up Android signing
         if: matrix.mobile != ''
         run: |
-          npx @tauri-apps/cli ${{ matrix.mobile }} init
+          cd src-tauri/gen/android
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
 
       - name: Tauri build
         uses: tauri-apps/tauri-action@v1

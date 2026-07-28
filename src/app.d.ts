@@ -7,7 +7,11 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			showSidebar?: boolean;
+			showArticle?: boolean;
+			selectedArticleId?: string;
+		}
 		// interface Platform {}
 	}
 }

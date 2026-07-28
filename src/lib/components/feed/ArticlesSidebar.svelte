@@ -16,17 +16,18 @@
 		inert,
 		onarticleselect,
 		onsidebarcollapse,
+		selectedArticleId = $bindable(),
 	}: {
 		filter: string;
 		inert: boolean;
 		onarticleselect: (article: string) => void;
 		onsidebarcollapse: () => void;
+		selectedArticleId: string;
 	} = $props();
 
 	const feedStore = getFeedStore();
 	const MQ = getMQ();
 
-	let selectedArticle = $state('');
 	let search = $state('');
 	let feedsRefreshing = $state(false);
 
@@ -92,11 +93,11 @@
 							icon={getFeedIcon(
 								feedStore.feeds.find((f) => f.id == article.feed_id)!.feed_type,
 							)}
-							selected={selectedArticle == article.id}
+							selected={selectedArticleId == article.id}
 							onclick={() => {
 								article.article_read = true;
-								selectedArticle = article.id;
-								onarticleselect(selectedArticle);
+								selectedArticleId = article.id;
+								onarticleselect(selectedArticleId);
 							}} />
 					{/if}
 				{/each}

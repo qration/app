@@ -11,11 +11,13 @@
 	} from '@choochmeque/tauri-plugin-notifications-api';
 	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import 'overlayscrollbars/overlayscrollbars.css';
+	import { pushState, replaceState } from '$app/navigation';
+	import { page } from '$app/state';
 
 	let articleFilter = $state('feed-all');
-	let selectedArticleId = $state('');
-	let sidebarCollapsed = $state(true);
-	let articleOpen = $state(false);
+	let selectedArticleId = $derived(page.state.selectedArticleId || '');
+	let sidebarCollapsed = $derived(!page.state.showSidebar);
+	let articleOpen = $derived(page.state.showArticle || false);
 
 	const MQ = new MediaQuery('width >= 64rem', true);
 	const feedStore = setFeedStore(new FeedStore());
@@ -29,22 +31,33 @@
 	}
 
 	async function articleSelect(articleId: string) {
-		selectedArticleId = articleId;
 		articleOpen = true;
+		if (selectedArticleId != articleId) {
+			pushState('', {
+				...page.state,
+				selectedArticleId: articleId,
+				showArticle: true,
+			});
+		}
 		await tick();
 		ac?.focus({ preventScroll: true });
 	}
 
 	function closeArticle() {
-		articleOpen = false;
+		replaceState('', { ...page.state, selectedArticleId, showArticle: false });
 	}
 
 	function closeArticleEnd() {
 		selectedArticleId = '';
+		history.back();
 	}
 
 	function collapseSidebar() {
-		sidebarCollapsed = !sidebarCollapsed;
+		if (sidebarCollapsed) {
+			pushState('', { ...page.state, showSidebar: true });
+		} else {
+			history.back();
+		}
 	}
 
 	onMount(() => {
@@ -91,6 +104,7 @@
 		filter={articleFilter}
 		onarticleselect={articleSelect}
 		onsidebarcollapse={collapseSidebar}
+		{selectedArticleId}
 		inert={!MQ.current && (!sidebarCollapsed || articleOpen)} />
 	<ArticleView
 		bind:articleContainer={ac}

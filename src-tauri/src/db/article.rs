@@ -30,10 +30,7 @@ pub async fn add_articles(
 		)
 		.execute(pool)
 		.await
-		.map_err(|e| {
-			println!("{}", e);
-			FeedError::DbError
-		})?;
+		.map_err(|_| FeedError::DbError)?;
 
 		if n.rows_affected() == 0 {
 			continue;

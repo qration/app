@@ -172,7 +172,6 @@
 					icon="tabler:bookmark{article.article_saved ? '-filled' : ''}"
 					label="Save {article.article_name}"
 					onclick={async () => {
-						console.log(article.article_saved);
 						await commands.setSaveArticle(articleId, !article.article_saved);
 						article.article_saved = !article.article_saved;
 					}} />

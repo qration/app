@@ -56,7 +56,6 @@
 		feedStore.articles_light = feedStore.articles_light.concat(
 			ch.articles_light,
 		);
-		console.log(feedStore);
 
 		onconfirm?.(trimmed);
 		formData.url = '';

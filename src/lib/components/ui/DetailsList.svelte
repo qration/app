@@ -33,14 +33,11 @@
 
 	async function handleOnRefresh(e: MouseEvent | undefined) {
 		e?.stopPropagation();
-		console.log('what');
 		if (feed && !feedRefreshing) {
-			console.log(feed.id);
 			feedRefreshing = true;
 			await commands.refreshFeed(feed.id);
 			await onrefresh?.();
 			feedRefreshing = false;
-			console.log(feed.id, 'done');
 		}
 	}
 </script>

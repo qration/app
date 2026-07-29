@@ -14,4 +14,6 @@ pub enum FeedError {
 	DbError,
 	#[error("already subscribed")]
 	AlreadySubscribed,
+	#[error("transcript unavailable")]
+	TranscriptUnavailable,
 }

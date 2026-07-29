@@ -23,6 +23,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 			feed::fetch_feed,
 			article::fetch_article_content,
 			article::fetch_articles_light,
+			article::fetch_transcript,
 			feed::set_star_feed,
 			article::set_save_article,
 			feed::delete_feed,

@@ -1,5 +1,11 @@
+use crate::types::{article::TranscriptSnippet, error::FeedError};
 use atom_syndication::{extension::Extension, Entry};
 use url::Url;
+
+// InnerTube's public web key. The WEB client no longer returns caption tracks,
+// so we ask as the ANDROID client, which still does.
+const INNERTUBE_KEY: &str = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";
+const INNERTUBE_PLAYER_URL: &str = "https://www.youtube.com/youtubei/v1/player";
 
 pub async fn _resolve_youtube_feed_url(url: &Url) -> Option<String> {
 	let host = url.host_str()?;
@@ -63,6 +69,163 @@ pub fn _get_yt_video_id(e: Entry) -> String {
 		.and_then(|ext| ext.value())
 		.unwrap_or_default()
 		.to_owned()
+}
+
+pub async fn _fetch_transcript(
+	video_id: &str,
+) -> Result<Vec<TranscriptSnippet>, FeedError> {
+	let client = reqwest::Client::new();
+
+	let body = client
+		.post(format!("{INNERTUBE_PLAYER_URL}?key={INNERTUBE_KEY}"))
+		.json(&serde_json::json!({
+			"videoId": video_id,
+			"context": {
+				"client": {
+					"clientName": "ANDROID",
+					"clientVersion": "20.10.38",
+					"androidSdkVersion": 30,
+					"hl": "en"
+				}
+			}
+		}))
+		.send()
+		.await
+		.map_err(|_| FeedError::RequestFailed)?
+		.text()
+		.await
+		.map_err(|_| FeedError::StreamFailed)?;
+
+	let player: serde_json::Value =
+		serde_json::from_str(&body).map_err(|_| FeedError::ParseFailed)?;
+
+	let tracks = player
+		.pointer("/captions/playerCaptionsTracklistRenderer/captionTracks")
+		.and_then(|t| t.as_array())
+		.ok_or(FeedError::TranscriptUnavailable)?;
+
+	let track_url =
+		_pick_caption_track(tracks).ok_or(FeedError::TranscriptUnavailable)?;
+
+	let timedtext = client
+		.get(track_url)
+		.send()
+		.await
+		.map_err(|_| FeedError::RequestFailed)?
+		.text()
+		.await
+		.map_err(|_| FeedError::StreamFailed)?;
+
+	let parsed: serde_json::Value =
+		serde_json::from_str(&timedtext).map_err(|_| FeedError::ParseFailed)?;
+
+	Ok(_parse_timedtext(&parsed))
+}
+
+/// Prefers an English track, falling back to whatever the video offers, and
+/// swaps the track's `fmt=srv3` for `fmt=json3` so it comes back as JSON.
+fn _pick_caption_track(tracks: &[serde_json::Value]) -> Option<Url> {
+	let track = tracks
+		.iter()
+		.find(|t| {
+			t.get("languageCode")
+				.and_then(|l| l.as_str())
+				.is_some_and(|l| l.starts_with("en"))
+		})
+		.or_else(|| tracks.first())?;
+
+	let mut url = Url::parse(track.get("baseUrl")?.as_str()?).ok()?;
+	let pairs: Vec<(String, String)> = url
+		.query_pairs()
+		.filter(|(k, _)| k != "fmt")
+		.map(|(k, v)| (k.into_owned(), v.into_owned()))
+		.collect();
+
+	url
+		.query_pairs_mut()
+		.clear()
+		.extend_pairs(pairs)
+		.append_pair("fmt", "json3");
+
+	Some(url)
+}
+
+fn _parse_timedtext(timedtext: &serde_json::Value) -> Vec<TranscriptSnippet> {
+	let Some(events) = timedtext.get("events").and_then(|e| e.as_array()) else {
+		return Vec::new();
+	};
+
+	events
+		.iter()
+		.filter_map(|e| {
+			let text = e
+				.get("segs")?
+				.as_array()?
+				.iter()
+				.filter_map(|s| s.get("utf8").and_then(|u| u.as_str()))
+				.collect::<String>();
+
+			let text = text.trim();
+			if text.is_empty() {
+				return None;
+			}
+
+			Some(TranscriptSnippet {
+				text: text.to_string(),
+				start: e.get("tStartMs")?.as_f64()? / 1000.0,
+				duration: e.get("dDurationMs").and_then(|d| d.as_f64()).unwrap_or(0.0)
+					/ 1000.0,
+			})
+		})
+		.collect()
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[tokio::test]
+	async fn fetches_transcript_snippets() {
+		let snippets = _fetch_transcript("jNQXAC9IVRw").await.unwrap();
+
+		assert!(!snippets.is_empty(), "expected at least one snippet");
+		assert!(
+			snippets.iter().all(|s| !s.text.trim().is_empty()),
+			"snippets should never carry empty text"
+		);
+		assert!(
+			snippets.windows(2).all(|w| w[0].start <= w[1].start),
+			"snippets should be in chronological order"
+		);
+	}
+
+	#[tokio::test]
+	async fn reports_unavailable_for_video_without_captions() {
+		// Video ids are 11 chars, so this parses as an id but resolves to nothing.
+		let res = _fetch_transcript("00000000000").await;
+
+		assert!(matches!(res, Err(FeedError::TranscriptUnavailable)));
+	}
+
+	#[test]
+	fn parse_timedtext_joins_segments_and_converts_ms() {
+		let raw = serde_json::json!({
+			"events": [
+				{ "tStartMs": 1200, "dDurationMs": 2160,
+					"segs": [{ "utf8": "hello" }, { "utf8": " world" }] },
+				{ "tStartMs": 5000, "dDurationMs": 1000, "segs": [{ "utf8": "  " }] },
+				{ "tStartMs": 7000, "segs": [{ "utf8": "no duration" }] }
+			]
+		});
+
+		let snippets = _parse_timedtext(&raw);
+
+		assert_eq!(snippets.len(), 2, "blank-only events should be dropped");
+		assert_eq!(snippets[0].text, "hello world");
+		assert_eq!(snippets[0].start, 1.2);
+		assert_eq!(snippets[0].duration, 2.16);
+		assert_eq!(snippets[1].duration, 0.0);
+	}
 }
 
 pub fn _get_yt_content(e: Entry) -> Option<String> {

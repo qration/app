@@ -25,13 +25,17 @@
 		articleId,
 		articleContainer = $bindable(),
 		isOpen,
+		zen,
 		onclose,
+		onzentoggle,
 		ontransitionend,
 	}: {
 		articleId: string;
 		articleContainer: HTMLDivElement | null;
 		isOpen: boolean;
+		zen: boolean;
 		onclose: () => void;
+		onzentoggle: () => void;
 		ontransitionend: () => void;
 	} = $props();
 
@@ -182,6 +186,12 @@
 						label="Open {article.article_name}"
 						onclick={async () => await openUrl(article.article_url!)} />
 				{/if}
+				{#if MQ.current}
+					<IconButton
+						icon="tabler:arrows-diagonal{zen ? '-minimize-2' : ''}"
+						label={zen ? 'Exit zen mode' : 'Zen mode'}
+						onclick={() => onzentoggle()} />
+				{/if}
 			</div>
 		</div>
 		{#key articleId}
@@ -193,7 +203,9 @@
 					role="tabpanel"
 					tabindex={0}
 					bind:this={articleContainer}
-					class="flex w-full flex-col gap-5 px-5 pb-5">
+					class="mx-auto flex w-full flex-col gap-5 px-5 pb-5 transition-[max-width] duration-500 {zen
+						? 'max-w-3xl'
+						: 'max-w-full'}">
 					<div class="flex max-w-full min-w-0 flex-col font-medium text-text">
 						<span
 							class="shrink-0 text-2xl font-light whitespace-nowrap text-text"

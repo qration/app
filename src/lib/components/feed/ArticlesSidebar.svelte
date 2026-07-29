@@ -14,12 +14,14 @@
 	let {
 		filter,
 		inert,
+		zen,
 		onarticleselect,
 		onsidebarcollapse,
 		selectedArticleId = $bindable(),
 	}: {
 		filter: string;
 		inert: boolean;
+		zen: boolean;
 		onarticleselect: (article: string) => void;
 		onsidebarcollapse: () => void;
 		selectedArticleId: string;
@@ -53,10 +55,12 @@
 </script>
 
 <div
-	class="flex h-full min-h-0 {MQ.current
-		? 'w-100'
-		: 'w-full'} shrink-0 touch-none flex-col justify-start
-		border-r border-border bg-bg text-4xl text-text"
+	class="flex h-full min-h-0 {zen
+		? 'w-0 border-r-0'
+		: MQ.current
+			? 'w-100'
+			: 'w-full'} shrink-0 touch-none flex-col justify-start overflow-hidden
+		border-r border-border bg-bg text-4xl text-text transition-all duration-500"
 	{inert}>
 	<div
 		class="sticky top-0 flex w-full flex-row

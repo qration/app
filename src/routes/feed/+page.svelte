@@ -25,6 +25,7 @@
 	setMQ(MQ);
 
 	let ac: HTMLDivElement | null = $state(null);
+	let zen = $state(false);
 
 	function filterChange(filter: string) {
 		articleFilter = filter;
@@ -44,6 +45,7 @@
 	}
 
 	function closeArticle() {
+		zen = false;
 		replaceState('', { ...page.state, selectedArticleId, showArticle: false });
 	}
 
@@ -68,6 +70,15 @@
 			15 * 60000,
 		);
 
+		// Dialogs and native video fullscreen consume Escape first.
+		const onKeydown = (e: KeyboardEvent) => {
+			if (e.key != 'Escape' || !zen) return;
+			if (document.querySelector('dialog[open]')) return;
+			if (document.fullscreenElement) return;
+			zen = false;
+		};
+		window.addEventListener('keydown', onKeydown);
+
 		let unlisten: () => Promise<void> | null;
 		onNotificationClicked(async () => {
 			await getCurrentWindow().setFocus();
@@ -79,6 +90,7 @@
 
 		return async () => {
 			clearInterval(interval);
+			window.removeEventListener('keydown', onKeydown);
 			await unlisten?.();
 		};
 	});
@@ -99,18 +111,22 @@
 	<Sidebar
 		onfilterchange={filterChange}
 		collapsed={sidebarCollapsed}
+		{zen}
 		oncollapse={collapseSidebar} />
 	<ArticlesSidebar
 		filter={articleFilter}
 		onarticleselect={articleSelect}
 		onsidebarcollapse={collapseSidebar}
 		{selectedArticleId}
-		inert={!MQ.current && (!sidebarCollapsed || articleOpen)} />
+		{zen}
+		inert={zen || (!MQ.current && (!sidebarCollapsed || articleOpen))} />
 	<ArticleView
 		bind:articleContainer={ac}
 		articleId={selectedArticleId}
 		isOpen={articleOpen}
+		{zen}
 		onclose={closeArticle}
+		onzentoggle={() => (zen = !zen)}
 		ontransitionend={closeArticleEnd} />
 	<!-- <h1>Welcome to SvelteKit</h1>
 	<p>

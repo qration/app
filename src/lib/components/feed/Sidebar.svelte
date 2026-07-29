@@ -29,10 +29,12 @@
 	let {
 		onfilterchange,
 		collapsed,
+		zen,
 		oncollapse,
 	}: {
 		onfilterchange: (filter: string) => void;
 		collapsed: boolean;
+		zen: boolean;
 		oncollapse: () => void;
 	} = $props();
 
@@ -65,11 +67,13 @@
 <div
 	bind:this={sidebarRef}
 	class="overflow-x-hidden border-r border-r-border bg-bg px-3.75 py-4
-		font-medium {collapsed
-		? '-translate-x-full lg:w-16'
-		: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70 shrink-0
+		font-medium {zen
+		? '-translate-x-full lg:w-0 lg:border-r-0 lg:px-0'
+		: collapsed
+			? '-translate-x-full lg:w-16'
+			: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70 shrink-0
 		flex-col justify-between overflow-hidden transition-all duration-500 lg:static lg:translate-x-0"
-	inert={collapsed && !MQ.current}>
+	inert={zen || (collapsed && !MQ.current)}>
 	<div class="flex min-h-0 flex-1 flex-col gap-4 pt-safe-top pb-safe-bottom">
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center py-6">

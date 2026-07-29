@@ -20,9 +20,9 @@ export const commands = {
 		typedError<ArticleLight[], FeedError>(
 			__TAURI_INVOKE('fetch_articles_light'),
 		),
-	fetchTranscript: (videoId: string) =>
+	fetchTranscript: (videoId: string, lang: string) =>
 		typedError<TranscriptSnippet[], FeedError>(
-			__TAURI_INVOKE('fetch_transcript', { videoId }),
+			__TAURI_INVOKE('fetch_transcript', { videoId, lang }),
 		),
 	setStarFeed: (id: string, star: boolean) =>
 		typedError<null, FeedError>(__TAURI_INVOKE('set_star_feed', { id, star })),

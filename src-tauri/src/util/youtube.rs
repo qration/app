@@ -73,6 +73,7 @@ pub fn _get_yt_video_id(e: Entry) -> String {
 
 pub async fn _fetch_transcript(
 	video_id: &str,
+	lang: &str,
 ) -> Result<Vec<TranscriptSnippet>, FeedError> {
 	let client = reqwest::Client::new();
 
@@ -85,7 +86,7 @@ pub async fn _fetch_transcript(
 					"clientName": "ANDROID",
 					"clientVersion": "20.10.38",
 					"androidSdkVersion": 30,
-					"hl": "en"
+					"hl": lang,
 				}
 			}
 		}))
@@ -186,7 +187,7 @@ mod tests {
 
 	#[tokio::test]
 	async fn fetches_transcript_snippets() {
-		let snippets = _fetch_transcript("jNQXAC9IVRw").await.unwrap();
+		let snippets = _fetch_transcript("jNQXAC9IVRw", "en").await.unwrap();
 
 		assert!(!snippets.is_empty(), "expected at least one snippet");
 		assert!(
@@ -202,7 +203,7 @@ mod tests {
 	#[tokio::test]
 	async fn reports_unavailable_for_video_without_captions() {
 		// Video ids are 11 chars, so this parses as an id but resolves to nothing.
-		let res = _fetch_transcript("00000000000").await;
+		let res = _fetch_transcript("00000000000", "en").await;
 
 		assert!(matches!(res, Err(FeedError::TranscriptUnavailable)));
 	}

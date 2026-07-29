@@ -64,6 +64,7 @@
 	let alt = $state('');
 
 	let articleViewRef: HTMLElement;
+	let ytPlayer: HTMLIFrameElement | null = $state(null);
 
 	function onDialogClose() {
 		suppressClick = true;
@@ -206,12 +207,13 @@
 					<hr class="text-border" />
 					{#if videoId}
 						<iframe
+							bind:this={ytPlayer}
 							title={article.article_name}
-							src="https://www.youtube-nocookie.com/embed/{videoId}"
+							src="https://www.youtube-nocookie.com/embed/{videoId}?enablejsapi=1"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowfullscreen
 							class="aspect-video w-full rounded-lg border-0"></iframe>
-						<Transcript {videoId} />
+						<Transcript {videoId} {ytPlayer} />
 					{/if}
 					<div
 						onclick={handleArticleClick}

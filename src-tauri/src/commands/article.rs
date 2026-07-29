@@ -26,8 +26,9 @@ pub async fn fetch_article_content(
 #[specta::specta]
 pub async fn fetch_transcript(
 	video_id: String,
+	lang: String,
 ) -> Result<Vec<TranscriptSnippet>, FeedError> {
-	util::youtube::_fetch_transcript(&video_id).await
+	util::youtube::_fetch_transcript(&video_id, &lang).await
 }
 
 #[tauri::command]

@@ -4,11 +4,13 @@
 	import { getOsbOptions } from '$lib/context/context.svelte';
 	import { commands, type TranscriptSnippet } from '$lib/util/bindings';
 
-	let { videoId }: { videoId: string } = $props();
+	let { videoId, ytPlayer }: { videoId: string; ytPlayer: HTMLIFrameElement } =
+		$props();
 
 	let open = $state(false);
 	let loading = $state(false);
 	let error = $state<string | null>(null);
+	let lastSnippetTime: number | null = $state(null);
 	let snippets: TranscriptSnippet[] = $state([]);
 
 	function timestamp(seconds: number): string {
@@ -16,17 +18,20 @@
 		const h = Math.floor(total / 3600);
 		const m = Math.floor((total % 3600) / 60);
 		const s = total % 60;
-		const mm = h > 0 ? String(m).padStart(2, '0') : String(m);
-		return `${h > 0 ? `${h}:` : ''}${mm}:${String(s).padStart(2, '0')}`;
+		const mm =
+			lastSnippetTime && lastSnippetTime > 60 * 10
+				? String(m).padStart(2, '0')
+				: String(m);
+		return `${lastSnippetTime && lastSnippetTime > 60 * 60 ? `${h}:` : ''}${mm}:${String(s).padStart(2, '0')}`;
 	}
 
-	async function toggle() {
+	async function toggle(e: MouseEvent, lang = 'en-US') {
 		open = !open;
 		if (!open || loading || snippets.length > 0) return;
 
 		loading = true;
 		error = null;
-		const res = await commands.fetchTranscript(videoId);
+		const res = await commands.fetchTranscript(videoId, lang);
 		if (res.status == 'ok') {
 			snippets = res.data;
 			if (snippets.length == 0) error = 'No transcript available.';
@@ -36,7 +41,19 @@
 					? 'No transcript available for this video.'
 					: "Couldn't load the transcript.";
 		}
+		lastSnippetTime = snippets[snippets.length - 1].start;
 		loading = false;
+	}
+
+	async function onSnippetClick(snippet: TranscriptSnippet) {
+		ytPlayer.contentWindow?.postMessage(
+			JSON.stringify({
+				event: 'command',
+				func: 'seekTo',
+				args: [snippet.start, true],
+			}),
+			'*',
+		);
 	}
 </script>
 
@@ -68,13 +85,15 @@
 					options={getOsbOptions()}>
 					<div class="flex flex-col gap-0.5 p-2">
 						{#each snippets as snippet, i (i)}
-							<div class="flex flex-row gap-3 rounded px-2 py-1">
+							<button
+								class="align-center flex cursor-pointer flex-row gap-3 rounded px-2 py-1 hover:bg-bg-hover"
+								onclick={async () => await onSnippetClick(snippet)}>
 								<span
-									class="shrink-0 pt-0.5 text-sm text-text-muted tabular-nums">
+									class="shrink-0 pt-0.75 font-mono text-sm text-text-muted tabular-nums">
 									{timestamp(snippet.start ?? 0)}
 								</span>
 								<span class="min-w-0 text-text">{snippet.text}</span>
-							</div>
+							</button>
 						{/each}
 					</div>
 				</OverlayScrollbarsComponent>

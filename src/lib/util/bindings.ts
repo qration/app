@@ -20,6 +20,10 @@ export const commands = {
 		typedError<ArticleLight[], FeedError>(
 			__TAURI_INVOKE('fetch_articles_light'),
 		),
+	fetchTranscript: (videoId: string) =>
+		typedError<TranscriptSnippet[], FeedError>(
+			__TAURI_INVOKE('fetch_transcript', { videoId }),
+		),
 	setStarFeed: (id: string, star: boolean) =>
 		typedError<null, FeedError>(__TAURI_INVOKE('set_star_feed', { id, star })),
 	setSaveArticle: (id: string, save: boolean) =>
@@ -79,7 +83,8 @@ export type FeedError =
 	| 'StreamFailed'
 	| 'ParseFailed'
 	| 'DbError'
-	| 'AlreadySubscribed';
+	| 'AlreadySubscribed'
+	| 'TranscriptUnavailable';
 
 export type FeedType = 'rss' | 'atom' | 'youtube';
 
@@ -88,6 +93,12 @@ export type MediaType = 'text' | 'video';
 export type RefreshFeedResult = {
 	new_count: number;
 	articles_light: ArticleLight[];
+};
+
+export type TranscriptSnippet = {
+	text: string;
+	start: number | null;
+	duration: number | null;
 };
 
 /* Tauri Specta runtime */

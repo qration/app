@@ -27,6 +27,13 @@ pub struct ArticleContent {
 	pub enclosure_length: Option<i64>,
 }
 
+#[derive(Serialize, Deserialize, Type, Clone)]
+pub struct TranscriptSnippet {
+	pub text: String,
+	pub start: f64,
+	pub duration: f64,
+}
+
 #[derive(
 	Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,
 )]

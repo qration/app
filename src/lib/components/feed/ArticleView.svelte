@@ -1,6 +1,7 @@
 <script lang="ts">
 	import IconButton from '$lib/components/ui/IconButton.svelte';
 	import ExternalLink from './dialogs/ExternalLink.svelte';
+	import Transcript from './Transcript.svelte';
 
 	import { openUrl } from '@tauri-apps/plugin-opener';
 	import {
@@ -210,6 +211,7 @@
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowfullscreen
 							class="aspect-video w-full rounded-lg border-0"></iframe>
+						<Transcript {videoId} />
 					{/if}
 					<div
 						onclick={handleArticleClick}

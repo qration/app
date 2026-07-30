@@ -46,6 +46,26 @@ export function isValidURL(url: string): boolean {
 	}
 }
 
+const WORDS_PER_MINUTE = 250;
+
+// Below this the estimate is noise (empty articles, video descriptions).
+const MIN_WORDS_FOR_ESTIMATE = 50;
+
+export function countWords(html: string | null | undefined): number {
+	if (!html) return 0;
+	const text = new DOMParser()
+		.parseFromString(html, 'text/html')
+		.body.textContent?.trim();
+	if (!text) return 0;
+	return text.split(/\s+/).length;
+}
+
+// Null when there isn't enough text to estimate against.
+export function readingMinutes(words: number): number | null {
+	if (words < MIN_WORDS_FOR_ESTIMATE) return null;
+	return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
+
 export function youtubeVideoId(url: string | null): string | null {
 	if (!url) return null;
 	try {

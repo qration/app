@@ -60,7 +60,7 @@
 	);
 
 	let articleContent: ArticleContent | null = $state(null);
-	let minutes: number | null = $derived(
+	let minutes: number | null = $derived.by(() =>
 		readingMinutes(countWords(articleContent?.content)),
 	);
 

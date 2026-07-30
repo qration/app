@@ -62,6 +62,16 @@
 		open = false;
 	}
 
+	// Without preventDefault the native submit navigates, which resets the
+	// history state the sidebar's collapsed flag lives in.
+	async function submit(e: SubmitEvent) {
+		e.preventDefault();
+		if (loading) return;
+		loading = true;
+		await confirm();
+		loading = false;
+	}
+
 	function clearError(field: keyof AddNewFormFields) {
 		errorData[field] = '';
 	}
@@ -73,7 +83,7 @@
 </script>
 
 <Modal bind:open onclose={close} title="Add New Feed">
-	<form>
+	<form onsubmit={submit}>
 		<div class="flex flex-col gap-4">
 			<label class="flex flex-col gap-2">
 				<span class="text-text-muted">Feed URL</span>
@@ -91,14 +101,7 @@
 				{/if}
 			</label>
 			<div class="flex justify-end">
-				<Button
-					onclick={async () => {
-						loading = true;
-						await confirm();
-						loading = false;
-					}}
-					class="h-10"
-					type="submit">
+				<Button class="h-10" type="submit">
 					<span class="flex w-15 items-center justify-center">
 						{#if loading}
 							<Icon icon="tabler:loader-2" class="block animate-spin" />

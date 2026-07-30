@@ -38,6 +38,7 @@
 				...page.state,
 				selectedArticleId: articleId,
 				showArticle: true,
+				sidebarEntry: false,
 			});
 		}
 		await tick();
@@ -56,9 +57,13 @@
 
 	function collapseSidebar() {
 		if (sidebarCollapsed) {
-			pushState('', { ...page.state, showSidebar: true });
-		} else {
+			pushState('', { ...page.state, showSidebar: true, sidebarEntry: true });
+		} else if (page.state.sidebarEntry) {
+			// Its own entry is still on top, so popping it is the exact undo.
 			history.back();
+		} else {
+			// Articles were opened since; popping would walk their history instead.
+			replaceState('', { ...page.state, showSidebar: false });
 		}
 	}
 

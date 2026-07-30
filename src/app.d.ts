@@ -9,6 +9,8 @@ declare global {
 		// interface PageData {}
 		interface PageState {
 			showSidebar?: boolean;
+			// Marks the entry pushed by opening the sidebar, so it can be popped.
+			sidebarEntry?: boolean;
 			showArticle?: boolean;
 			selectedArticleId?: string;
 		}

@@ -242,7 +242,7 @@
 				</div>
 			</OverlayScrollbarsComponent>
 		{/key}
-		{#if minutes && !videoId}
+		{#if minutes && !videoId && MQ.current}
 			<div
 				aria-hidden={!zen}
 				class="pointer-events-none absolute bottom-0 left-0 m-4 flex

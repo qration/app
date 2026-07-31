@@ -1,6 +1,5 @@
 use crate::db;
 use crate::types::{article::*, error::*};
-use crate::util;
 use sqlx::{Pool, Sqlite};
 use tauri::State;
 
@@ -17,18 +16,12 @@ pub async fn fetch_articles_light(
 pub async fn fetch_article_content(
 	pool: State<'_, Pool<Sqlite>>,
 	id: String,
-) -> Result<ArticleContent, FeedError> {
+) -> Result<(ArticleContent, Option<Transcript>), FeedError> {
 	db::article::mark_article_read(&pool, id.clone()).await?;
-	db::article::fetch_article_content(&pool, id.clone()).await
-}
-
-#[tauri::command]
-#[specta::specta]
-pub async fn fetch_transcript(
-	video_id: String,
-	lang: String,
-) -> Result<Vec<TranscriptSnippet>, FeedError> {
-	util::youtube::_fetch_transcript(&video_id, &lang).await
+	Ok((
+		db::article::fetch_article_content(&pool, id.clone()).await?,
+		db::article::fetch_transcript(&pool, id.clone()).await?,
+	))
 }
 
 #[tauri::command]

@@ -13,6 +13,7 @@
 	import {
 		commands,
 		type ArticleContent,
+		type Transcript as ArticleTranscript,
 		type ArticleLight,
 		type Feed,
 	} from '$lib/util/bindings';
@@ -59,6 +60,7 @@
 	);
 
 	let articleContent: ArticleContent | null = $state(null);
+	let transcript: ArticleTranscript | null = $state(null);
 
 	let externalLinkOpen = $state(false);
 	let imageViewOpen = $state(false);
@@ -139,7 +141,8 @@
 	$effect(() => {
 		if (!articleId) return;
 		commands.fetchArticleContent(articleId).then((res) => {
-			if (res.status == 'ok') articleContent = res.data;
+			if (res.status == 'ok') [articleContent, transcript] = [...res.data];
+			console.log(res);
 		});
 	});
 
@@ -225,7 +228,7 @@
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowfullscreen
 							class="aspect-video w-full rounded-lg border-0"></iframe>
-						<Transcript {videoId} {ytPlayer} />
+						<Transcript {transcript} {ytPlayer} />
 					{/if}
 					<div
 						onclick={handleArticleClick}

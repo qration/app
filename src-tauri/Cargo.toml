@@ -43,3 +43,4 @@ tokio = { version = "1.53.1", features = ["full"] }
 dateparser = "0.3.1"
 tauri-plugin-notifications = { version = "0.4" }
 futures = "0.3.33"
+itertools = "0.15.0"

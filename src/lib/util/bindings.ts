@@ -13,16 +13,12 @@ export const commands = {
 	fetchFeed: (id: string) =>
 		typedError<Feed, FeedError>(__TAURI_INVOKE('fetch_feed', { id })),
 	fetchArticleContent: (id: string) =>
-		typedError<ArticleContent, FeedError>(
+		typedError<[ArticleContent, Transcript | null], FeedError>(
 			__TAURI_INVOKE('fetch_article_content', { id }),
 		),
 	fetchArticlesLight: () =>
 		typedError<ArticleLight[], FeedError>(
 			__TAURI_INVOKE('fetch_articles_light'),
-		),
-	fetchTranscript: (videoId: string, lang: string) =>
-		typedError<TranscriptSnippet[], FeedError>(
-			__TAURI_INVOKE('fetch_transcript', { videoId, lang }),
 		),
 	setStarFeed: (id: string, star: boolean) =>
 		typedError<null, FeedError>(__TAURI_INVOKE('set_star_feed', { id, star })),
@@ -93,6 +89,15 @@ export type MediaType = 'text' | 'video';
 export type RefreshFeedResult = {
 	new_count: number;
 	articles_light: ArticleLight[];
+};
+
+export type Transcript = {
+	id: string;
+	article_id: string;
+	video_id: string;
+	lang: string;
+	feed_type: FeedType;
+	snippets: TranscriptSnippet[];
 };
 
 export type TranscriptSnippet = {

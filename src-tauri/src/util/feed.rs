@@ -1,12 +1,16 @@
 use crate::{
 	types::{article::*, error::*, feed::*},
-	util,
+	util::{self, youtube::_get_yt_video_id},
 };
 use atom_syndication::{Entry, Feed as AtomFeed, Link};
 use futures::future;
 use nanoid::nanoid;
 use rss::Channel;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{
+	sync::Arc,
+	time::{SystemTime, UNIX_EPOCH},
+};
+use tokio::sync::Semaphore;
 use url::Url;
 
 pub async fn _fetch_live_feed(
@@ -62,7 +66,7 @@ fn _new_rss_feed(
 		),
 	};
 
-	let (al, ac): (Vec<ArticleLight>, Vec<ArticleContent>) = channel
+	let (al, ac) = channel
 		.items
 		.into_iter()
 		.map(|i| {
@@ -116,6 +120,7 @@ fn _new_rss_feed(
 		feed: feed,
 		articles_light: al,
 		articles_content: ac,
+		transcripts: vec![],
 	})
 }
 
@@ -126,10 +131,11 @@ async fn _new_atom_feed(
 	feed_type: Option<FeedType>,
 	media_type: Option<MediaType>,
 ) -> Result<ParsedFeed, FeedError> {
+	let feed_type_val = feed_type.unwrap_or(FeedType::Atom);
 	let feed = Feed {
 		id: feed_id.clone(),
 		feed_name: atomfeed.title.to_string(),
-		feed_type: feed_type.unwrap_or(FeedType::Atom),
+		feed_type: feed_type_val.clone(),
 		favourited: false,
 		feed_url: base_url.to_string(),
 		site_url: _pick_link(&atomfeed.links, "alternate")
@@ -143,48 +149,84 @@ async fn _new_atom_feed(
 		),
 	};
 
-	let article_iter = atomfeed.entries.into_iter();
+	let mut al = vec![];
+	let mut ac = vec![];
+	let mut tr_tasks = vec![];
 
-	let (al, ac) = future::join_all(article_iter.map(async |e| {
+	for e in atomfeed.entries {
 		let article_id = nanoid!();
 		let article_content =
 			_get_atomfeed_content(e.clone(), base_url.clone(), feed_type)
 				.await
 				.unwrap();
 		let article_description = _get_atomfeed_description(e.clone(), feed_type);
+		let video_id = _get_yt_video_id(e.clone());
 
-		(
-			ArticleLight {
-				id: article_id.clone(),
-				article_name: Some(e.title.to_string()),
-				article_description: article_description,
-				feed_id: feed_id.clone(),
-				media_type: media_type.unwrap_or(MediaType::Text),
-				article_read: false,
-				article_saved: false,
-				article_date: Some(e.published.unwrap_or(e.updated).timestamp()),
-				article_url: _pick_link(&e.links, "alternate")
-					.or_else(|| e.links.first().cloned())
-					.map(|l| l.href.clone()),
-				article_guid: e.id,
-			},
-			ArticleContent {
-				id: article_id.clone(),
-				content: article_content,
-				enclosure_url: None,
-				enclosure_mime_type: None,
-				enclosure_length: None,
-			},
-		)
-	}))
-	.await
-	.into_iter()
-	.unzip();
+		al.push(ArticleLight {
+			id: article_id.clone(),
+			article_name: Some(e.title.to_string()),
+			article_description: article_description,
+			feed_id: feed_id.clone(),
+			media_type: media_type.unwrap_or(MediaType::Text),
+			article_read: false,
+			article_saved: false,
+			article_date: Some(e.published.unwrap_or(e.updated).timestamp()),
+			article_url: _pick_link(&e.links, "alternate")
+				.or_else(|| e.links.first().cloned())
+				.map(|l| l.href.clone()),
+			article_guid: e.id,
+		});
+		ac.push(ArticleContent {
+			id: article_id.clone(),
+			content: article_content,
+			enclosure_url: None,
+			enclosure_mime_type: None,
+			enclosure_length: None,
+		});
+
+		if video_id != "" {
+			tr_tasks.push((article_id, video_id));
+		}
+	}
+
+	println!("parsed articles");
+
+	let sem = Arc::new(Semaphore::new(5)); // only handle 5 transcripts at once
+	let tr_futures = tr_tasks.into_iter().map(|(article_id, video_id)| {
+		let sem = sem.clone();
+		async move {
+			let _permit = sem
+				.acquire()
+				.await
+				.map_err(|_| FeedError::TranscriptUnavailable);
+			println!("fetching transcripts for {}", video_id);
+			let snippets =
+				util::youtube::_fetch_transcript(&video_id.clone(), "en").await?;
+			Ok::<Transcript, FeedError>(Transcript {
+				id: nanoid!(),
+				article_id,
+				video_id,
+				lang: String::from("en"),
+				feed_type: feed_type_val.clone(),
+				snippets: sqlx::types::Json(snippets),
+			})
+		}
+	});
+
+	let tr_results = future::join_all(tr_futures).await;
+	let mut tr = vec![];
+	for res in tr_results {
+		match res {
+			Ok(transcript) => tr.push(transcript),
+			Err(err) => println!("failed to fetch transcript: {}", err),
+		}
+	}
 
 	Ok(ParsedFeed {
 		feed: feed,
 		articles_light: al,
 		articles_content: ac,
+		transcripts: tr,
 	})
 }
 

@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use specta_typescript::Number;
+use sqlx::types::Json;
+
+use crate::types::feed::FeedType;
 
 #[derive(Serialize, Deserialize, Type, Clone)]
 pub struct ArticleLight {
@@ -25,6 +28,17 @@ pub struct ArticleContent {
 	pub enclosure_mime_type: Option<String>,
 	#[specta(type = Number)]
 	pub enclosure_length: Option<i64>,
+}
+
+#[derive(Serialize, Deserialize, Type, Clone)]
+pub struct Transcript {
+	pub id: String,
+	pub article_id: String,
+	pub video_id: String,
+	pub lang: String,
+	pub feed_type: FeedType,
+	#[specta(type = Vec<TranscriptSnippet>)]
+	pub snippets: Json<Vec<TranscriptSnippet>>,
 }
 
 #[derive(Serialize, Deserialize, Type, Clone)]

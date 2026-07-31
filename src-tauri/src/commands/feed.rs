@@ -28,9 +28,13 @@ pub async fn new_feed(
 		util::feed::_fetch_live_feed(base_url, None, feed_type, media_type).await?;
 
 	db::feed::add_feed(&pool, &pf.feed).await?;
-	let new_articles =
-		db::article::add_articles(&pool, &pf.articles_light, &pf.articles_content)
-			.await?;
+	let new_articles = db::article::add_articles(
+		&pool,
+		&pf.articles_light,
+		&pf.articles_content,
+		&pf.transcripts,
+	)
+	.await?;
 
 	let afr = AddFeedResult {
 		feed: pf.feed,
@@ -94,9 +98,13 @@ pub async fn refresh_feed(
 	)
 	.await?;
 
-	let new_articles =
-		db::article::add_articles(&pool, &pf.articles_light, &pf.articles_content)
-			.await?;
+	let new_articles = db::article::add_articles(
+		&pool,
+		&pf.articles_light,
+		&pf.articles_content,
+		&pf.transcripts,
+	)
+	.await?;
 
 	let rfr = RefreshFeedResult {
 		new_count: new_articles.len(),
@@ -129,6 +137,7 @@ pub async fn refresh_feeds(
 			&pool,
 			&pf.articles_light,
 			&pf.articles_content,
+			&pf.transcripts,
 		)
 		.await?;
 		new_count += new_articles.len();

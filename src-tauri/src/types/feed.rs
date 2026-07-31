@@ -31,6 +31,7 @@ pub struct ParsedFeed {
 	pub feed: Feed,
 	pub articles_light: Vec<ArticleLight>,
 	pub articles_content: Vec<ArticleContent>,
+	pub transcripts: Vec<Transcript>,
 }
 
 #[derive(Serialize, Deserialize, Type, Clone)]

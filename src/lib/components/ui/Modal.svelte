@@ -15,7 +15,7 @@
 		title?: string;
 		onclose?: () => void;
 		children: Snippet;
-	} = $props();	
+	} = $props();
 
 	let dialog: HTMLDialogElement | null = $state(null);
 	let pushedEntry = false;

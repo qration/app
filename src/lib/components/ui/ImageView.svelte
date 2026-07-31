@@ -92,7 +92,7 @@
 	onpointerup={handleClick}
 	closedby="any">
 	<IconButton
-		class="fixed top-4 left-4 z-50 bg-bg-secondary"
+		class="z-50 mt-4 ml-4 bg-bg-secondary"
 		icon="tabler:x"
 		label="Close"
 		onclick={close} />

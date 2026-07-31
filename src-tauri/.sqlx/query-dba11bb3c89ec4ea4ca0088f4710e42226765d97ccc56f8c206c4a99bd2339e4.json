@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO articles_light\n        (id, feed_id, article_guid, article_name, article_description,\n        article_url, article_date, media_type, article_read, article_saved)\n      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n      ON CONFLICT(feed_id, article_guid) DO UPDATE SET\n\t\t\t\tarticle_name = excluded.article_name,\n\t\t\t\tarticle_description = excluded.article_description,\n\t\t\t\tarticle_date = excluded.article_date",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 10
+    },
+    "nullable": []
+  },
+  "hash": "dba11bb3c89ec4ea4ca0088f4710e42226765d97ccc56f8c206c4a99bd2339e4"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO transcripts\n\t\t\t\t(id, article_id, video_id, lang, feed_type, snippets)\n\t\t\tVALUES (?, ?, ?, ?, ?, ?)\n\t\t\tON CONFLICT(video_id, lang) DO UPDATE SET\n\t\t\t\tsnippets = excluded.snippets",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "cc137323472b6c3c60c9440ef78d8f52717827039fb2f4a6eed85e1be31a0849"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO articles_content\n        (id, content, enclosure_url, enclosure_mime_type, enclosure_length)\n      VALUES (?, ?, ?, ?, ?)\n\t\t\tON CONFLICT(id) DO UPDATE SET\n\t\t\t\tcontent = excluded.content",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "07da6051243774447daf0b281ac3258136a3bf15f29ccb42809132b801e6a74e"
+}

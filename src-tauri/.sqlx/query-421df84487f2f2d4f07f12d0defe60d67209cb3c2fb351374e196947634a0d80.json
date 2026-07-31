@@ -1,0 +1,74 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT l.id, l.article_name, l.article_description, l.article_date, c.content\n\t\t\tFROM articles_light l LEFT JOIN articles_content c ON c.id = l.id\n\t\t\tWHERE l.feed_id = ? AND l.article_guid = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "article_name",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_name"
+          }
+        }
+      },
+      {
+        "name": "article_description",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_description"
+          }
+        }
+      },
+      {
+        "name": "article_date",
+        "ordinal": 3,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "articles_light",
+            "name": "article_date"
+          }
+        }
+      },
+      {
+        "name": "content",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "articles_content",
+            "name": "content"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "421df84487f2f2d4f07f12d0defe60d67209cb3c2fb351374e196947634a0d80"
+}

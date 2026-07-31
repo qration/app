@@ -1,0 +1,86 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id,\n\t\t\t\t\t\tarticle_id,\n\t\t\t\t\t\tvideo_id,\n\t\t\t\t\t\tlang,\n\t\t\t\t\t\tfeed_type AS \"feed_type!: FeedType\",\n\t\t\t\t\t\tsnippets AS \"snippets: Json<Vec<TranscriptSnippet>>\"\n    FROM transcripts\n    WHERE article_id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "transcripts",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "article_id",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "transcripts",
+            "name": "article_id"
+          }
+        }
+      },
+      {
+        "name": "video_id",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "transcripts",
+            "name": "video_id"
+          }
+        }
+      },
+      {
+        "name": "lang",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "transcripts",
+            "name": "lang"
+          }
+        }
+      },
+      {
+        "name": "feed_type!: FeedType",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "transcripts",
+            "name": "feed_type"
+          }
+        }
+      },
+      {
+        "name": "snippets: Json<Vec<TranscriptSnippet>>",
+        "ordinal": 5,
+        "type_info": "Null",
+        "origin": {
+          "Table": {
+            "table": "transcripts",
+            "name": "snippets"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "08d3d6fa6cdeb33e36bae382e5b443b59b2bf184b58a72669987c7ebd4ee3542"
+}

@@ -41,14 +41,16 @@ export class FeedStore {
 	}
 
 	async refreshAll(force = false) {
-		this.status = 'loading';
 		if (
 			!force &&
+			this.status == 'loading' &&
 			this.lastRefreshed &&
 			Date.now() - this.lastRefreshed < 5 * 60000
 		)
 			return;
 
+		this.status = 'loading';
+		this.lastRefreshed = Date.now();
 		const res = await commands.refreshFeeds();
 		if (res.status == 'error') {
 			this.error = res.error;
@@ -58,7 +60,6 @@ export class FeedStore {
 
 		this.articles_light = res.data.articles_light.concat(this.articles_light);
 		this.status = 'ready';
-		this.lastRefreshed = Date.now();
 		this.notificationPermsGranted = await isPermissionGranted();
 
 		if (res.data.new_count > 0 && this.notificationPermsGranted) {

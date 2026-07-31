@@ -2,29 +2,38 @@
 
 <img src="./logo.svg" align="right" alt="Qration Logo" width="100"/>
 
-Qration is a privacy-first RSS+ feed reader. Read, watch and listen to exactly what you care about, whenever you want to, without distractions.
+Qration is a cross-platform*, privacy-first RSS+ feed reader. Read, watch and listen to exactly what you care about, whenever you want to, without distractions.
 
 Qration is, and always will be, 100% free and open source.
 
 [Official Discord Server](https://discord.gg/9sudXdUdMx)
 
-![alt text](screenshot.png)
+<div style="display:flex;gap:10px;">
+  <div style="flex:calc(1919/1171)">
+    <img src="screenshot.png" style="width:100%;height:auto" alt="Screenshot of Qration on desktop"/>
+  </div>
+  <div style="flex:calc(1067/2395)">
+    <img src="screenshot-mobile.png" style="width:100%;height:auto"
+    alt="Screenshot of Qration on an Android device"/>
+  </div>
+</div>
+
+\* Windows, MacOS, Linux and Android are currently supported.
 
 ## Feed Support
 
 - [x] RSS
 - [x] Atom
-- [x] YouTube&dagger;
+- [x] YouTube
 - [ ] Bluesky
 - [ ] Podcasts
 
-&dagger;**Partial support**. Basic info is available, but transcripts are not.
-
 ## Planned Features
 
-- [ ] YouTube transcript fetching
+- [x] YouTube transcript fetching
 - [ ] More support for RSS+ feeds
 - [ ] OPML import/export
+- [ ] iOS support
 - [ ] Opt-in account system
 - [ ] Opt-in cloud sync
 - [ ] Article snippet sharing

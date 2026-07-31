@@ -46,7 +46,7 @@
 
 		const res = await commands.newFeed(formData.url);
 		if (res.status == 'error') {
-			errorData.url = `Error: ${res.error}`;
+			errorData.url = `${res.error.type}: ${res.error.message}`;
 			return;
 		}
 

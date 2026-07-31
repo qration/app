@@ -18,8 +18,11 @@ pub async fn new_feed(
 	let fetch_url = yt_feed_url.clone().unwrap_or(url_string);
 	let base_url = Url::parse(&fetch_url).unwrap_or(url_parsed);
 
-	if let Ok(_) = db::feed::fetch_feed_by_url(&pool, fetch_url).await {
-		return Err(FeedError::AlreadySubscribed);
+	if let Ok(_) = db::feed::fetch_feed_by_url(&pool, fetch_url.clone()).await {
+		return Err(FeedError::AlreadySubscribed(format!(
+			"Already subscribed to {}",
+			fetch_url.clone()
+		)));
 	}
 
 	let feed_type = util::feed::_get_feed_type(yt_feed_url.clone());

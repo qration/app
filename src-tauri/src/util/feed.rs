@@ -21,10 +21,10 @@ pub async fn _fetch_live_feed(
 ) -> Result<ParsedFeed, FeedError> {
 	let bytes = reqwest::get(url.clone())
 		.await
-		.map_err(|_| FeedError::RequestFailed)?
+		.map_err(|e| FeedError::RequestFailed(e.to_string()))?
 		.bytes()
 		.await
-		.map_err(|_| FeedError::StreamFailed)?;
+		.map_err(|e| FeedError::StreamFailed(e.to_string()))?;
 
 	let feed_id = feed_id.unwrap_or(nanoid!());
 
@@ -40,7 +40,7 @@ pub async fn _fetch_live_feed(
 		)
 		.await
 	} else {
-		Err(FeedError::ParseFailed)
+		Err(FeedError::ParseFailed("Invalid feed".to_string()))
 	}
 }
 

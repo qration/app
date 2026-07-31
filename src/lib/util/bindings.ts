@@ -75,12 +75,12 @@ export type Feed = {
 };
 
 export type FeedError =
-	| 'RequestFailed'
-	| 'StreamFailed'
-	| 'ParseFailed'
-	| 'DbError'
-	| 'AlreadySubscribed'
-	| 'TranscriptUnavailable';
+	| { type: 'RequestFailed'; message: string }
+	| { type: 'StreamFailed'; message: string }
+	| { type: 'ParseFailed'; message: string }
+	| { type: 'DbError'; message: string }
+	| { type: 'AlreadySubscribed'; message: string }
+	| { type: 'TranscriptUnavailable'; message: string };
 
 export type FeedType = 'rss' | 'atom' | 'youtube';
 

@@ -22,14 +22,14 @@ export class FeedStore {
 		this.status = 'loading';
 		const feedsRes = await commands.fetchFeeds();
 		if (feedsRes.status == 'error') {
-			this.error = feedsRes.error;
+			this.error = `${feedsRes.error.type}: ${feedsRes.error.message}`;
 			this.status = 'error';
 			return;
 		}
 
 		const alRes = await commands.fetchArticlesLight();
 		if (alRes.status == 'error') {
-			this.error = alRes.error;
+			this.error = `${alRes.error.type}: ${alRes.error.message}`;
 			this.status = 'error';
 			return;
 		}
@@ -53,7 +53,7 @@ export class FeedStore {
 		this.lastRefreshed = Date.now();
 		const res = await commands.refreshFeeds();
 		if (res.status == 'error') {
-			this.error = res.error;
+			this.error = `${res.error.type}: ${res.error.message}`;
 			this.status = 'error';
 			return;
 		}

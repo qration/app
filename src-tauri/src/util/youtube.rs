@@ -92,33 +92,38 @@ pub async fn _fetch_transcript(
 		}))
 		.send()
 		.await
-		.map_err(|_| FeedError::RequestFailed)?
+		.map_err(|e| FeedError::RequestFailed(e.to_string()))?
 		.text()
 		.await
-		.map_err(|_| FeedError::StreamFailed)?;
+		.map_err(|e| FeedError::StreamFailed(e.to_string()))?;
 
-	let player: serde_json::Value =
-		serde_json::from_str(&body).map_err(|_| FeedError::ParseFailed)?;
+	let player: serde_json::Value = serde_json::from_str(&body)
+		.map_err(|e| FeedError::ParseFailed(e.to_string()))?;
 
 	let tracks = player
 		.pointer("/captions/playerCaptionsTracklistRenderer/captionTracks")
 		.and_then(|t| t.as_array())
-		.ok_or(FeedError::TranscriptUnavailable)?;
+		.ok_or(FeedError::TranscriptUnavailable(format!(
+			"Couldn't get transcript for video {}",
+			video_id
+		)))?;
 
 	let track_url =
-		_pick_caption_track(tracks).ok_or(FeedError::TranscriptUnavailable)?;
+		_pick_caption_track(tracks).ok_or(FeedError::TranscriptUnavailable(
+			format!("Couldn't get transcript for video {}", video_id),
+		))?;
 
 	let timedtext = client
 		.get(track_url)
 		.send()
 		.await
-		.map_err(|_| FeedError::RequestFailed)?
+		.map_err(|e| FeedError::RequestFailed(e.to_string()))?
 		.text()
 		.await
-		.map_err(|_| FeedError::StreamFailed)?;
+		.map_err(|e| FeedError::StreamFailed(e.to_string()))?;
 
-	let parsed: serde_json::Value =
-		serde_json::from_str(&timedtext).map_err(|_| FeedError::ParseFailed)?;
+	let parsed: serde_json::Value = serde_json::from_str(&timedtext)
+		.map_err(|e| FeedError::ParseFailed(e.to_string()))?;
 
 	Ok(_parse_timedtext(&parsed))
 }
@@ -205,7 +210,7 @@ mod tests {
 		// Video ids are 11 chars, so this parses as an id but resolves to nothing.
 		let res = _fetch_transcript("00000000000", "en").await;
 
-		assert!(matches!(res, Err(FeedError::TranscriptUnavailable)));
+		assert!(matches!(res, Err(FeedError::TranscriptUnavailable(_))));
 	}
 
 	#[test]

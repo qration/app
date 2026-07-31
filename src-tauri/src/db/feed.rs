@@ -19,8 +19,8 @@ pub async fn add_feed(
   .execute(pool)
   .await
   .map_err(|e| match e {
-    sqlx::Error::Database(ref db) if db.is_unique_violation() => FeedError::AlreadySubscribed,
-    _ => FeedError::DbError,
+    sqlx::Error::Database(ref db) if db.is_unique_violation() => FeedError::AlreadySubscribed(format!("Already subscribed to {}", &feed.feed_url)),
+    _ => FeedError::DbError(e.to_string()),
   })?;
 
 	Ok(())
@@ -40,7 +40,7 @@ pub async fn fetch_feeds(pool: &Pool<Sqlite>) -> Result<Vec<Feed>, FeedError> {
 	)
 	.fetch_all(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(rows)
 }
@@ -64,7 +64,7 @@ pub async fn fetch_feed(
 	)
 	.fetch_one(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(feed)
 }
@@ -88,7 +88,7 @@ pub async fn fetch_feed_by_url(
 	)
 	.fetch_one(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(feed)
 }
@@ -108,7 +108,7 @@ pub async fn set_star_feed(
 	)
 	.execute(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(())
 }
@@ -125,7 +125,7 @@ pub async fn delete_feed(
 	)
 	.execute(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(())
 }

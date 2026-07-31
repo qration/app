@@ -10,7 +10,10 @@ pub async fn add_articles(
 	articles_content: &Vec<ArticleContent>,
 	transcripts: &Vec<Transcript>,
 ) -> Result<Vec<ArticleLight>, FeedError> {
-	let mut tx = pool.begin().await.map_err(|_| FeedError::DbError)?;
+	let mut tx = pool
+		.begin()
+		.await
+		.map_err(|e| FeedError::DbError(e.to_string()))?;
 	let mut articles = vec![];
 
 	for (al, ac) in articles_light.iter().zip(articles_content) {
@@ -23,7 +26,7 @@ pub async fn add_articles(
 		)
 		.fetch_optional(&mut *tx)
 		.await
-		.map_err(|_| FeedError::DbError)?;
+		.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 		let article_id = match &existing_row {
 			Some(row) => {
@@ -61,7 +64,7 @@ pub async fn add_articles(
 		)
 		.execute(&mut *tx)
 		.await
-		.map_err(|_| FeedError::DbError)?;
+		.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 		sqlx::query!(
 			"INSERT INTO articles_content
@@ -77,7 +80,7 @@ pub async fn add_articles(
 		)
 		.execute(&mut *tx)
 		.await
-		.map_err(|_| FeedError::DbError)?;
+		.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 		let mut a = al.clone();
 		a.id = article_id;
@@ -100,10 +103,12 @@ pub async fn add_articles(
 		)
 		.execute(&mut *tx)
 		.await
-		.map_err(|_| FeedError::DbError)?;
+		.map_err(|e| FeedError::DbError(e.to_string()))?;
 	}
 
-	tx.commit().await.map_err(|_| FeedError::DbError)?;
+	tx.commit()
+		.await
+		.map_err(|e| FeedError::DbError(e.to_string()))?;
 	Ok(articles)
 }
 
@@ -127,7 +132,7 @@ pub async fn fetch_articles_light(
 	)
 	.fetch_all(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(rows)
 }
@@ -149,7 +154,7 @@ pub async fn fetch_article_content(
 	)
 	.fetch_one(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(ac)
 }
@@ -172,7 +177,7 @@ pub async fn fetch_transcript(
 	)
 	.fetch_optional(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(tr)
 }
@@ -190,7 +195,7 @@ pub async fn mark_article_read(
 	)
 	.execute(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(())
 }
@@ -210,7 +215,7 @@ pub async fn set_save_article(
 	)
 	.execute(pool)
 	.await
-	.map_err(|_| FeedError::DbError)?;
+	.map_err(|e| FeedError::DbError(e.to_string()))?;
 
 	Ok(())
 }

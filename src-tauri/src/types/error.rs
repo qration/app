@@ -3,17 +3,18 @@ use specta::Type;
 use thiserror::Error;
 
 #[derive(Debug, Error, Serialize, Type)]
+#[serde(tag = "type", content = "message")]
 pub enum FeedError {
 	#[error("request failed")]
-	RequestFailed,
+	RequestFailed(String),
 	#[error("stream failed")]
-	StreamFailed,
+	StreamFailed(String),
 	#[error("parse failed")]
-	ParseFailed,
+	ParseFailed(String),
 	#[error("db failed")]
-	DbError,
+	DbError(String),
 	#[error("already subscribed")]
-	AlreadySubscribed,
+	AlreadySubscribed(String),
 	#[error("transcript unavailable")]
-	TranscriptUnavailable,
+	TranscriptUnavailable(String),
 }

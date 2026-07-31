@@ -15,7 +15,7 @@ use tauri::Manager;
 use tauri_specta::collect_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() -> Result<(), Box<dyn Error>> {
+pub fn run() {
 	let builder =
 		tauri_specta::Builder::<tauri::Wry>::new().commands(collect_commands![
 			feed::new_feed,
@@ -65,8 +65,6 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 		})
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
-
-	Ok(())
 }
 
 fn _db_setup(dir: PathBuf) -> Result<Pool<Sqlite>, Box<dyn Error>> {

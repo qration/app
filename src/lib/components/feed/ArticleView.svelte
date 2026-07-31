@@ -19,7 +19,8 @@
 	} from '$lib/util/bindings';
 	import { onMount } from 'svelte';
 	import ImageView from '../ui/ImageView.svelte';
-	import { youtubeVideoId } from '$lib/util/util';
+	import { countWords, readingMinutes, youtubeVideoId } from '$lib/util/util';
+	import Icon from '@iconify/svelte';
 	import { OverlayScrollbarsComponent } from 'overlayscrollbars-svelte';
 
 	let {
@@ -61,6 +62,9 @@
 
 	let articleContent: ArticleContent | null = $state(null);
 	let transcript: ArticleTranscript | null = $state(null);
+	let minutes: number | null = $derived.by(() =>
+		readingMinutes(countWords(articleContent?.content)),
+	);
 
 	let externalLinkOpen = $state(false);
 	let imageViewOpen = $state(false);
@@ -241,6 +245,19 @@
 				</div>
 			</OverlayScrollbarsComponent>
 		{/key}
+		{#if minutes && !videoId && MQ.current}
+			<div
+				aria-hidden={!zen}
+				class="pointer-events-none absolute bottom-0 left-0 m-4 flex
+					flex-row items-center gap-1.5 rounded-full border border-border
+					bg-bg-secondary px-3 py-1.5 text-sm font-light text-text-secondary
+					transition-all duration-500 select-none {zen
+					? 'translate-y-0 opacity-60'
+					: 'translate-y-2 opacity-0'}">
+				<Icon icon="tabler:clock" class="shrink-0 text-base" />
+				<span class="tabular-nums">{minutes} min read</span>
+			</div>
+		{/if}
 	{/if}
 </div>
 

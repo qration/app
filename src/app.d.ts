@@ -13,6 +13,7 @@ declare global {
 			sidebarEntry?: boolean;
 			showArticle?: boolean;
 			selectedArticleId?: string;
+			dialogOpen?: boolean;
 		}
 		// interface Platform {}
 	}

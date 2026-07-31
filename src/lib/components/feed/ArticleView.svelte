@@ -238,7 +238,7 @@
 						onclick={handleArticleClick}
 						onkeydown={handleArticleKeydown}
 						role="presentation"
-						class="feed-content flex h-full flex-col gap-3">
+						class="feed-content flex h-full flex-col gap-3 wrap-anywhere">
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 						{@html articleContent?.content}
 					</div>

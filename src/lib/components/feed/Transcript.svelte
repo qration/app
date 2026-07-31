@@ -81,7 +81,8 @@
 										class="shrink-0 pt-0.75 font-mono text-sm text-text-muted tabular-nums">
 										{timestamp(snippet.start ?? 0)}
 									</span>
-									<span class="min-w-0 text-text">{snippet.text}</span>
+									<span class="min-w-0 text-left text-text"
+										>{snippet.text}</span>
 								</button>
 							{/each}
 						{/if}

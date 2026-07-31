@@ -1,7 +1,9 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
-
 	import type { Snippet } from 'svelte';
+	import { untrack } from 'svelte';
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/state';
 
 	let {
 		open = $bindable(false),
@@ -13,30 +15,82 @@
 		title?: string;
 		onclose?: () => void;
 		children: Snippet;
-	} = $props();
+	} = $props();	
 
 	let dialog: HTMLDialogElement | null = $state(null);
+	let pushedEntry = false;
 
 	function close() {
 		open = false;
-		dialog?.close();
+	}
+
+	function handleClose() {
+		open = false;
 		onclose?.();
 	}
 
+	function reposition() {
+		const vv = window.visualViewport;
+		if (!dialog || !vv) return;
+		const doc = document.documentElement;
+		dialog.style.top = `${vv.offsetTop}px`;
+		dialog.style.left = `${vv.offsetLeft}px`;
+		dialog.style.right = `${doc.clientWidth - vv.offsetLeft - vv.width}px`;
+		dialog.style.bottom = `${doc.clientHeight - vv.offsetTop - vv.height}px`;
+		dialog.style.maxHeight = `${vv.height}px`;
+	}
+
 	$effect(() => {
-		if (!open) dialog?.close();
-		else dialog?.showModal();
+		if (!dialog) return;
+
+		if (open) {
+			if (!dialog.open) dialog.showModal();
+			reposition();
+
+			const vv = window.visualViewport;
+			vv?.addEventListener('resize', reposition);
+			vv?.addEventListener('scroll', reposition);
+
+			return () => {
+				vv?.removeEventListener('resize', reposition);
+				vv?.removeEventListener('scroll', reposition);
+			};
+		} else {
+			if (dialog.open) dialog.close();
+		}
+	});
+
+	$effect(() => {
+		if (!open) return;
+
+		untrack(() => pushState('', { ...page.state, dialogOpen: true }));
+		pushedEntry = true;
+
+		const onPop = () => {
+			pushedEntry = false;
+			open = false;
+		};
+		window.addEventListener('popstate', onPop);
+
+		return () => {
+			window.removeEventListener('popstate', onPop);
+			if (pushedEntry) {
+				pushedEntry = false;
+				history.back();
+			}
+		};
 	});
 </script>
 
 <dialog
 	bind:this={dialog}
-	class="mx-auto my-auto w-120 rounded-xl border
-		border-border bg-bg p-6 text-text shadow-lg select-none
+	class="mx-auto my-auto flex w-120 max-w-[calc(100vw-2rem)] flex-col
+		overflow-y-auto rounded-xl border border-border bg-bg p-6 text-text
+		shadow-lg select-none
 		backdrop:bg-black/50 backdrop:backdrop-blur-xs"
 	aria-modal="true"
 	aria-label={title || 'Dialog'}
-	onclose={close}
+	onclose={handleClose}
 	closedby="any">
 	<div class="mb-4 flex items-center justify-between">
 		<div class="text-xl font-medium">{title}</div>
@@ -49,14 +103,16 @@
 	dialog {
 		opacity: 0;
 		transform: scale(0.97);
-		transition: all 0.1s ease-out allow-discrete;
+		transition:
+			opacity 0.1s ease-out,
+			transform 0.1s ease-out;
 	}
 
 	dialog::backdrop {
 		opacity: 0;
 		background-color: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(4px);
-		transition: all 0.1s ease-out allow-discrete;
+		transition: opacity 0.1s ease-out;
 	}
 
 	dialog[open] {
@@ -66,6 +122,11 @@
 
 	dialog[open]::backdrop {
 		opacity: 1;
+	}
+
+	dialog:not([open]),
+	dialog:not([open])::backdrop {
+		pointer-events: none;
 	}
 
 	@starting-style {

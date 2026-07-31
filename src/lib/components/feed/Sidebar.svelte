@@ -74,7 +74,7 @@
 			: 'translate-x-0 lg:w-70'} safe fixed inset-y-0 z-50 flex h-full w-70 shrink-0
 		flex-col justify-between overflow-hidden transition-all duration-500 lg:static lg:translate-x-0"
 	inert={zen || (collapsed && !MQ.current)}>
-	<div class="flex min-h-0 flex-1 flex-col gap-4 pt-safe-top pb-safe-bottom">
+	<div class="flex min-h-0 flex-1 flex-col gap-4 pt-safe-top">
 		<div class="flex flex-col">
 			<div class="relative flex h-10 items-center py-6">
 				<div
@@ -174,7 +174,7 @@
 		</div>
 	</div>
 
-	<div class="mt-2 flex shrink-0 flex-col">
+	<div class="mt-2 flex shrink-0 flex-col pb-safe-bottom">
 		<SidebarButton
 			text="Settings"
 			icon="tabler:settings"

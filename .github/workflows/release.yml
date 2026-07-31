@@ -55,11 +55,11 @@ jobs:
           targets: ${{ (matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin') || (matrix.mobile == 'android' && 'aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android') || (contains(matrix.args, 'i686-pc-windows-msvc') && 'i686-pc-windows-msvc') || '' }}
 
       # ANDROID
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         if: matrix.mobile == 'android'
         uses: actions/setup-java@v5
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Set up Android SDK
@@ -104,6 +104,7 @@ jobs:
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         with:
           tagName: __VERSION__
           releaseName: 'Qration v__VERSION__'

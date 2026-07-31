@@ -8,14 +8,9 @@ Qration is, and always will be, 100% free and open source.
 
 [Official Discord Server](https://discord.gg/9sudXdUdMx)
 
-<div style="display:flex;gap:10px;">
-  <div style="flex:calc(1919/1171)">
-    <img src="screenshot.png" style="width:100%;height:auto" alt="Screenshot of Qration on desktop"/>
-  </div>
-  <div style="flex:calc(1067/2395)">
-    <img src="screenshot-mobile.png" style="width:100%;height:auto"
-    alt="Screenshot of Qration on an Android device"/>
-  </div>
+<p float="left">
+  <img src="screenshot.png" width="77.25%" alt="Screenshot of Qration on desktop"/>
+  <img src="screenshot-mobile.png" width="21%" alt="Screenshot of Qration on an Android device"/>
 </div>
 
 \* Windows, MacOS, Linux and Android are currently supported.

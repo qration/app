@@ -6,6 +6,8 @@ Qration is a cross-platform*, privacy-first RSS+ feed reader. Read, watch and li
 
 Qration is, and always will be, 100% free and open source.
 
+[Official Website](https://qration.github.io)
+
 [Official Discord Server](https://discord.gg/9sudXdUdMx)
 
 <p float="left">

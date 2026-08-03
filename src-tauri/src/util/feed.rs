@@ -5,6 +5,7 @@ use crate::{
 use atom_syndication::{Entry, Feed as AtomFeed, Link};
 use futures::future;
 use nanoid::nanoid;
+use reqwest::StatusCode;
 use rss::Channel;
 use std::{
 	sync::Arc,
@@ -19,9 +20,20 @@ pub async fn _fetch_live_feed(
 	feed_type: Option<FeedType>,
 	media_type: Option<MediaType>,
 ) -> Result<ParsedFeed, FeedError> {
-	let bytes = reqwest::get(url.clone())
+	println!("fetching {}", url.clone());
+	let res = reqwest::get(url.clone())
 		.await
-		.map_err(|e| FeedError::RequestFailed(e.to_string()))?
+		.map_err(|e| FeedError::RequestFailed(e.to_string()))?;
+
+	let bytes = res
+		.error_for_status()
+		.map_err(|e| {
+			FeedError::StreamFailed(format!(
+				"Error {} when trying to access {}",
+				e.status().unwrap_or(StatusCode::IM_A_TEAPOT).as_str(),
+				url.clone()
+			))
+		})?
 		.bytes()
 		.await
 		.map_err(|e| FeedError::StreamFailed(e.to_string()))?;

@@ -2,10 +2,11 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use specta_typescript::Number;
 use sqlx::types::Json;
+use std::fmt::Debug;
 
 use crate::types::feed::FeedType;
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct ArticleLight {
 	pub id: String,
 	pub feed_id: String,
@@ -20,7 +21,7 @@ pub struct ArticleLight {
 	pub article_saved: bool,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct ArticleContent {
 	pub id: String,
 	pub content: Option<String>,
@@ -30,7 +31,7 @@ pub struct ArticleContent {
 	pub enclosure_length: Option<i64>,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct Transcript {
 	pub id: String,
 	pub article_id: String,
@@ -41,7 +42,7 @@ pub struct Transcript {
 	pub snippets: Json<Vec<TranscriptSnippet>>,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct TranscriptSnippet {
 	pub text: String,
 	pub start: f64,
@@ -49,7 +50,7 @@ pub struct TranscriptSnippet {
 }
 
 #[derive(
-	Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,
+	Debug, Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,
 )]
 #[serde(rename_all = "snake_case")]
 #[sqlx(rename_all = "snake_case")]

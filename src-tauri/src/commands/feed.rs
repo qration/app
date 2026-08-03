@@ -126,6 +126,7 @@ pub async fn refresh_feeds(
 	let mut new_count = 0;
 	let mut articles_light = vec![];
 	for f in vf {
+		println!("refreshing {}", f.feed_name);
 		let url_parsed = Url::parse(&f.feed_url)
 			.unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
 		let pf = util::feed::_fetch_live_feed(
@@ -136,6 +137,8 @@ pub async fn refresh_feeds(
 		)
 		.await?;
 
+		println!("parsed {}", f.feed_name);
+
 		let new_articles = db::article::add_articles(
 			&pool,
 			&pf.articles_light,
@@ -143,6 +146,7 @@ pub async fn refresh_feeds(
 			&pf.transcripts,
 		)
 		.await?;
+		println!("added {} new articles", new_articles.len());
 		new_count += new_articles.len();
 		articles_light.extend(new_articles);
 	}

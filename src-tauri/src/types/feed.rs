@@ -1,11 +1,12 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use specta_typescript::Number;
+use std::fmt::Debug;
 
 use crate::types::article::*;
 
 #[derive(
-	Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,
+	Debug, Serialize, Deserialize, Type, Clone, Copy, PartialEq, Eq, sqlx::Type,
 )]
 #[serde(rename_all = "snake_case")]
 #[sqlx(rename_all = "snake_case")]
@@ -15,7 +16,7 @@ pub enum FeedType {
 	Youtube,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct Feed {
 	pub id: String,
 	pub feed_name: String,
@@ -27,6 +28,7 @@ pub struct Feed {
 	pub last_fetched: Option<i64>,
 }
 
+#[derive(Debug, Clone)]
 pub struct ParsedFeed {
 	pub feed: Feed,
 	pub articles_light: Vec<ArticleLight>,
@@ -34,7 +36,7 @@ pub struct ParsedFeed {
 	pub transcripts: Vec<Transcript>,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct AddFeedResult {
 	pub feed: Feed,
 	#[specta(type = Number)]
@@ -42,7 +44,7 @@ pub struct AddFeedResult {
 	pub articles_light: Vec<ArticleLight>,
 }
 
-#[derive(Serialize, Deserialize, Type, Clone)]
+#[derive(Debug, Serialize, Deserialize, Type, Clone)]
 pub struct RefreshFeedResult {
 	#[specta(type = Number)]
 	pub new_count: usize,

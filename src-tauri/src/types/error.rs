@@ -1,5 +1,6 @@
 use serde::Serialize;
 use specta::Type;
+use std::fmt::Debug;
 use thiserror::Error;
 
 #[derive(Debug, Error, Serialize, Type)]

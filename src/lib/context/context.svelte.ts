@@ -24,6 +24,7 @@ export class FeedStore {
 		if (feedsRes.status == 'error') {
 			this.error = `${feedsRes.error.type}: ${feedsRes.error.message}`;
 			this.status = 'error';
+			console.error(this.error);
 			return;
 		}
 
@@ -31,6 +32,7 @@ export class FeedStore {
 		if (alRes.status == 'error') {
 			this.error = `${alRes.error.type}: ${alRes.error.message}`;
 			this.status = 'error';
+			console.error(this.error);
 			return;
 		}
 
@@ -42,12 +44,12 @@ export class FeedStore {
 
 	async refreshAll(force = false) {
 		if (
-			!force &&
-			this.status == 'loading' &&
-			this.lastRefreshed &&
-			Date.now() - this.lastRefreshed < 5 * 60000
-		)
+			!force ||
+			this.status == 'loading' ||
+			(this.lastRefreshed && Date.now() - (this.lastRefreshed || 0) < 5 * 60000)
+		) {
 			return;
+		}
 
 		this.status = 'loading';
 		this.lastRefreshed = Date.now();
@@ -55,6 +57,7 @@ export class FeedStore {
 		if (res.status == 'error') {
 			this.error = `${res.error.type}: ${res.error.message}`;
 			this.status = 'error';
+			console.error(this.error);
 			return;
 		}
 

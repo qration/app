@@ -56,7 +56,8 @@
 	},
 	"lint-staged": {
 		"**/*.{js,ts,svelte}": "eslint --cache --fix",
-		"**/*.{js,ts,css,md,svelte}": "prettier --write"
+		"**/*.{js,ts,css,md,svelte}": "prettier --write",
+		"src-tauri/**/*.rs": "rustfmt --edition 2021"
 	},
 	"dependencies": {
 		"@choochmeque/tauri-plugin-notifications-api": "^0.5.0-rc.11",

@@ -244,8 +244,8 @@ pub fn _get_yt_content(e: Entry) -> Option<String> {
 	let likes = child(cmm, "starRating")?.attrs().get("count")?;
 
 	Some(format!(
-		"<p>{}</p>
-<p>{} views &bullet; {} likes</p>",
+		r#"<p>{}</p>
+<p><Icon icon="tabler:eye"/> {} views &bullet;<Icon icon="tabler:thumb-up"/> {} likes</p>"#,
 		description, views, likes
 	))
 }

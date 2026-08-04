@@ -43,15 +43,27 @@ export class FeedStore {
 	}
 
 	async refreshAll(force = false) {
-		if (
-			!force ||
-			this.status == 'loading' ||
-			(this.lastRefreshed && Date.now() - (this.lastRefreshed || 0) < 5 * 60000)
-		) {
+		console.log(
+			this.lastRefreshed &&
+				Date.now() - (this.lastRefreshed || Date.now()) < 5 * 60000,
+		);
+		// if force OR (not loading AND more than 5 minutes have passed)
+		console.log(
+			force,
+			this.status != 'refreshing',
+			Date.now() - (this.lastRefreshed || 0),
+		);
+		// console.log('should not continue');
+		// }
+		if (!(
+			force ||
+			(this.status != 'refreshing' &&
+				Date.now() - (this.lastRefreshed || 0) > 5 * 60000)
+		)) {
 			return;
 		}
 
-		this.status = 'loading';
+		this.status = 'refreshing';
 		this.lastRefreshed = Date.now();
 		const res = await commands.refreshFeeds();
 		if (res.status == 'error') {
@@ -62,6 +74,7 @@ export class FeedStore {
 		}
 
 		this.articles_light = res.data.articles_light.concat(this.articles_light);
+		console.log(this.articles_light);
 		this.status = 'ready';
 		this.notificationPermsGranted = await isPermissionGranted();
 

@@ -129,26 +129,28 @@ pub async fn refresh_feeds(
 		println!("refreshing {}", f.feed_name);
 		let url_parsed = Url::parse(&f.feed_url)
 			.unwrap_or_else(|_| Url::parse("https://qration.net").unwrap());
-		let pf = util::feed::_fetch_live_feed(
+		let pf_res = util::feed::_fetch_live_feed(
 			url_parsed,
 			Some(f.id),
 			Some(f.feed_type),
 			util::feed::_get_media_type(Some(f.feed_type)),
 		)
-		.await?;
+		.await;
 
-		println!("parsed {}", f.feed_name);
+		if let Ok(pf) = pf_res {
+			println!("parsed {}", f.feed_name);
 
-		let new_articles = db::article::add_articles(
-			&pool,
-			&pf.articles_light,
-			&pf.articles_content,
-			&pf.transcripts,
-		)
-		.await?;
-		println!("added {} new articles", new_articles.len());
-		new_count += new_articles.len();
-		articles_light.extend(new_articles);
+			let new_articles = db::article::add_articles(
+				&pool,
+				&pf.articles_light,
+				&pf.articles_content,
+				&pf.transcripts,
+			)
+			.await?;
+			println!("added {} new articles", new_articles.len());
+			new_count += new_articles.len();
+			articles_light.extend(new_articles);
+		}
 	}
 
 	let rfr = RefreshFeedResult {

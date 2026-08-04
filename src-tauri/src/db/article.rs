@@ -18,9 +18,7 @@ pub async fn add_articles(
 
 	for (al, ac) in articles_light.iter().zip(articles_content) {
 		let existing_row = sqlx::query!(
-			"SELECT l.id, l.article_name, l.article_description, l.article_date, c.content
-			FROM articles_light l LEFT JOIN articles_content c ON c.id = l.id
-			WHERE l.feed_id = ? AND l.article_guid = ?",
+			"SELECT id FROM articles_light WHERE feed_id = ? AND article_guid = ?",
 			al.feed_id,
 			al.article_guid,
 		)
@@ -28,18 +26,9 @@ pub async fn add_articles(
 		.await
 		.map_err(|e| FeedError::DbError(e.to_string()))?;
 
-		let article_id = match &existing_row {
-			Some(row) => {
-				let unchanged = row.article_name == al.article_name.clone().unwrap()
-					&& row.article_description == al.article_description
-					&& row.article_date == al.article_date
-					&& row.content == ac.content;
-				if unchanged {
-					continue;
-				}
-				row.id.clone()
-			}
-			None => al.id.clone(),
+		let (article_id, is_new) = match &existing_row {
+			Some(row) => (row.id.clone(), false),
+			None => (al.id.clone(), true),
 		};
 
 		sqlx::query!(
@@ -72,7 +61,7 @@ pub async fn add_articles(
       VALUES (?, ?, ?, ?, ?)
 			ON CONFLICT(id) DO UPDATE SET
 				content = excluded.content",
-			al.id,
+			article_id,
 			ac.content,
 			ac.enclosure_url,
 			ac.enclosure_mime_type,
@@ -82,9 +71,11 @@ pub async fn add_articles(
 		.await
 		.map_err(|e| FeedError::DbError(e.to_string()))?;
 
-		let mut a = al.clone();
-		a.id = article_id;
-		articles.push(a);
+		if is_new {
+			let mut a = al.clone();
+			a.id = article_id;
+			articles.push(a);
+		}
 	}
 
 	for tr in transcripts.iter() {

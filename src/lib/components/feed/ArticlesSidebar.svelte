@@ -49,6 +49,7 @@
 		if (!feedsRefreshing) {
 			feedsRefreshing = true;
 			await feedStore.refreshAll(true);
+			// await feedStore.load();
 			feedsRefreshing = false;
 		}
 	}
